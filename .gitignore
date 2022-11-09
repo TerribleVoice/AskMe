@@ -1,0 +1,84 @@
+# git ignore file
+
+# Git merge results
+*.orig
+*.rej
+
+# Logs
+[Ll]ogs
+*/logs/*
+securityLogs
+*.deploylog
+
+# VS
+*.user
+*.suo
+.vs/
+.vscode/
+_ReSharper*/
+/*.sln
+/*.slnf
+/*.sln.DotSettings
+
+# Binaries
+[Bb]in
+obj
+precompiled
+ViewsBase
+/SharedPackages
+packages
+*/Backup/*
+Assemblies
+.release*
+
+# Cassandra
+commitlog/*
+data/*
+saved_caches/*
+
+# Front
+npm-debug.log*
+yarn-error.log*
+.eslintcache
+node_modules/
+bower_components/
+js-test-coverage
+webpack-assets.json
+
+**/Content/assets/
+**/Content/bundled/
+**/Content/compiledCss/
+**/Content/prebuild/development
+/frontend-tasks/webpack/static/webpack.static-config*
+/frontend-tasks/docs/storybook-static/
+/frontend-tasks/docs/report/
+
+
+# Idea
+*idea/
+!/.idea/
+**/.vs/**
+
+# Deploy
+/Deploy/PsakeDeploy/Conf/dbConfig.xml
+/Deploy/PsakeDeploy/Conf/topology.xml
+/lastBuildWarnings.log
+/UnitTestResult/*.xml
+/Deploy/PsakeDeploy/BillyLocal/build.properties
+**/settings/clusterconfig
+launchSettings.json
+
+# Nuget
+*.nupkg
+*.DotSettings
+/NDependOut
+/NDependOut1
+/Webz.ndproj
+/Docs/pages/_book/
+
+
+# Nuke.Build
+.tmp
+artifacts
+
+
