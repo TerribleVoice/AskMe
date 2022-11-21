@@ -16,7 +16,7 @@ securityLogs
 .vs/
 .vscode/
 _ReSharper*/
-/*.sln
+
 /*.slnf
 /*.sln.DotSettings
 
