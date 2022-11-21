@@ -4,6 +4,6 @@ CREATE TABLE public.users
     login      varchar NOT NULL,
     email      varchar NULL,
     "password" varchar NOT NULL,
-    is_autor   bool    NOT NULL,
+    is_author   bool    NOT NULL,
     CONSTRAINT users_pk PRIMARY KEY (id)
 );
