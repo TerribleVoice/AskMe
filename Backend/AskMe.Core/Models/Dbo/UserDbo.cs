@@ -1,18 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AskMe.Models;
+namespace AskMe.Core.Models.Dbo;
 
 [Table("users")]
-public class User
+public class UserDbo : Dbo
 {
-    public User()
+    public UserDbo()
     {
     Login = string.Empty;
     Password = string.Empty;
     }
-    [Column("id"), Key, Required]
-    public Guid Id { get; set; }
 
     [Column("login")]
     [Required(AllowEmptyStrings = true)]

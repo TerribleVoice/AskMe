@@ -1,4 +1,7 @@
-using AskMe.Repository;
+
+using AskMe.Core.StorageLayer;
+using AskMe.Service.Repositories;
+using AskMe.Service.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,11 +12,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<WebApiDbContext>(optionsBuilder =>
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddDbContext<PostgresDbContext>(optionsBuilder =>
 {
     var dbConnectionString = builder.Configuration.GetConnectionString("WebApi");
     optionsBuilder.UseNpgsql(dbConnectionString);
 });
+
 
 var app = builder.Build();
 
