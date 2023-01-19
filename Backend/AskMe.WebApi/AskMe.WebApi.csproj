@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
-    <RootNamespace>AskMe</RootNamespace>
+    <RootNamespace>AskMe.WebApi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models" />
+    <ProjectReference Include="..\AskMe.Service\AskMe.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AskMe.Service\AskMe.Service.csproj" />
+    <Folder Include="Models" />
   </ItemGroup>
 
 </Project>

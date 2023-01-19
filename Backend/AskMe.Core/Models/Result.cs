@@ -12,7 +12,7 @@ public class Result
     public bool IsFailure => !IsSuccess;
     public string? ErrorMsg { get; set; }
 
-    public static Result Success() => new(true);
+    public static Result Ok() => new(true);
     public static Result Fail(string msg) => new(false, msg);
 }
 
@@ -29,6 +29,6 @@ public class Result<T>
         ErrorMsg = msg;
     }
 
-    public static Result<T> Success(T value) => new(true, value);
+    public static Result<T> Ok(T value) => new(true, value);
     public static Result<T> Fail(string msg) => new(false, default, msg);
 }
