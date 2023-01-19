@@ -1,0 +1,196 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,regular,italic,500,500italic,700,700italic,900,900italic&display=swap");
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Roboto;
+    font-size: 16px;
+    color: white;
+
+    background: #101010;
+    max-height: 100vh;
+}
+
+.wrapper {
+    min-height: 100%;
+}
+.main {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.main__angel {
+    position: absolute;
+    max-height: 100vh;
+    left: -100px;
+    top: 0;
+}
+.reg {
+    width: 1000px;
+    height: 600px;
+    background: #181818;
+    position: relative;
+}
+
+/* ============================= */
+
+
+.reg {
+    display: flex;
+}
+.left-reg {
+    flex: 0 1 50%;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.left-reg__choose {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.left-reg__registation {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 42px;
+
+    /* Светлый */
+
+    color: #FFFFFF;
+}
+.left-reg__auth {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+
+    /* Серый */
+
+    color: #C0C0C0;
+
+    opacity: 0.31;
+}
+.left-reg__welcome {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+
+    /* Серый */
+
+    color: #C0C0C0;
+}
+label {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #C0C0C0;
+}
+.left-reg__text {
+}
+.left-reg__form {
+}
+.left-reg__mail input {
+    margin-top: 5px;
+    border: 0;
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 23px;
+
+/* Светлый */
+
+color: #FFFFFF;
+    background: #202020;
+}
+.left-reg__mail {
+    margin-bottom: 12px;
+    padding: 10px;
+    background: #202020;
+    display: flex;
+    flex-direction: column;
+}
+.left-reg__login input {
+    margin-top: 5px;
+    border: 0;
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 23px;
+
+/* Светлый */
+
+color: #FFFFFF;
+    background: #202020;
+}
+.left-reg__login {
+    margin-bottom: 12px;
+    padding: 10px;
+    background: #202020;
+    display: flex;
+    flex-direction: column;
+}
+.left-reg__password input {
+    margin-top: 5px;
+    border: 0;
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 23px;
+
+/* Светлый */
+
+color: #FFFFFF;
+    background: #202020;
+}
+.left-reg__password {
+    padding: 10px;
+    background: #202020;
+    display: flex;
+    flex-direction: column;
+}
+.left-reg__submit {
+    margin-top: 20px;
+    display: inline-flex;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+    border: 3px solid #B00062;
+    color: #FFFFFF;
+    padding: 12px 24px;
+}
+.left-reg__submit:hover {
+    cursor: pointer;
+}
+.left-reg__submit button {
+    background: #181818;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #FFFFFF;
+    border: 0;
+}
+
+.active-input {
+    border-left: 3px solid #B00062;
+}
