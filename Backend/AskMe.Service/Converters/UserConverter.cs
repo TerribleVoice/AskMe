@@ -1,6 +1,32 @@
-﻿namespace AskMe.Service.Converters;
+﻿using AskMe.Core.Models.Dbo;
+using AskMe.Service.Models;
+using AskMe.WebApi.Models;
+
+namespace AskMe.Service.Converters;
 
 public class UserConverter : IUserConverter
 {
 
+    public UserDbo ToDbo(UserCreationForm creationDto)
+    {
+        return new UserDbo
+        {
+            Id = Guid.NewGuid(),
+            Email = creationDto.Email,
+            Login = creationDto.Login,
+            Password = creationDto.Password,
+            IsAuthor = creationDto.IsAuthor
+        };
+    }
+
+    public UserDto ToDto(UserDbo user)
+    {
+        return new UserDto
+        {
+            IsAuthor = user.IsAuthor,
+            Id = user.Id,
+            Email = user.Email,
+            Login = user.Login
+        };
+    }
 }
