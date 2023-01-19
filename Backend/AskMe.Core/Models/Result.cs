@@ -2,7 +2,7 @@
 
 public class Result
 {
-    private Result(bool isSuccess, string? msg = null)
+    protected Result(bool isSuccess, string? msg = null)
     {
         IsSuccess = isSuccess;
         ErrorMsg = msg;
@@ -14,21 +14,19 @@ public class Result
 
     public static Result Ok() => new(true);
     public static Result Fail(string msg) => new(false, msg);
+    public static Result<T> Ok<T>(T value) => new(true, value);
+    public static Result<T> Fail<T>(string msg) => new(false, default, msg);
+    public static Result From<T>(Result<T> rootResult) => new(rootResult.IsSuccess, rootResult.ErrorMsg);
+    public static Result<T1> Fail<T1, T2>(Result<T2> rootResult) => new(false, default, rootResult.ErrorMsg);
+
 }
 
-public class Result<T>
+public class Result<T> : Result
 {
     public T? Value { get; set; }
-    public bool IsSuccess { get; set; }
-    public bool IsFailure => !IsSuccess;
-    public string? ErrorMsg { get; set; }
-    private Result(bool isSuccess, T? value, string? msg = null)
+
+    protected internal Result(bool isSuccess, T? value, string? msg = null) : base(isSuccess, msg)
     {
         Value = value;
-        IsSuccess = isSuccess;
-        ErrorMsg = msg;
     }
-
-    public static Result<T> Ok(T value) => new(true, value);
-    public static Result<T> Fail(string msg) => new(false, default, msg);
 }
