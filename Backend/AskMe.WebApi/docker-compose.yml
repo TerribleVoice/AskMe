@@ -7,12 +7,12 @@ services:
       POSTGRES_DB: "AskMe"
       POSTGRES_USER: 'admin'
       POSTGRES_PASSWORD: "test"
-      PGDATA: "../Database/Data/pgdata"
+      PGDATA: "../../Database/Data/pgdata"
     ports:
       - "5000:5432"
     volumes:
-      - ../Database/Initialization:/docker-entrypoint-initdb.d
-      - ../Database/Data/data:/var/lib/postgresql/data
+      - ../../Database/Initialization:/docker-entrypoint-initdb.d
+      - ../../Database/Data/data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U admin -d AskMe" ]
       interval: 10s
@@ -25,3 +25,20 @@ services:
         limits:
           cpus: '1'
           memory: 1G
+
+  payment:
+    restart: unless-stopped
+    container_name: payment
+    build:
+      context: .
+      dockerfile: ./paymentService/Dockerfile
+    environment:
+      POSTGRES_DB: "AskMe"
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: "test"
+    depends_on:
+      - postgres
+    ports:
+      - "4554:4554"
+    volumes:
+      - ./paymentService:/app
