@@ -15,10 +15,12 @@ public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly IUserService userService;
+    private readonly IUserIdentity userIdentity;
 
-    public UserController(ILogger<UserController> logger, IUserService userService)
+    public UserController(ILogger<UserController> logger, IUserService userService, IUserIdentity userIdentity)
     {
         this.userService = userService;
+        this.userIdentity = userIdentity;
         _logger = logger;
     }
 
@@ -63,7 +65,10 @@ public class UserController : ControllerBase
                 new(ClaimTypes.Role, user.IsAuthor ? Roles.Author : Roles.Reader),
             };
             var claimIdentity = new ClaimsIdentity(claims, "Cookies");
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
+            var principal = new ClaimsPrincipal(claimIdentity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            userIdentity.ChangeUser(principal);
             return Ok(true);
         }
 

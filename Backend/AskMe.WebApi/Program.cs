@@ -8,6 +8,7 @@ using AskMe.Service.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,7 +26,7 @@ builder.Services.AddScoped<IFeedService, FeedService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostConverter, PostConverter>();
 
-builder.Services.AddScoped<IUserIdentity>(sp =>
+builder.Services.AddSingleton<IUserIdentity>(sp =>
 {
     var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
     if (httpContextAccessor == null || httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated != null
@@ -33,17 +34,10 @@ builder.Services.AddScoped<IUserIdentity>(sp =>
     {
         return new UserIdentity();
     }
-    var identity = httpContextAccessor.HttpContext!.User;
-    return new UserIdentity
-    {
-        CurrentUser =
-        {
-            Id = Guid.Parse(identity.FindFirst("/id")!.Value),
-            Email = identity.FindFirst(ClaimTypes.Email)!.Value,
-            Login = identity.FindFirst(ClaimTypes.Name)!.Value,
-            IsAuthor = identity.FindFirst(ClaimTypes.Role)!.Value == Roles.Author
-        }
-    };
+    var claimsPrincipal = httpContextAccessor.HttpContext!.Request.HttpContext.User;
+    var identity =  new UserIdentity();
+    identity.ChangeUser(claimsPrincipal);
+    return identity;
 });
 
 builder.Services.AddDbContext<PostgresDbContext>(optionsBuilder =>
