@@ -2,7 +2,6 @@ using System.Security.Claims;
 using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
-using AskMe.WebApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -50,13 +49,19 @@ public class UserController : ControllerBase
     {
         if ((await userService.AuthenticateUser(login, password)).IsSuccess)
         {
-            var userResult = await userService.GetUser(login);
+            var userResult = await userService.FindUserByLogin(login);
             if (userResult.IsFailure)
             {
                 return BadRequest(userResult.ErrorMsg);
             }
-            var userRole = userResult.Value!.IsAuthor ? Roles.Author : Roles.Reader;
-            var claims = new List<Claim> { new(ClaimTypes.Name, login), new(ClaimTypes.Role, userRole) };
+            var user = userResult.Value!;
+            var claims = new List<Claim>
+            {
+                new("/id", user.Id.ToString()),
+                new(ClaimTypes.Name, login),
+                new(ClaimTypes.Email, user.Email ?? string.Empty),
+                new(ClaimTypes.Role, user.IsAuthor ? Roles.Author : Roles.Reader),
+            };
             var claimIdentity = new ClaimsIdentity(claims, "Cookies");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
             return Ok(true);

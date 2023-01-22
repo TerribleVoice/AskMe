@@ -18,6 +18,26 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserConverter, UserConverter>();
+builder.Services.AddScoped<IUserIdentity>(sp =>
+{
+    var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
+    if (httpContextAccessor == null || httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated != null
+        && !httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+    {
+        return new UserIdentity();
+    }
+    var identity = httpContextAccessor.HttpContext!.User;
+    return new UserIdentity
+    {
+        CurrentUser =
+        {
+            Id = Guid.Parse(identity.FindFirst("/id")!.Value),
+            Email = identity.FindFirst(ClaimTypes.Email)!.Value,
+            Login = identity.FindFirst(ClaimTypes.Name)!.Value,
+            IsAuthor = identity.FindFirst(ClaimTypes.Role)!.Value == Roles.Author
+        }
+    };
+});
 
 builder.Services.AddDbContext<PostgresDbContext>(optionsBuilder =>
 {
