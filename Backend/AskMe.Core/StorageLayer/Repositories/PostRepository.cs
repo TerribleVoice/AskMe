@@ -18,7 +18,10 @@ public class PostRepository : IPostRepository
         var posts = postgresDbContext.Posts.Where(x=>x.AuthorId == authorId);
         if (timeFilter.HasValue)
         {
-            posts = posts.Where(x => x.CreatedAt >= timeFilter.Value);
+            //todo добавить конвертацию часовых поясов
+            var timeUtc = timeFilter.Value.ToUniversalTime();
+
+            posts = posts.Where(x => x.CreatedAt >= timeUtc);
         }
         return await posts.ToArrayAsync();
     }
@@ -38,6 +41,7 @@ public class PostRepository : IPostRepository
         {
             return Result.Fail("Пост с таким id уже существует");
         }
+        post.TimeToUtc();
         await postgresDbContext.Posts.AddAsync(post);
         await postgresDbContext.SaveChangesAsync();
         return Result.Ok();
@@ -57,7 +61,7 @@ public class PostRepository : IPostRepository
         }
 
         var existedPost = readResult.Value!;
-
+        existedPost.TimeToUtc();
         existedPost.Content = post.Content;
         existedPost.Price = post.Price;
         existedPost.SubscriptionId = post.SubscriptionId;

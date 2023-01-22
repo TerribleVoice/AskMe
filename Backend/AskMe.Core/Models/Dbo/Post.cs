@@ -29,5 +29,13 @@ public class Post : Dbo
 
     [Column("price")]
     public uint? Price { get; set; }
+}
 
+public static class PostExt
+{
+    public static void TimeToUtc(this Post post)
+    {
+        //todo проверить что норм приводит
+        post.CreatedAt = post.CreatedAt.ToUniversalTime();
+    }
 }
