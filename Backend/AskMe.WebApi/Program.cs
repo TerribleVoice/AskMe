@@ -1,4 +1,6 @@
 
+using System.Security.Claims;
+using AskMe.Core.Models;
 using AskMe.Core.StorageLayer;
 using AskMe.Core.StorageLayer.Repositories;
 using AskMe.Service.Converters;
@@ -15,9 +17,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IUserConverter, UserConverter>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserConverter, UserConverter>();
+
+builder.Services.AddScoped<IFeedService, FeedService>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IPostConverter, PostConverter>();
+
 builder.Services.AddScoped<IUserIdentity>(sp =>
 {
     var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
