@@ -13,17 +13,17 @@ public class UserDbo : Dbo
     }
 
     [Column("login")]
-    [Required(AllowEmptyStrings = true)]
+    [Required(AllowEmptyStrings = false)]
     [MaxLength(100)]
     public string Login { get; set; }
 
     [Column("email")]
-    [Required(AllowEmptyStrings = true)]
+    [Required(AllowEmptyStrings = false)]
     [MaxLength(150)]
     public string? Email { get; set; }
 
     [Column("password")]
-    [Required(AllowEmptyStrings = true)]
+    [Required(AllowEmptyStrings = false)]
     [MaxLength(100)]
     public string Password { get; set; }
 
