@@ -1,6 +1,5 @@
 ﻿using AskMe.Core.Models.Dbo;
 using AskMe.Service.Models;
-using AskMe.WebApi.Models;
 
 namespace AskMe.Service.Converters;
 

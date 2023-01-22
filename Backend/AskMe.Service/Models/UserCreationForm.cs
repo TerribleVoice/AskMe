@@ -1,4 +1,4 @@
-﻿namespace AskMe.WebApi.Models;
+﻿namespace AskMe.Service.Models;
 
 public class UserCreationForm
 {

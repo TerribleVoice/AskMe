@@ -3,7 +3,6 @@ using AskMe.Core.Models.Dbo;
 using AskMe.Core.StorageLayer.Repositories;
 using AskMe.Service.Converters;
 using AskMe.Service.Models;
-using AskMe.WebApi.Models;
 
 namespace AskMe.Service.Services;
 
@@ -37,7 +36,7 @@ public class UserService : IUserService
             : Result.Fail("Wrong login or password");
     }
 
-    public async Task<Result<UserDto>> GetUser(string login)
+    public async Task<Result<UserDto>> FindUserByLogin(string login)
     {
         var userResult = await userRepository.Find(login);
         if (userResult.IsFailure)
