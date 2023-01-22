@@ -27,7 +27,8 @@ CREATE TABLE public.bills (
     bill_id uuid NOT NULL,
     sender varchar(30),
     receiver uuid NOT NULL,
-    comment varchar(500)
+    comment varchar(500),
+    amount integer NOT NULL
 );
 
 ALTER TABLE ONLY public.posts

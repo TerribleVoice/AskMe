@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, String, Boolean, ForeignKey
+from sqlalchemy import Column, String, Boolean, ForeignKey, Integer
 from sqlalchemy.dialects.postgresql import UUID
 
 Base = declarative_base()
@@ -29,3 +29,4 @@ class Bills(Base):
     sender = Column(String, default='Аноним')
     receiver = Column(UUID(as_uuid=True), ForeignKey(Users.id), nullable=False)
     comment = Column(String, default='')
+    amount = Column(Integer, nullable=False)
