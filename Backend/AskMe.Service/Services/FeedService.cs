@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using AskMe.Core.Models;
 using AskMe.Core.StorageLayer.Repositories;
 using AskMe.Service.Converters;
@@ -49,6 +50,19 @@ public class FeedService : IFeedService
 
     public async Task<Result> CreateOrUpdate(PostRequest request, Guid? postId = null)
     {
+        if (!userIdentity.CurrentUser.IsAuthor)
+        {
+            return Result.Fail("Авторизованный пользователь не является автором. Он не может создавать или редактировать посты");
+        }
+        if (postId.HasValue)
+        {
+            var canBeEditedResult = await PostCanBeEdited(postId.Value);
+            if (canBeEditedResult.IsFailure)
+            {
+                return canBeEditedResult;
+            }
+        }
+
         var id = postId ?? Guid.NewGuid();
         var authorId = userIdentity.CurrentUser.Id;
         var postDbo = postConverter.Convert(id, authorId, DateTime.Now, request);
@@ -58,8 +72,28 @@ public class FeedService : IFeedService
             : await postRepository.Create(postDbo);
     }
 
+    private async Task<Result> PostCanBeEdited(Guid postId)
+    {
+        var readResult = await postRepository.Read(postId);
+        if (readResult.IsFailure)
+        {
+            return readResult;
+        }
+
+        return readResult.Value!.AuthorId == userIdentity.CurrentUser.Id
+            ? Result.Ok()
+            : Result.Fail("Авторизованный пользователь не является автором поста. Он не имет прав на действия с постом");
+
+    }
+
     public async Task<Result> Delete(Guid postId)
     {
+        var canBeEditedResult = await PostCanBeEdited(postId);
+        if (canBeEditedResult.IsFailure)
+        {
+            return canBeEditedResult;
+        }
+
         return await postRepository.Delete(postId);
     }
 
