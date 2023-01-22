@@ -1,6 +1,7 @@
 ﻿using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskMe.WebApi.Controllers;
@@ -20,24 +21,28 @@ public class FeedController : ControllerBase
     }
 
     [HttpGet("{userLogin}/feed")]
+    [Authorize]
     public async Task<PostResponse[]> ShowFeed(string userLogin)
     {
         return await feedService.Select(userLogin);
     }
 
     [HttpGet("{postId:guid}")]
+    [Authorize]
     public async Task<PostResponse> GetPost(Guid postId)
     {
         return await feedService.Read(postId);
     }
 
     [HttpGet("{userLogin}/feed_after")]
+    [Authorize]
     public async Task<PostResponse[]> FeedAfter(string userLogin, DateTime timeAfter)
     {
         return await feedService.Select(userLogin, timeAfter);
     }
 
     [HttpPost("create")]
+    [Authorize]
     public async Task<IActionResult> Create([FromBody] PostRequest request)
     {
         var creationResult =  await feedService.CreateOrUpdate(request);
@@ -46,6 +51,7 @@ public class FeedController : ControllerBase
     }
 
     [HttpDelete("{postId:guid}")]
+    [Authorize]
     public async Task<IActionResult> Delete(Guid postId)
     {
         var deletionResult = await feedService.Delete(postId);
@@ -54,6 +60,7 @@ public class FeedController : ControllerBase
     }
 
     [HttpPost("{postId:guid}/update")]
+    [Authorize]
     public async Task<IActionResult> Update(Guid postId, [FromBody] PostRequest request)
     {
         var updateResult =  await feedService.CreateOrUpdate(request, postId);
@@ -62,6 +69,7 @@ public class FeedController : ControllerBase
     }
 
     [HttpGet("{postId:guid}/buy")]
+    [Authorize]
     public IActionResult BuyPost(Guid postId)
     {
         throw new NotImplementedException();
