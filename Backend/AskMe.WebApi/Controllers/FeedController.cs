@@ -1,5 +1,6 @@
 ﻿using AskMe.Core.Models;
 using AskMe.Service.Models;
+using AskMe.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskMe.WebApi.Controllers;
@@ -8,45 +9,71 @@ namespace AskMe.WebApi.Controllers;
 [Route("[controller]")]
 public class FeedController : ControllerBase
 {
-    [HttpGet("{userLogin}/feed")]
-    public PostResponse[] ShowFeed(string userLogin)
+    private readonly IFeedService feedService;
+    private readonly IUserIdentity userIdentity;
+
+    public FeedController(IFeedService feedService, IUserIdentity userIdentity)
     {
-        throw new NotImplementedException();
+        this.feedService = feedService;
+        this.userIdentity = userIdentity;
+
+    }
+
+    [HttpGet("{userLogin}/feed")]
+    public async Task<PostResponse[]> ShowFeed(string userLogin)
+    {
+        return await feedService.Select(userLogin);
     }
 
     [HttpGet("{postId:guid}")]
-    public PostResponse GetPost(Guid postId)
+    public async Task<PostResponse> GetPost(Guid postId)
     {
-        throw new NotImplementedException();
+        return await feedService.Read(postId);
     }
 
     [HttpGet("{userLogin}/feed_after")]
-    public PostResponse[] FeedAfter(string userLogin, DateTime timeAfter)
+    public async Task<PostResponse[]> FeedAfter(string userLogin, DateTime timeAfter)
     {
-        throw new NotImplementedException();
+        return await feedService.Select(userLogin, timeAfter);
     }
 
-    [HttpPost("{userLogin}/create")]
-    public Result Create(string userLogin, [FromBody] PostRequest request)
+    [HttpPost("create")]
+    public async Task<IActionResult> Create([FromBody] PostRequest request)
     {
-        throw new NotImplementedException();
+        var creationResult =  await feedService.CreateOrUpdate(request);
+
+        return ProcessResult(creationResult);
     }
 
     [HttpDelete("{postId:guid}")]
-    public Result Delete(Guid postId)
+    public async Task<IActionResult> Delete(Guid postId)
     {
-        throw new NotImplementedException();
+        var deletionResult = await feedService.Delete(postId);
+
+        return ProcessResult(deletionResult);
     }
 
-    [HttpGet("{postId:guid}/update")]
-    public Result Update(Guid postId, [FromBody] PostRequest request)
+    [HttpPost("{postId:guid}/update")]
+    public async Task<IActionResult> Update(Guid postId, [FromBody] PostRequest request)
     {
-        throw new NotImplementedException();
+        var updateResult =  await feedService.CreateOrUpdate(request, postId);
+
+        return ProcessResult(updateResult);
     }
 
     [HttpGet("{postId:guid}/buy")]
-    public Result BuyPost(Guid postId)
+    public IActionResult BuyPost(Guid postId)
     {
         throw new NotImplementedException();
+    }
+
+    private IActionResult ProcessResult(Result operationResult)
+    {
+        if (operationResult.IsFailure)
+        {
+            return BadRequest(operationResult.ErrorMsg);
+        }
+
+        return Ok();
     }
 }
