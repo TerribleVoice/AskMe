@@ -5,11 +5,13 @@ using AskMe.Service.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskMe.WebApi.Controllers;
 
 [ApiController]
+[EnableCors("MyPolicy")]
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
