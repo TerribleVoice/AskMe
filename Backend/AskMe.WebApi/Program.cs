@@ -17,6 +17,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -26,7 +27,7 @@ builder.Services.AddScoped<IFeedService, FeedService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostConverter, PostConverter>();
 
-builder.Services.AddSingleton<IUserIdentity>(sp =>
+builder.Services.AddScoped<IUserIdentity, UserIdentity>(sp =>
 {
     var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
     if (httpContextAccessor == null || httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated != null
@@ -35,8 +36,7 @@ builder.Services.AddSingleton<IUserIdentity>(sp =>
         return new UserIdentity();
     }
     var claimsPrincipal = httpContextAccessor.HttpContext!.Request.HttpContext.User;
-    var identity =  new UserIdentity();
-    identity.ChangeUser(claimsPrincipal);
+    var identity =  new UserIdentity(claimsPrincipal);
     return identity;
 });
 

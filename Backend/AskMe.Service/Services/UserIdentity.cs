@@ -6,17 +6,19 @@ namespace AskMe.Service.Services;
 
 public class UserIdentity : IUserIdentity
 {
-    public UserDto CurrentUser { get; private set; }
+    public UserIdentity()
+    {
 
-    public void ChangeUser(ClaimsPrincipal claimsPrincipal)
+    }
+    public UserIdentity(ClaimsPrincipal claimsPrincipal)
     {
         CurrentUser = new UserDto
-            {
-                Id = Guid.Parse(claimsPrincipal.FindFirst("/id")!.Value),
-                Email = claimsPrincipal.FindFirst(ClaimTypes.Email)!.Value,
-                Login = claimsPrincipal.FindFirst(ClaimTypes.Name)!.Value,
-                IsAuthor = claimsPrincipal.FindFirst(ClaimTypes.Role)!.Value == Roles.Author
-            };
+        {
+            Id = Guid.Parse(claimsPrincipal.FindFirst("/id")!.Value),
+            Email = claimsPrincipal.FindFirst(ClaimTypes.Email)!.Value,
+            Login = claimsPrincipal.FindFirst(ClaimTypes.Name)!.Value,
+            IsAuthor = claimsPrincipal.FindFirst(ClaimTypes.Role)!.Value == Roles.Author
+        };
     }
-
+    public UserDto? CurrentUser { get; }
 }

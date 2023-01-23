@@ -65,10 +65,8 @@ public class UserController : ControllerBase
                 new(ClaimTypes.Role, user.IsAuthor ? Roles.Author : Roles.Reader),
             };
             var claimIdentity = new ClaimsIdentity(claims, "Cookies");
-            var principal = new ClaimsPrincipal(claimIdentity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
 
-            userIdentity.ChangeUser(principal);
             return Ok(true);
         }
 
