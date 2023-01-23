@@ -15,6 +15,5 @@ export default function Header() {
                 <div className="header__signup">Войти</div>
             </Link>
         </header>
-
     );
 }

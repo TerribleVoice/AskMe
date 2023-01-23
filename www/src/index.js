@@ -9,6 +9,9 @@ import './style.css';
 import Profile from "./pages/profile_page/profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const PrivateRoute = ({ component: Component, ...rest}) => {
+
+}
 root.render(
     <BrowserRouter>
         <Routes>

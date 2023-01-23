@@ -84,6 +84,21 @@ body {
     cursor: pointer;
 }
 
+.left-reg__isAuthor {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+
+    /* Серый */
+
+    color: #C0C0C0;
+}
+.left-reg__isAuthor.hide{
+    display: none;
+}
+
 .active-btn {
     font-weight: 700;
     font-size: 36px;
@@ -135,6 +150,9 @@ color: #FFFFFF;
     background: #202020;
     display: flex;
     flex-direction: column;
+}
+.left-reg__mail.hide {
+    display: none;
 }
 .left-reg__login input {
     margin-top: 5px;

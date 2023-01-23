@@ -54,8 +54,6 @@ export default class Main extends Component {
           <Footer/>
         </footer>
     </div>
-
-
     );
   }
 }
