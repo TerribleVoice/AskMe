@@ -50,10 +50,6 @@ public class FeedService : IFeedService
 
     public async Task<Result> CreateOrUpdate(PostRequest request, Guid? postId = null)
     {
-        if (!userIdentity.CurrentUser.IsAuthor)
-        {
-            return Result.Fail("Авторизованный пользователь не является автором. Он не может создавать или редактировать посты");
-        }
         if (postId.HasValue)
         {
             var canBeEditedResult = await PostCanBeEdited(postId.Value);

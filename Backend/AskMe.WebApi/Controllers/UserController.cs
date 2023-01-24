@@ -13,17 +13,13 @@ namespace AskMe.WebApi.Controllers;
 [ApiController]
 [EnableCors("MyPolicy")]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public class UserController : CustomControllerBase
 {
-    private readonly ILogger<UserController> _logger;
     private readonly IUserService userService;
-    private readonly IUserIdentity userIdentity;
 
-    public UserController(ILogger<UserController> logger, IUserService userService, IUserIdentity userIdentity)
+    public UserController(IUserIdentity userIdentity, IUserService userService) : base(userIdentity)
     {
         this.userService = userService;
-        this.userIdentity = userIdentity;
-        _logger = logger;
     }
 
     [HttpGet(Name = "GetUsersList")]
@@ -36,16 +32,8 @@ public class UserController : ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> CreateAsync(UserCreationForm creationForm)
     {
-        try
-        {
-            await userService.CreateUser(creationForm);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message);
-            return BadRequest("Не удалось зарегистрировать пользователя, попробуйте еще раз");
-        }
-        return Ok();
+        var creationResult = await userService.CreateUser(creationForm);
+        return ProcessResult(creationResult);
     }
 
     [HttpPost("Login")]

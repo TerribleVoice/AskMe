@@ -10,16 +10,15 @@ namespace AskMe.WebApi.Controllers;
 [ApiController]
 [EnableCors("MyPolicy")]
 [Route("[controller]")]
-public class FeedController : ControllerBase
+public class FeedController : CustomControllerBase
 {
     private readonly IFeedService feedService;
     private readonly IUserIdentity userIdentity;
 
-    public FeedController(IFeedService feedService, IUserIdentity userIdentity)
+    public FeedController(IFeedService feedService, IUserIdentity userIdentity) : base(userIdentity)
     {
         this.feedService = feedService;
         this.userIdentity = userIdentity;
-
     }
 
     [HttpGet("{userLogin}/feed")]
@@ -47,6 +46,7 @@ public class FeedController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Create([FromBody] PostRequest request)
     {
+        AssertUserIsAuthor();
         var creationResult =  await feedService.CreateOrUpdate(request);
 
         return ProcessResult(creationResult);
@@ -56,6 +56,7 @@ public class FeedController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Delete(Guid postId)
     {
+        AssertUserIsAuthor();
         var deletionResult = await feedService.Delete(postId);
 
         return ProcessResult(deletionResult);
@@ -65,6 +66,7 @@ public class FeedController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Update(Guid postId, [FromBody] PostRequest request)
     {
+        AssertUserIsAuthor();
         var updateResult =  await feedService.CreateOrUpdate(request, postId);
 
         return ProcessResult(updateResult);
@@ -74,16 +76,9 @@ public class FeedController : ControllerBase
     [Authorize]
     public IActionResult BuyPost(Guid postId)
     {
+        AssertUserIsReader();
         throw new NotImplementedException();
     }
 
-    private IActionResult ProcessResult(Result operationResult)
-    {
-        if (operationResult.IsFailure)
-        {
-            return BadRequest(operationResult.ErrorMsg);
-        }
 
-        return Ok();
-    }
 }
