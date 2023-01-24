@@ -36,6 +36,10 @@ builder.Services.AddScoped<IFeedService, FeedService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostConverter, PostConverter>();
 
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddScoped<ISubscriptionConverter, SubscriptionConverter>();
+
 builder.Services.AddScoped<IUserIdentity, UserIdentity>(sp =>
 {
     var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
