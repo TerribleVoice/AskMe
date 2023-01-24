@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using AskMe.Core.Models;
 using AskMe.Core.StorageLayer.Repositories;
 using AskMe.Service.Converters;

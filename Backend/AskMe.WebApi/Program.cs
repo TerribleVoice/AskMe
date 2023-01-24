@@ -1,6 +1,3 @@
-
-using System.Security.Claims;
-using AskMe.Core.Models;
 using AskMe.Core.StorageLayer;
 using AskMe.Core.StorageLayer.Repositories;
 using AskMe.Service.Converters;

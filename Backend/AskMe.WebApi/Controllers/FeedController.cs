@@ -1,5 +1,4 @@
-﻿using AskMe.Core.Models;
-using AskMe.Service.Models;
+﻿using AskMe.Service.Models;
 using AskMe.Service.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
