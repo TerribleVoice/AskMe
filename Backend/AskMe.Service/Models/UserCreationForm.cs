@@ -15,4 +15,6 @@ public class UserCreationForm
     public string Password { get; set; }
 
     public bool IsAuthor { get; set; }
+
+    public string? QiwiToken { get; set; }
 }

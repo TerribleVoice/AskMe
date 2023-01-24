@@ -59,7 +59,7 @@ public class FeedService : IFeedService
         }
 
         var id = postId ?? Guid.NewGuid();
-        var authorId = userIdentity.CurrentUser.Id;
+        var authorId = userIdentity.CurrentUser!.Id;
         var postDbo = postConverter.Convert(id, authorId, DateTime.Now, request);
 
         return postId.HasValue
@@ -75,10 +75,9 @@ public class FeedService : IFeedService
             return readResult;
         }
 
-        return readResult.Value!.AuthorId == userIdentity.CurrentUser.Id
+        return readResult.Value!.AuthorId == userIdentity.CurrentUser!.Id
             ? Result.Ok()
             : Result.Fail("Авторизованный пользователь не является автором поста. Он не имет прав на действия с постом");
-
     }
 
     public async Task<Result> Delete(Guid postId)

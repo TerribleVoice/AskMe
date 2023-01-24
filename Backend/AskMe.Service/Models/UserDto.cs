@@ -14,4 +14,6 @@ public class UserDto
     public string? Email { get; set; }
 
     public bool IsAuthor { get; set; }
+
+    public string? QiwiToken { get; set; }
 }

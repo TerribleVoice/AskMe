@@ -30,4 +30,8 @@ public class User : Dbo
     [Column("is_author")]
     [Required]
     public bool IsAuthor { get; set; }
+
+    [Column("qiwi_token")]
+    [MaxLength(200)]
+    public string? QiwiToken { get; set; }
 }
