@@ -5,5 +5,5 @@ namespace AskMe.Service.Services;
 
 public interface IUserIdentity
 {
-    UserDto CurrentUser { get; }
+    UserDto? CurrentUser { get; }
 }

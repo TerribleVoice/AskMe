@@ -8,8 +8,9 @@ public class UserIdentity : IUserIdentity
 {
     public UserIdentity()
     {
-
+        CurrentUser = null;
     }
+
     public UserIdentity(ClaimsPrincipal claimsPrincipal)
     {
         CurrentUser = new UserDto

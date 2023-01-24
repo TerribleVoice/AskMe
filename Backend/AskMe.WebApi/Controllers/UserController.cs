@@ -22,21 +22,22 @@ public class UserController : CustomControllerBase
         this.userService = userService;
     }
 
-    [HttpGet(Name = "GetUsersList")]
+    [HttpGet(Name = "getUsersList_only_for_test")]
+    [Obsolete]
     public IEnumerable<UserDto> GetUsersList()
     {
         var users = userService.GetAll();
         return users.Value!;
     }
 
-    [HttpPost("Create")]
+    [HttpPost("сreate")]
     public async Task<IActionResult> CreateAsync(UserCreationForm creationForm)
     {
         var creationResult = await userService.CreateUser(creationForm);
         return ProcessResult(creationResult);
     }
 
-    [HttpPost("Login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login(string login, string password, string? returnUrl)
     {
         if ((await userService.AuthenticateUser(login, password)).IsSuccess)
@@ -63,7 +64,20 @@ public class UserController : CustomControllerBase
         return Unauthorized();
     }
 
-    [HttpGet("GetUser"), Authorize]
+    [HttpGet("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        if (CurrentUser == null)
+        {
+            BadRequest("Невозможно выйти, потому что пользователь не авторизован");
+        }
+
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return Ok();
+    }
+
+    [HttpGet("get_current_user_only_for_test"), Authorize]
+    [Obsolete]
     public IActionResult GetUser()
     {
         var user = User;
