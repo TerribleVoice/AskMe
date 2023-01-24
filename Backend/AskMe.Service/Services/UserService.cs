@@ -41,7 +41,7 @@ public class UserService : IUserService
         var userResult = await userRepository.Find(login);
         if (userResult.IsFailure)
         {
-            return Result.Fail<UserDto, UserDbo>(userResult!);
+            return Result.Fail<UserDto, User>(userResult!);
         }
         return Result.Ok(userConverter.ToDto(userResult.Value!));
     }

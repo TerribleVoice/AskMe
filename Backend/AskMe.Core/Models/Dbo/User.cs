@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AskMe.Core.Models.Dbo;
 
 [Table("users")]
-public class UserDbo : Dbo
+public class User : Dbo
 {
-    public UserDbo()
+    public User()
     {
     Login = string.Empty;
     Password = string.Empty;

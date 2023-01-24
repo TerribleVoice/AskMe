@@ -6,9 +6,9 @@ namespace AskMe.Service.Converters;
 public class UserConverter : IUserConverter
 {
 
-    public UserDbo ToDbo(UserCreationForm creationDto)
+    public User ToDbo(UserCreationForm creationDto)
     {
-        return new UserDbo
+        return new User
         {
             Id = Guid.NewGuid(),
             Email = creationDto.Email,
@@ -18,7 +18,7 @@ public class UserConverter : IUserConverter
         };
     }
 
-    public UserDto ToDto(UserDbo user)
+    public UserDto ToDto(User user)
     {
         return new UserDto
         {

@@ -5,6 +5,6 @@ namespace AskMe.Service.Converters;
 
 public interface IUserConverter
 {
-    public UserDbo ToDbo(UserCreationForm creationDto);
-    public UserDto ToDto(UserDbo user);
+    public User ToDbo(UserCreationForm creationDto);
+    public UserDto ToDto(User user);
 }

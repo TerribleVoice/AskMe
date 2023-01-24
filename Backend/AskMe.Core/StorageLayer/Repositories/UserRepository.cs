@@ -13,7 +13,7 @@ public class UserRepository : IUserRepository
         this.postgresDbContext = postgresDbContext;
     }
 
-    public async Task<Result> CreateAsync(UserDbo dbo)
+    public async Task<Result> CreateAsync(User dbo)
     {
         try
         {
@@ -27,7 +27,7 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public Result<UserDbo[]> GetAll()
+    public Result<User[]> GetAll()
     {
         try
         {
@@ -36,7 +36,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception e)
         {
-            return Result.Fail<UserDbo[]>(e.Message);
+            return Result.Fail<User[]>(e.Message);
         }
     }
 
@@ -48,7 +48,7 @@ public class UserRepository : IUserRepository
             : Result.Fail<string>("User not found");
     }
 
-    public async Task<Result<UserDbo?>> Find(string login)
+    public async Task<Result<User?>> Find(string login)
     {
         try
         {
@@ -57,7 +57,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception e)
         {
-            return Result.Fail<UserDbo?>(e.Message);
+            return Result.Fail<User?>(e.Message);
         }
     }
 }
