@@ -82,3 +82,5 @@ artifacts
 
 .idea
 
+/Backend/AskMe.WebApi/paymentService/venv/
+/Backend/AskMe.WebApi/tgService/venv/

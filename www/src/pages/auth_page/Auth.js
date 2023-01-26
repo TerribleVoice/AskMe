@@ -1,58 +1,133 @@
-import React, { Component } from 'react'
+import React, {useState} from 'react'
+import {useNavigate} from "react-router-dom";
 import './Auth.css'
+import {useLocation} from "react-router-dom";
+import axios, {Axios} from 'axios';
 
-export default class Test extends Component {
+export default function Auth() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [register, setRegister] = useState(() => {
+        return {
+            login: "123",
+            password: "123",
+            mail: "123",
+            errorMsg: ""
+        }
+    })
 
-  onAuthClick(event) {
-    event.target.classList.add('active-btn');
-    event.target.previousElementSibling.classList.remove('active-btn');
-    document.querySelector('.left-reg__login').classList.add('hide');
-  }
+    const onAuthClick = event => {
+        event.target.classList.add('active-btn');
+        event.target.previousElementSibling.classList.remove('active-btn');
+        document.getElementById('mail').setAttribute('type', 'text')
+        document.querySelector('.left-reg__mail').classList.add('hide');
+        document.querySelector('.left-reg__isAuthor').classList.add('hide');
+    }
 
-  onRegClick(event) {
-    event.target.classList.add('active-btn');
-    event.target.nextElementSibling.classList.remove('active-btn');
-    document.querySelector('.left-reg__login').classList.remove('hide');
-  }
+    const onRegClick = event => {
+        event.target.classList.add('active-btn');
+        event.target.nextElementSibling.classList.remove('active-btn');
+        document.getElementById('mail').setAttribute('type', 'email')
+        document.querySelector('.left-reg__mail').classList.remove('hide');
+        document.querySelector('.left-reg__isAuthor').classList.remove('hide');
+    }
 
-  render() {
+    const changeInput = event => {
+        event.persist()
+        setRegister(prev => {
+            return {
+                ...prev,
+                [event.target.name]: event.target.value,
+            }
+        })
+    }
+
+    const handleLogin = (event) => {
+        let isAuth = document.querySelector('.left-reg__mail').classList.contains('hide')
+        if (isAuth) {
+            alert('Авторизация')
+            axios({
+                method: 'post',
+                withCredentials: true,
+                url: "http://localhost:7279/User/Login?login=" + register.login + "&password=" + register.password,
+                headers: {accept: '*/*', credentials: 'include'}
+            })
+                .then(res => {
+                    alert('Успешная авторизация')
+                    alert(res.cookie)
+                    navigate('/')
+                }).catch(err => alert(err))
+        } else {
+            let isAuthor = document.getElementById('isAuthor').checked
+            axios({
+                method: 'post',
+                url: "http://localhost:7279/User/Create",
+                withCredentials: true,
+                headers: {accept: '*/*', 'Content-Type': 'application/json', credentials: 'include'},
+                data: {
+                    login: register.login,
+                    email: register.mail,
+                    password: register.password,
+                    isAuthor: isAuthor
+                }
+            }).then(res => {
+                    alert(res.status)
+                },
+                error => {
+                    alert(error)
+                })
+        }
+        event.preventDefault();
+        location.reload();
+    };
+
     return (
-          <div className="wrapper">
+        <div className="wrapper">
             <div className="main">
-              <img className="main__angel" src="angel.png" alt="" />
-              <div className="reg">
-                <div className="reg__left left-reg">
-                  <div className="left-reg__choose">
-                    <div className="left-reg__registation active-btn" onClick={(e) => this.onRegClick(e)}>Регистрация</div>
-                    <div className="left-reg__auth" onClick={(e) => this.onAuthClick(e)}>Авторизация</div>
-                  </div>
-                  <div className="left-reg__welcome">Добро пожаловать</div>
-                  <div className="left-reg__text">Введите адрес электронной почты, придумайте логин и пароль</div>
-                  <form action="#" className="left-reg__form">
-                    <div className="left-reg__mail active-input">
-                      <label htmlFor="mail">Электронная почта</label>
-                      <input type="email" name="mail" defaultValue="michelle.rivera@example.com" />
+                <img className="main__angel" src="angel.png" alt=""/>
+                <div className="reg">
+                    <div className="reg__left left-reg">
+                        <div className="left-reg__choose">
+                            <div className="left-reg__registation active-btn"
+                                 onClick={onRegClick}>Регистрация
+                            </div>
+                            <div className="left-reg__auth" onClick={onAuthClick}>Авторизация
+                            </div>
+                        </div>
+                        <div className="left-reg__welcome">Добро пожаловать</div>
+                        <div className="left-reg__text">Введите адрес электронной почты, придумайте логин и
+                            пароль
+                        </div>
+                        <form onSubmit={handleLogin} className="left-reg__form">
+                            <div className="left-reg__mail">
+                                <label htmlFor="mail">Электронная почта</label>
+                                <input value={register.mail}
+                                       onInput={changeInput} type="email" id="mail" name="mail"/>
+                            </div>
+                            <div className="left-reg__login">
+                                <label htmlFor="login">Логин</label>
+                                <input value={register.login}
+                                       onInput={changeInput} type="text" id="login" name="login"/>
+                            </div>
+                            <div className="left-reg__password">
+                                <label htmlFor="password">Пароль</label>
+                                <input value={register.password}
+                                       onInput={changeInput} type="password" id="password" name="password"/>
+                            </div>
+                            <div className="left-reg__isAuthor">
+                                <input  type="checkbox" id="isAuthor" name="isAuthor"/>
+                                <label htmlFor="mail">Хотите стать автором?</label>
+                            </div>
+                            <div className="left-reg__submit">
+                                <button type="submit">Далее</button>
+                            </div>
+                        </form>
                     </div>
-                    <div className="left-reg__login">
-                      <label htmlFor="login">Логин</label>
-                      <input type="text" name="login" defaultValue="michelle" />
+                    <div className="reg__right">
+                        <img src="woman.jpg" alt/>
                     </div>
-                    <div className="left-reg__password">
-                      <label htmlFor="password">Пароль</label>
-                      <input type="password" name="password" defaultValue="example.com" />
-                    </div>
-                    <div className="left-reg__submit">
-                      <button type="submit">Далее</button>
-                    </div>
-                  </form>
                 </div>
-                <div className="reg__right">
-                  <img src="woman.jpg" alt />
-                </div>
-              </div>
             </div>
-          </div>
-
+        </div>
     )
-  }
 }

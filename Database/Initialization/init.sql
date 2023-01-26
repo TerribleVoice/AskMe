@@ -18,11 +18,30 @@ CREATE TABLE public.posts (
     price integer
 );
 
+CREATE TABLE public.tokens (
+    author_id uuid NOT NULL,
+    token varchar(500) NOT NULL
+);
+
+CREATE TABLE public.bills (
+    bill_id uuid NOT NULL,
+    sender varchar(30),
+    receiver uuid NOT NULL,
+    comment varchar(500),
+    amount integer NOT NULL
+);
+
 ALTER TABLE ONLY public.posts
     ADD CONSTRAINT posts_pk PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.posts
     ADD CONSTRAINT posts_fk FOREIGN KEY (author_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+ALTER TABLE ONLY public.tokens
+    ADD CONSTRAINT tokens_fk FOREIGN KEY (author_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.bills
+    ADD CONSTRAINT bill_fk FOREIGN KEY (receiver) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 INSERT INTO public.users (id,login,email,"password",is_author,qiwi_token) VALUES
