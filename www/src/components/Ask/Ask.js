@@ -7,7 +7,7 @@ export default function Ask(props) {
               <div className="left__title">
                 <img src="img/AskMe.png" alt />
               </div>
-              <div className="left__text">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. </div>
+              <div className="left__text">Ваше творчество - ваш заработок </div>
               <Link to="/auth">
                 <div className="left__btn">Приступить</div>
               </Link>

@@ -5,14 +5,15 @@ export default function Let(props) {
             <div className="let__body body-let">
               <div className="body-let__left">
                 <ul>
-                  <li>Amet minim mollit non</li>
-                  <li>Velit officia consequat duis</li>
-                  <li>Exercitation veniam</li>
+                  <li>Минимальная комиссия</li>
+                  <li>Безопасные платежи</li>
+                  <li>Ваши цены</li>
                 </ul>
               </div>
               <div className="body-let__right">
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
+              Главная особенность нашего сервиса – дать возможность тем кто хочет поддержать авторов платить через наш сервис напрямую на счёт автору. 
+Мы взымаем определенную комиссию для работы сервиса, но она будет гораздо меньше для вас.
+
               </div>
             </div>
         </div>

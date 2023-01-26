@@ -10,11 +10,10 @@ export default function Service(props) {
             </div>
             <div className="service__points">
               <ul>
-                <li>художников;</li>
-                <li>музыкантов;</li>
-                <li>стримеров;</li>
-                <li>различных проектов;</li>
-                <li>и много другого...</li>
+                <li>художников</li>
+                <li>музыкантов</li>
+                <li>стримеров</li>
+                <li>различных проектов</li>
               </ul>
             </div>
           </div>

@@ -4,10 +4,9 @@ export default function Footer(props) {
             <div className="footer__body">
               <div className="footer__left">
                 <ul>
-                  <li>Exercitation</li>
-                  <li>Amet</li>
-                  <li>Velit offician</li>
-                  <li>Edeserunt ullamco</li>
+                  <li>Поддержка</li>
+                  <li>Политика конфиденциальности</li>
+                  <li>Пользовательское соглашение</li>
                 </ul>
               </div>
               <div className="footer__right">

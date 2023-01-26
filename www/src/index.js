@@ -4,7 +4,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import Main from "./pages/main_page/Main";
 import Auth from "./pages/auth_page/Auth";
-import './index.css'
+import './index.css';
+import './style.css';
+import Profile from "./pages/profile_page/profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,6 +16,9 @@ root.render(
                 <Route path="" element={<Main />} />
             </Route>
             <Route path="/auth" element={<Auth />} />
+            <Route path="" exact element={<App />}>
+                <Route path="/profile" element={<Profile />} />
+            </Route>
         </Routes>
     </BrowserRouter>
 );
