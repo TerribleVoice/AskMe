@@ -84,7 +84,7 @@ export default function Auth() {
     return (
         <div className="wrapper">
             <div className="main">
-                <img className="main__angel" src="img/angel.png" alt=""/>
+                <img className="main__angel" src="angel.png" alt=""/>
                 <div className="reg">
                     <div className="reg__left left-reg">
                         <div className="left-reg__choose">
@@ -124,7 +124,7 @@ export default function Auth() {
                         </form>
                     </div>
                     <div className="reg__right">
-                        <img src="img/woman.jpg" alt/>
+                        <img src="woman.jpg" alt/>
                     </div>
                 </div>
             </div>

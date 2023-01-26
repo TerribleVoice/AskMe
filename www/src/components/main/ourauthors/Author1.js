@@ -5,7 +5,7 @@ export default function Author1(props) {
 
     <div className="Author">
             <div className="Authoravatar">
-            <img src="profile/img/avatar1.jpg" height="180" width="180"/>
+            <img src="img/profile/avatar1.jpg" height="180" width="180"/>
             </div>
             <div className="Authorname">
                 Автор 1
