@@ -42,3 +42,18 @@ services:
       - "4554:4554"
     volumes:
       - ./paymentService:/app
+
+  tg_bot:
+    restart: unless-stopped
+    container_name: tg_bot
+    build:
+      context: .
+      dockerfile: ./tgService/Dockerfile
+    environment:
+      POSTGRES_DB: "AskMe"
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: "test"
+    depends_on:
+      - postgres
+    volumes:
+      - ./tgService:/app
