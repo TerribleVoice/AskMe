@@ -45,7 +45,6 @@ export default function Auth() {
     const handleLogin = (event) => {
         let isAuth = document.querySelector('.left-reg__mail').classList.contains('hide')
         if (isAuth) {
-            alert('Авторизация')
             axios({
                 method: 'post',
                 withCredentials: true,
@@ -53,9 +52,7 @@ export default function Auth() {
                 headers: {accept: '*/*', credentials: 'include'}
             })
                 .then(res => {
-                    alert('Успешная авторизация')
                     localStorage.setItem("login", register.login)
-                    alert(res.cookie)
                     navigate('/')
                 }).catch(err => alert(err))
         } else {
@@ -72,10 +69,8 @@ export default function Auth() {
                     isAuthor: isAuthor
                 }
             }).then(res => {
-                    alert(res.status)
                 },
                 error => {
-                    alert(error)
                 })
         }
         event.preventDefault();
