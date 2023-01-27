@@ -2,6 +2,8 @@ using System.Security.Claims;
 using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
+using AskMe.WebApi.Builders;
+using AskMe.WebApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -16,10 +18,12 @@ namespace AskMe.WebApi.Controllers;
 public class UserController : CustomControllerBase
 {
     private readonly IUserService userService;
+    private readonly UserViewModelBuilder userViewModelBuilder;
 
-    public UserController(IUserIdentity userIdentity, IUserService userService) : base(userIdentity)
+    public UserController(IUserIdentity userIdentity, IUserService userService, UserViewModelBuilder userViewModelBuilder) : base(userIdentity)
     {
         this.userService = userService;
+        this.userViewModelBuilder = userViewModelBuilder;
     }
 
     [HttpGet(Name = "getUsersList_only_for_test")]
@@ -65,6 +69,7 @@ public class UserController : CustomControllerBase
     }
 
     [HttpGet("logout")]
+    [Authorize]
     public async Task<IActionResult> Logout()
     {
         if (CurrentUser == null)
@@ -74,6 +79,12 @@ public class UserController : CustomControllerBase
 
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return Ok();
+    }
+
+    [HttpGet("{userLogin}")]
+    public async Task<UserViewModel> GetUserProfile(string userLogin)
+    {
+        return await userViewModelBuilder.Build(userLogin);
     }
 
     [HttpGet("get_current_user_only_for_test"), Authorize]

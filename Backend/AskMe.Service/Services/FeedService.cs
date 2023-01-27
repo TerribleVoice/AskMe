@@ -29,7 +29,7 @@ public class FeedService : IFeedService
     {
         var userResult = (await userService.FindUserByLogin(userLogin)).ThrowIfFailure();
 
-        var result = await postRepository.Select(userResult.Id, timeAfter);
+        var result = await postRepository.SelectByAuthorId(userResult.Id, timeAfter);
         return result.Select(postConverter.Convert).ToArray();
     }
 
@@ -82,6 +82,13 @@ public class FeedService : IFeedService
         }
 
         return await postRepository.Delete(postId);
+    }
+
+    public async Task<Dictionary<Guid, bool>> IsUserHaveAccessByPostId(string userLogin, Guid[] postIds)
+    {
+        var userPosts = await postRepository.SelectByIds(postIds);
+        //todo доделать проверку доступов
+        return userPosts.ToDictionary(x => x.Id, _=> true);
     }
 
     public Result Buy(Guid postId)

@@ -5,7 +5,8 @@ namespace AskMe.Core.StorageLayer.Repositories;
 
 public interface IPostRepository
 {
-    Task<Post[]> Select(Guid authorId, DateTime? timeFilter = null);
+    Task<Post[]> SelectByAuthorId(Guid authorId, DateTime? timeFilter = null);
+    Task<Post[]> SelectByIds(Guid[] ids);
     Task<Post?> Find(Guid id);
     Task<Result<Post>> Read(Guid id);
     Task<Result> Create(Post post);

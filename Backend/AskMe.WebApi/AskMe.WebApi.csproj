@@ -16,8 +16,4 @@
     <ProjectReference Include="..\AskMe.Service\AskMe.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models" />
-  </ItemGroup>
-
 </Project>

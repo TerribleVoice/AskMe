@@ -10,4 +10,5 @@ public interface IFeedService
     Task<Result> CreateOrUpdate(PostRequest request, Guid? postId = null);
     Task<Result> Delete(Guid postId);
     Result Buy(Guid postId);
+    Task<Dictionary<Guid, bool>> IsUserHaveAccessByPostId(string userLogin, Guid[] postIds);
 }

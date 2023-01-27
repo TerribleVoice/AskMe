@@ -13,7 +13,7 @@ public class PostRepository : IPostRepository
         this.postgresDbContext = postgresDbContext;
     }
 
-    public async Task<Post[]> Select(Guid authorId, DateTime? timeFilter = null)
+    public async Task<Post[]> SelectByAuthorId(Guid authorId, DateTime? timeFilter = null)
     {
         var posts = postgresDbContext.Posts.Where(x=>x.AuthorId == authorId);
         if (timeFilter.HasValue)
