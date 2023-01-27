@@ -33,6 +33,27 @@ CREATE TABLE public.bills (
     amount integer NOT NULL
 );
 
+CREATE TABLE public.subscriptions (
+	id uuid NOT NULL,
+	author_id uuid NOT NULL,
+	price int NOT NULL,
+	name varchar NOT NULL,
+	description varchar NOT NULL,
+	parent_subscription_id uuid NULL,
+	CONSTRAINT subscriptions_pk PRIMARY KEY (id),
+	CONSTRAINT subscriptions_fk FOREIGN KEY (author_id) REFERENCES public.users(id)
+);
+
+CREATE TABLE public.user_subscription (
+	id uuid NOT NULL,
+	user_id uuid NOT NULL,
+	subscription_id uuid NOT NULL,
+	CONSTRAINT user_subscription_pk PRIMARY KEY (id),
+	CONSTRAINT user_subscription_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL,
+	CONSTRAINT user_subscription_fk_1 FOREIGN KEY (subscription_id) REFERENCES public.subscriptions(id)
+);
+
+
 ALTER TABLE ONLY public.posts
     ADD CONSTRAINT posts_pk PRIMARY KEY (id);
 

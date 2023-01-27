@@ -33,7 +33,7 @@ public class SubscriptionController : CustomControllerBase
 
     [HttpPost("/update")]
     [Authorize]
-    public async Task Update([FromBody] SubscriptionRequest subscriptionRequest)
+    public async Task Update(Guid subscriptionId, [FromBody] SubscriptionRequest subscriptionRequest)
     {
         AssertUserIsAuthor();
         throw new NotImplementedException();

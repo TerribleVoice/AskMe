@@ -12,4 +12,6 @@ public class PostgresDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Post> Posts { get; set; }
+    public DbSet<Subscription> Subscription { get; set; }
+    public DbSet<UserSubscription> UserSubscription { get; set; }
 }
