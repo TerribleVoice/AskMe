@@ -26,6 +26,11 @@ public class PostRepository : IPostRepository
         return await posts.ToArrayAsync();
     }
 
+    public Task<Post[]> SelectByIds(Guid[] ids)
+    {
+        return postgresDbContext.Posts.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+    }
+
     public async Task<Result<Post>> Read(Guid id)
     {
         var post = await Find(id);
