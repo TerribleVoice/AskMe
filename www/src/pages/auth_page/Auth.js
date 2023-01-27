@@ -49,11 +49,12 @@ export default function Auth() {
             axios({
                 method: 'post',
                 withCredentials: true,
-                url: "http://localhost:7279/User/Login?login=" + register.login + "&password=" + register.password,
+                url: "http://localhost:7279/User/login?login=" + register.login + "&password=" + register.password,
                 headers: {accept: '*/*', credentials: 'include'}
             })
                 .then(res => {
                     alert('Успешная авторизация')
+                    localStorage.setItem("login", register.login)
                     alert(res.cookie)
                     navigate('/')
                 }).catch(err => alert(err))
@@ -61,7 +62,7 @@ export default function Auth() {
             let isAuthor = document.getElementById('isAuthor').checked
             axios({
                 method: 'post',
-                url: "http://localhost:7279/User/Create",
+                url: "http://localhost:7279/User/create",
                 withCredentials: true,
                 headers: {accept: '*/*', 'Content-Type': 'application/json', credentials: 'include'},
                 data: {
