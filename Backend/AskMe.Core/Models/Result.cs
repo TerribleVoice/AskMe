@@ -19,6 +19,16 @@ public class Result
     public static Result From<T>(Result<T> rootResult) => new(rootResult.IsSuccess, rootResult.ErrorMsg);
     public static Result<T1> Fail<T1, T2>(Result<T2> rootResult) => new(false, default, rootResult.ErrorMsg);
 
+    public Result ThrowIfFailure()
+    {
+        if (IsFailure)
+        {
+            throw new ArgumentException(ErrorMsg);
+        }
+
+        return this;
+    }
+
 }
 
 public class Result<T> : Result
@@ -28,5 +38,14 @@ public class Result<T> : Result
     protected internal Result(bool isSuccess, T? value, string? msg = null) : base(isSuccess, msg)
     {
         Value = value;
+    }
+    public new T ThrowIfFailure()
+    {
+        if (IsFailure)
+        {
+            throw new ArgumentException(ErrorMsg);
+        }
+
+        return Value!;
     }
 }

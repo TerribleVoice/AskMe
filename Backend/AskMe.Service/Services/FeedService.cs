@@ -27,31 +27,24 @@ public class FeedService : IFeedService
 
     public async Task<PostResponse[]> Select(string userLogin, DateTime? timeAfter = null)
     {
-        var userResult = await userService.FindUserByLogin(userLogin);
-        if (userResult.IsFailure)
-        {
-            throw new Exception(userResult.ErrorMsg);
-        }
-        var result = await postRepository.Select(userResult.Value!.Id, timeAfter);
+        var userResult = (await userService.FindUserByLogin(userLogin)).ThrowIfFailure();
+
+        var result = await postRepository.Select(userResult.Id, timeAfter);
         return result.Select(postConverter.Convert).ToArray();
     }
 
     public async Task<PostResponse> Read(Guid postId)
     {
-        var readResult = await postRepository.Read(postId);
-        if (readResult.IsFailure)
-        {
-            throw new ArgumentException(readResult.ErrorMsg);
-        }
+        var readResult = (await postRepository.Read(postId)).ThrowIfFailure();
 
-        return postConverter.Convert(readResult.Value!);
+        return postConverter.Convert(readResult);
     }
 
     public async Task<Result> CreateOrUpdate(PostRequest request, Guid? postId = null)
     {
         if (postId.HasValue)
         {
-            var canBeEditedResult = await PostCanBeEdited(postId.Value);
+            var canBeEditedResult = await CanBeEdited(postId.Value);
             if (canBeEditedResult.IsFailure)
             {
                 return canBeEditedResult;
@@ -67,7 +60,7 @@ public class FeedService : IFeedService
             : await postRepository.Create(postDbo);
     }
 
-    private async Task<Result> PostCanBeEdited(Guid postId)
+    private async Task<Result> CanBeEdited(Guid postId)
     {
         var readResult = await postRepository.Read(postId);
         if (readResult.IsFailure)
@@ -82,7 +75,7 @@ public class FeedService : IFeedService
 
     public async Task<Result> Delete(Guid postId)
     {
-        var canBeEditedResult = await PostCanBeEdited(postId);
+        var canBeEditedResult = await CanBeEdited(postId);
         if (canBeEditedResult.IsFailure)
         {
             return canBeEditedResult;
