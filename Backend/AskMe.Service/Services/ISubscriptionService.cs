@@ -9,8 +9,8 @@ public interface ISubscriptionService
     public Task<Result> Delete(Guid id);
     public Task<SubscriptionResponse[]> GetAuthorSubscriptions(string userLogin);
     public Task<SubscriptionResponse[]> GetReaderSubscriptions(string userLogin);
-    public Task<Result> Subscribe(Guid userId, Guid subscriptionId);
-    public Task<Result> Unsubscribe(Guid userId, Guid subscriptionId);
+    public Task<Result> Subscribe(Guid subscriptionId);
+    public Task<Result> Unsubscribe(Guid subscriptionId);
 
 
 }

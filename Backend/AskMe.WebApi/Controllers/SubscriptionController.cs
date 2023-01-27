@@ -11,32 +11,38 @@ namespace AskMe.WebApi.Controllers;
 [Route("[controller]")]
 public class SubscriptionController : CustomControllerBase
 {
-    public SubscriptionController(IUserIdentity userIdentity) : base(userIdentity)
+    private readonly ISubscriptionService subscriptionService;
+
+    public SubscriptionController(IUserIdentity userIdentity, ISubscriptionService subscriptionService) : base(userIdentity)
     {
+        this.subscriptionService = subscriptionService;
     }
 
     [HttpPost("/create")]
     [Authorize]
-    public async Task Create([FromBody] SubscriptionRequest subscriptionRequest)
+    public async Task<IActionResult> Create([FromBody] SubscriptionRequest subscriptionRequest)
     {
         AssertUserIsAuthor();
-        throw new NotImplementedException();
+        var creationResult = await subscriptionService.CreateOrUpdate(subscriptionRequest);
+        return ProcessResult(creationResult);
     }
 
     [HttpDelete("/delete")]
     [Authorize]
-    public async Task Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         AssertUserIsAuthor();
-        throw new NotImplementedException();
+        var deletionResult = await subscriptionService.Delete(id);
+        return ProcessResult(deletionResult);
     }
 
     [HttpPost("/update")]
     [Authorize]
-    public async Task Update(Guid subscriptionId, [FromBody] SubscriptionRequest subscriptionRequest)
+    public async Task<IActionResult> Update(Guid subscriptionId, [FromBody] SubscriptionRequest subscriptionRequest)
     {
         AssertUserIsAuthor();
-        throw new NotImplementedException();
+        var updateResult = await subscriptionService.CreateOrUpdate(subscriptionRequest, subscriptionId);
+        return ProcessResult(updateResult);
     }
 
     [HttpGet("{id:guid}/buy")]
@@ -50,27 +56,30 @@ public class SubscriptionController : CustomControllerBase
     //Метод для авторов, показывает подписки созданные пользователем
     [HttpGet("{userLogin}/created_list")]
     [Authorize]
-    public async Task AuthorSubscriptions(string userLogin)
+    public async Task<SubscriptionResponse[]> AuthorSubscriptions(string userLogin)
     {
         AssertUserIsAuthor();
-        throw new NotImplementedException();
+        var subscriptions = await subscriptionService.GetAuthorSubscriptions(userLogin);
+        return subscriptions;
     }
 
     //Метод для читателей, показывает купленные подписки
     [HttpGet("{userLogin}/bought_list")]
     [Authorize]
-    public async Task UserSubscriptions(string userLogin)
+    public async Task<SubscriptionResponse[]> UserSubscriptions(string userLogin)
     {
         AssertUserIsReader();
-        throw new NotImplementedException();
+        var subscriptions = await subscriptionService.GetReaderSubscriptions(userLogin);
+        return subscriptions;
     }
 
     [HttpGet("{id:guid}/unsubscribe")]
     [Authorize]
-    public async Task Unsubscribe(Guid id)
+    public async Task<IActionResult> Unsubscribe(Guid id)
     {
         AssertUserIsReader();
-        throw new NotImplementedException();
+        var result = await subscriptionService.Unsubscribe(id);
+        return ProcessResult(result);
     }
 
 

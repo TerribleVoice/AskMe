@@ -75,14 +75,14 @@ public class SubscriptionService : ISubscriptionService
         return subscriptions.Select(subscriptionConverter.Convert).ToArray();
     }
 
-    public async Task<Result> Subscribe(Guid userId, Guid subscriptionId)
+    public async Task<Result> Subscribe(Guid subscriptionId)
     {
-        return await userSubscriptionRepository.Create(userId, subscriptionId);
+        return await userSubscriptionRepository.Create(userIdentity.CurrentUser!.Id, subscriptionId);
     }
 
-    public async Task<Result> Unsubscribe(Guid userId, Guid subscriptionId)
+    public async Task<Result> Unsubscribe(Guid subscriptionId)
     {
-        return await userSubscriptionRepository.Delete(userId, subscriptionId);
+        return await userSubscriptionRepository.Delete(userIdentity.CurrentUser!.Id, subscriptionId);
     }
 
     private async Task<Result> CanBeEdited(Guid subscriptionId)
