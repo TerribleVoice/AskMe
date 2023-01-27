@@ -82,6 +82,22 @@ header {
     margin-right: 60px;
     background: linear-gradient(90deg, rgba(195, 0, 109, 0.9) 5%, rgba(115, 0, 64, 0.9) 100%);
 }
+.header_user_logo {
+    display: none;
+    user-select: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    margin-right: 16px;
+}
+.header_dropdown_menu {
+    display: none;
+    margin-right: 36px;
+}
+
+
+
 
 /* ==================== */
 
@@ -90,7 +106,12 @@ header {
     margin: 0 auto;
     padding-top: 108px;
 }
-
+.container_profile {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-top: 108px;
+    height:1400px;
+}
 .ask {
     display: flex;
     
@@ -311,8 +332,6 @@ a:active {
     padding: 100px;
     position: relative;
 }
-.container {
-}
 .footer__body {
     display: flex;
 }
@@ -341,8 +360,8 @@ a:active {
     padding-left: 100px;
 }
 .footer__img img {
-    width: 100px;
-    height: 50px;
+    width: 102px;
+    height: 35px;
 }
 .footer__mail {
     font-family: 'Roboto';
@@ -490,6 +509,7 @@ a:active {
     font-size: 20px;
     line-height: 28px;
     color: #C0C0C0;
+    text-align: center;
 }
 .pp_post__text2 img {
     padding-top: 5px;
@@ -638,7 +658,8 @@ a:active {
 }
 .pp_goal__progress {
     text-align: center;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
+    padding: 5px;
     margin-bottom: 12px;
 }
 .pp_goal__main {

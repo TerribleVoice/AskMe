@@ -115,8 +115,8 @@ export default function Auth() {
                                        onInput={changeInput} type="password" id="password" name="password"/>
                             </div>
                             <div className="left-reg__isAuthor">
-                                <input  type="checkbox" id="isAuthor" name="isAuthor"/>
-                                <label htmlFor="mail">Хотите стать автором?</label>
+                                <input type="checkbox" id="isAuthor" name="isAuthor"/>
+                                <label classname="left-reg__isAuthor_text" for="isAuthor" htmlFor="mail">Хочу стать автором</label>
                             </div>
                             <div className="left-reg__submit">
                                 <button type="submit">Далее</button>

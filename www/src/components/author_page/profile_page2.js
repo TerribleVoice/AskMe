@@ -1,27 +1,21 @@
 //import './style.css';
 
-export default function Profile_page(props) {
+export default function Profile_page2(props) {
     return (
         <body class="pp_body">
         <div class="pp_main">
             <div class="pp_main__container">
                 <div class="pp_about">
                     <div class="pp_about__title">Об авторе</div>
-                    <div class="pp_about__text">Душа моя озарена неземной радостью, как эти чудесные весенние утра, которыми я наслаждаюсь от всего сердца. Я совсем один и блаженствую в здешнем краю, словно созданном для таких, как я. Я так счастлив, мой друг, так упоен ощущением покоя, что искусство мое страдает от этого. Ни одного штриха не мог бы я сделать, а никогда не был таким большим художником, как в эти минуты.  </div>
-                </div>
-                <div class="pp_sort">
-                    <div class="pp_sort__text">Сортировать</div>
-                    <div class="pp_sort__arrow">
-                        <img src="img/profile/dropdown.svg" alt="arrow"></img>
-                    </div>
+                    <div class="pp_about__text">Разнообразный и богатый опыт сложившаяся структура организации влечет за собой процесс внедрения и модернизации соответствующий условий активизации.</div>
                 </div>
                 <div class="pp_post">
                     <div class="pp_post__title">
-                        <div class="pp_post__text">Helping a local business reinvent itself</div>
+                        <div class="pp_post__text">Укрепление и развитие</div>
                         <div class="pp_post__date">29 января 2021, пт</div>
                     </div>
                     <div class="pp_post__img pp_blurred">
-                        <img src="img/profile/photo.jpg" alt="photo"></img>
+                        <img src="img/profile/photo2.jpg" alt="photo"></img>
                         <div class="pp_post__text2">
                             <span>Пост только для платных подписчиков</span>
                             <img src="img/profile/lock.svg" alt=""></img>
@@ -30,11 +24,11 @@ export default function Profile_page(props) {
                 </div>
                 <aside class="pp_left">
                     <div class="pp_left__img">
-                        <img src="img/profile/avatar1.jpg" alt="avatar"></img>
+                        <img src="img/profile/avatar3.jpg" alt="avatar"></img>
                     </div>
                     <div class="pp_left__body pp_body-left">
-                        <div class="pp_body-left__nick">TheOnlyOne1</div>
-                        <div class="pp_body-left__job">Один такой</div>
+                        <div class="pp_body-left__nick">YOUNG77</div>
+                        <div class="pp_body-left__job">Молодой и перспективный</div>
                         <div class="pp_body-left__subscribe">Подписаться</div>
                     </div>
                 </aside>
@@ -48,8 +42,8 @@ export default function Profile_page(props) {
                     </div>
                     <div class="pp_left__top pp_goal">
                         <div class="pp_goal__text">Цель</div>
-                        <div class="pp_goal__progress">30 из 100 рублей</div>
-                        <div class="pp_goal__main">Ни штриха не мог бы я сделать, а никогда не был таким большим художником, как в эти минуты.</div>
+                        <div class="pp_goal__progress">464 из 1500 рублей</div>
+                        <div class="pp_goal__main">На значимые проблемы и крупные проекты</div>
                     </div>
                 </aside>
             </div>

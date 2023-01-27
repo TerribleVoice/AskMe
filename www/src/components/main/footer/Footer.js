@@ -11,7 +11,7 @@ export default function Footer(props) {
               </div>
               <div className="footer__right">
                 <div className="footer__img">
-                  <img src="img/AskMe.png" alt />
+                  <img src="img/profile/logo.png" alt />
                 </div>
                 <div className="footer__mail">dolores.chambers@example.com</div>
                 <div className="footer__tel">+7 (903) 134-55-26</div>

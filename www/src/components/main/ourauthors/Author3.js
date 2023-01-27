@@ -8,10 +8,10 @@ export default function Author1(props) {
             <img src="img/profile/avatar3.jpg" height="180" width="180"/>
             </div>
             <div className="Authorname">
-            Автор 3
+            YOUNG77
             </div>
             <div className="Authorlink" >
-            <Link to="/auth">
+            <Link to="/YOUNG77">
                 Перейти в блог
             </Link>
             </div>
