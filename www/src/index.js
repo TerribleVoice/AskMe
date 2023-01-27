@@ -7,6 +7,7 @@ import Auth from "./pages/auth_page/Auth";
 import './index.css';
 import './style.css';
 import Profile from "./pages/profile_page/profile";
+import ScrollUp from "./components/scroll/scrollUp"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const PrivateRoute = ({ component: Component, ...rest}) => {
@@ -14,6 +15,7 @@ const PrivateRoute = ({ component: Component, ...rest}) => {
 }
 root.render(
     <BrowserRouter>
+        <ScrollUp />
         <Routes>
             <Route path="" exact element={<App />}>
                 <Route path="" element={<Main />} />
