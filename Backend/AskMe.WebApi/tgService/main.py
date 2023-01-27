@@ -14,7 +14,7 @@ from config import TG_TOKEN, DB_CONFIG
 from states import States
 
 logger = logging.getLogger(__name__)
-bot = Bot(token='5874902892:AAEMQ0MSAFHvIEZ_lxDbgQMl0JAbyq2_q4c')
+bot = Bot(token=TG_TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 
