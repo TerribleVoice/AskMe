@@ -307,9 +307,7 @@ color: #FFFFFF;
 .left-reg__mail:focus, input:focus{
   outline: none;
   }
-.left-reg__mail.hide {
-    display: none;
-}
+
 .left-reg__login input {
     margin-top: 5px;
     border: 0;
@@ -328,9 +326,11 @@ color: #FFFFFF;
     display: flex;
     flex-direction: column;
 }
-.left-reg__login.hide {
-    display: none;
+
+.hide{
+  display: none;
 }
+
 .left-reg__password input {
     margin-top: 5px;
     border: 0;
