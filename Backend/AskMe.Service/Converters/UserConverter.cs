@@ -15,7 +15,9 @@ public class UserConverter : IUserConverter
             Login = creationDto.Login,
             Password = creationDto.Password,
             IsAuthor = creationDto.IsAuthor,
-            QiwiToken = creationDto.QiwiToken
+            QiwiToken = creationDto.QiwiToken,
+            Description = creationDto.Description,
+            Links = creationDto.Links
         };
     }
 
@@ -27,7 +29,9 @@ public class UserConverter : IUserConverter
             Id = user.Id,
             Email = user.Email,
             Login = user.Login,
-            QiwiToken = user.QiwiToken
+            QiwiToken = user.QiwiToken,
+            Description = user.Description,
+            Links = user.Links
         };
     }
 }

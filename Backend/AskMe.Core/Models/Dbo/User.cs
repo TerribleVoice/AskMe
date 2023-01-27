@@ -8,8 +8,8 @@ public class User : Dbo
 {
     public User()
     {
-    Login = string.Empty;
-    Password = string.Empty;
+        Login = string.Empty;
+        Password = string.Empty;
     }
 
     [Column("login")]
@@ -34,4 +34,10 @@ public class User : Dbo
     [Column("qiwi_token")]
     [MaxLength(200)]
     public string? QiwiToken { get; set; }
+
+    [Column("description")]
+    public string? Description { get; set; }
+
+    [Column("description")]
+    public string? Links { get; set; }
 }

@@ -6,6 +6,8 @@ CREATE TABLE public.users
     "password" varchar NOT NULL,
     is_author   bool    NOT NULL,
     qiwi_token varchar NULL,
+    "description" text NULL,
+    links text NULL,
     CONSTRAINT users_pk PRIMARY KEY (id)
 );
 
