@@ -9,4 +9,6 @@ public interface IUserRepository
     Result<User[]> GetAll();
     Task<Result<string>> GetPasswordAsync(string login);
     Task<Result<User?>> Find(string login);
+
+    Task<Result<User>> ReadByLogin(string login);
 }

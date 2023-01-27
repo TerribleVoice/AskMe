@@ -10,7 +10,7 @@ export default class Profile extends Component {
     return (
         <div>
           <div className="container">
-          <Profile_page/>
+          <Profile_page />
           </div>
         <footer className="footer">
           <Footer/>

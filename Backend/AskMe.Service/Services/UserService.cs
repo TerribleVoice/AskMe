@@ -38,10 +38,10 @@ public class UserService : IUserService
 
     public async Task<Result<UserDto>> FindUserByLogin(string login)
     {
-        var userResult = await userRepository.Find(login);
+        var userResult = await userRepository.ReadByLogin(login);
         if (userResult.IsFailure)
         {
-            return Result.Fail<UserDto, User>(userResult!);
+            return Result.Fail<UserDto, User>(userResult);
         }
         return Result.Ok(userConverter.ToDto(userResult.Value!));
     }

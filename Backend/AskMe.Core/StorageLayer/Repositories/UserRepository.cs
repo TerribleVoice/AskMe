@@ -60,4 +60,11 @@ public class UserRepository : IUserRepository
             return Result.Fail<User?>(e.Message);
         }
     }
+    public async Task<Result<User>> ReadByLogin(string login)
+    {
+        var user = (await Find(login)).ThrowIfFailure();
+        return user != null
+            ? Result.Ok(user)
+            : Result.Fail<User>("Пользователь не найден");
+    }
 }

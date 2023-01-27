@@ -45,23 +45,21 @@ export default function Auth() {
     const handleLogin = (event) => {
         let isAuth = document.querySelector('.left-reg__mail').classList.contains('hide')
         if (isAuth) {
-            alert('Авторизация')
             axios({
                 method: 'post',
                 withCredentials: true,
-                url: "http://localhost:7279/User/Login?login=" + register.login + "&password=" + register.password,
+                url: "http://localhost:7279/User/login?login=" + register.login + "&password=" + register.password,
                 headers: {accept: '*/*', credentials: 'include'}
             })
                 .then(res => {
-                    alert('Успешная авторизация')
-                    alert(res.cookie)
+                    localStorage.setItem("login", register.login)
                     navigate('/')
                 }).catch(err => alert(err))
         } else {
             let isAuthor = document.getElementById('isAuthor').checked
             axios({
                 method: 'post',
-                url: "http://localhost:7279/User/Create",
+                url: "http://localhost:7279/User/create",
                 withCredentials: true,
                 headers: {accept: '*/*', 'Content-Type': 'application/json', credentials: 'include'},
                 data: {
@@ -71,10 +69,8 @@ export default function Auth() {
                     isAuthor: isAuthor
                 }
             }).then(res => {
-                    alert(res.status)
                 },
                 error => {
-                    alert(error)
                 })
         }
         event.preventDefault();
