@@ -20,7 +20,7 @@ public class UserSubscription : Dbo
     [Required]
     public Guid UserId { get; set; }
 
-    [Column("user_id")]
+    [Column("subscription_id")]
     [Required]
     public Guid SubscriptionId { get; set; }
 }

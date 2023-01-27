@@ -38,6 +38,6 @@ public class User : Dbo
     [Column("description")]
     public string? Description { get; set; }
 
-    [Column("description")]
+    [Column("links")]
     public string? Links { get; set; }
 }

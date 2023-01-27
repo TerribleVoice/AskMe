@@ -23,7 +23,7 @@ public class Subscription : Dbo
     [MaxLength(100)]
     public string Name { get; set; }
 
-    [Column("name")]
+    [Column("description")]
     [Required(AllowEmptyStrings = false)]
     [MaxLength(300)]
     public string Description { get; set; }

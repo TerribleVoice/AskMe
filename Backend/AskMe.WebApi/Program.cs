@@ -2,6 +2,7 @@ using AskMe.Core.StorageLayer;
 using AskMe.Core.StorageLayer.Repositories;
 using AskMe.Service.Converters;
 using AskMe.Service.Services;
+using AskMe.WebApi.Builders;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,10 @@ builder.Services.AddScoped<IPostConverter, PostConverter>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ISubscriptionConverter, SubscriptionConverter>();
+
+builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
+builder.Services.AddScoped<UserViewModelBuilder>();
+builder.Services.AddScoped<PostViewModelBuilder>();
 
 builder.Services.AddScoped<IUserIdentity, UserIdentity>(sp =>
 {
