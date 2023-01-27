@@ -82,9 +82,14 @@ public class UserController : CustomControllerBase
     }
 
     [HttpGet("{userLogin}")]
-    public async Task<UserViewModel> GetUserProfile(string userLogin)
+    public async Task<IActionResult> GetUserProfile(string userLogin)
     {
-        return await userViewModelBuilder.Build(userLogin);
+        var user = await userService.FindUserByLogin(userLogin);
+        if (user.IsFailure)
+        {
+            return NotFound(user.ErrorMsg);
+        }
+        return Ok(await userViewModelBuilder.Build(userLogin));
     }
 
     [HttpGet("get_current_user_only_for_test"), Authorize]
