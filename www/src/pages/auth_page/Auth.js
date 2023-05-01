@@ -2,81 +2,84 @@ import React, {useState} from 'react'
 import {useNavigate} from "react-router-dom";
 import './Auth.css'
 import {useLocation} from "react-router-dom";
-import axios, {Axios} from 'axios';
+import axios, {Axios} from 'axios';//Регистрация ща не работает, AxiosError: Request failed with status code 401
 
 export default function Auth() {
     const navigate = useNavigate();
     const location = useLocation();
-    const [register, setRegister] = useState(() => {
+    const [register, setRegister] = useState(() => {//что передать в форму
         return {
             login: "123",
             password: "123",
-            mail: "123",
+            mail: "123@mail.ru",
             errorMsg: ""
         }
     })
 
     const onAuthClick = event => {
-        event.target.classList.add('active-btn');
-        event.target.previousElementSibling.classList.remove('active-btn');
-        document.getElementById('mail').setAttribute('type', 'text')
-        document.querySelector('.left-reg__mail').classList.add('hide');
-        document.querySelector('.left-reg__isAuthor').classList.add('hide');
+        event.target.classList.add('active-btn');//добавляем класс активной кнопки(типо большая надпись)
+        event.target.previousElementSibling.classList.remove('active-btn');//убираем этот же класс из предыдущей надписи
+        document.getElementById('mail').setAttribute('type', 'text')//отмена проверки почты
+        document.querySelector('.left-reg__mail').classList.add('hide');//скрываем поля которые не должны видеть
+        document.querySelector('.left-reg__isAuthor').classList.add('hide');//скрываем поля которые не должны видеть
     }
 
     const onRegClick = event => {
-        event.target.classList.add('active-btn');
-        event.target.nextElementSibling.classList.remove('active-btn');
-        document.getElementById('mail').setAttribute('type', 'email')
-        document.querySelector('.left-reg__mail').classList.remove('hide');
-        document.querySelector('.left-reg__isAuthor').classList.remove('hide');
+        event.target.classList.add('active-btn');//добавляем класс активной кнопки(типо большая надпись)
+        event.target.nextElementSibling.classList.remove('active-btn');//убираем этот же класс из предыдущей надписи
+        document.getElementById('mail').setAttribute('type', 'email')//будет проверять почта ли это (есть @ичето.еще)
+        document.querySelector('.left-reg__mail').classList.remove('hide');//скрываем поля которые не должны видеть
+        document.querySelector('.left-reg__isAuthor').classList.remove('hide');//скрываем поля которые не должны видеть
     }
 
-    const changeInput = event => {
+    const changeInput = event => {//чтобы записать из формы в переменные
         event.persist()
         setRegister(prev => {
             return {
                 ...prev,
-                [event.target.name]: event.target.value,
+                [event.target.name]: event.target.value,//TODO: поискать че оно делает
             }
         })
     }
 
-    const handleLogin = (event) => {
-        let isAuth = document.querySelector('.left-reg__mail').classList.contains('hide')
+    const handleLogin = (event) => { //объявление функции для передачи в форму типо по нажатию кнопки
+        let isAuth = document.querySelector('.left-reg__mail').classList.contains('hide')//переключение класса для показа
         if (isAuth) {
-            axios({
-                method: 'post',
-                withCredentials: true,
-                url: "http://localhost:7279/User/login?login=" + register.login + "&password=" + register.password,
-                headers: {accept: '*/*', credentials: 'include'}
+            axios({//библа для нодджс для http запросов, можно юзать потом для других штук в проекте
+                method: 'post',//тип хттп запроса
+                withCredentials: true,//для прокидки куки
+                url: "http://localhost:7279/User/login?login=" + register.login + "&password=" + register.password,//7279 это порт из апи, откуда он будет слушать,,, константа реджистер сверху, в ней написали что передать в форму
+                headers: {accept: '*/*', credentials: 'include'}//для куки
             })
-                .then(res => {
-                    localStorage.setItem("login", register.login)
-                    navigate('/')
-                }).catch(err => alert(err))
+                .then(res => {//запрос прошёл успешно
+                    localStorage.setItem("login", register.login)//хранение логина в браузере
+                    navigate('/')//отправка на главную
+                }).catch(err => alert(err))//если не удался выводит ошибку
         } else {
-            let isAuthor = document.getElementById('isAuthor').checked
-            axios({
+            let isAuthor = document.getElementById('isAuthor').checked//регистрация
+            axios({//вызов метода апи, можно юзать потом для других штук в проекте
                 method: 'post',
-                url: "http://localhost:7279/User/create",
-                withCredentials: true,
+                url: "http://localhost:7279/User/create",//можно спросить у михи че как используется в свагере
+                withCredentials: true,//для прокидки куки
                 headers: {accept: '*/*', 'Content-Type': 'application/json', credentials: 'include'},
-                data: {
+                data: {//возможно регистрация не работает из-за обновленного бека, там больше полей для данных, не все параметры передаются(смотреть свагер)
                     login: register.login,
                     email: register.mail,
                     password: register.password,
                     isAuthor: isAuthor
                 }
-            }).then(res => {
-                },
-                error => {
-                })
+            }).then(res => {//обработка результата для авторизации и регистрации, рес=ответ от сервера
+                }
+                ).catch(err => alert(err))  
         }
-        event.preventDefault();
-        location.reload();
+        event.preventDefault();//костыль чтобы не слетели цсс стили при авторизации
+        location.reload();//часть костыля, перезагружает страницу
     };
-
+/*
+Handlelogin написанный сверху приравнивается к onsumbit(при нажатии на кнопку)
+value={register.mail} value={register.login}
+onClick={onRegClick} и  onClick={onAuthClick} переключатели авторизации и регистрации
+*/
     return (
         <div className="wrapper">
             <div className="main">

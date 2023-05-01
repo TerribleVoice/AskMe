@@ -9,7 +9,7 @@ export default function Ask(props) {
               </div>
               <div className="left__text">Ваше творчество - ваш заработок </div>
               <Link to="/auth">
-                <div className="left__btn">Приступить</div>
+                <div className="left__btn">Регистрация</div>
               </Link>
             </div>
             <div className="right">
