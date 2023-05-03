@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace AskMe.WebApi.Controllers;
 
 [ApiController]
-[EnableCors("MyPolicy")]
 [Route("[controller]")]
 public class FeedController : CustomControllerBase
 {

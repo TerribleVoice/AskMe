@@ -16,15 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "MyPolicy",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000")
-                .AllowCredentials().AllowAnyHeader().AllowAnyMethod();
-        });
-});
+builder.Services.AddCors();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -45,8 +37,8 @@ builder.Services.AddScoped<PostViewModelBuilder>();
 builder.Services.AddScoped<IUserIdentity, UserIdentity>(sp =>
 {
     var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
-    if (httpContextAccessor == null || httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated != null
-        && !httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+    if (httpContextAccessor == null ||
+        httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated is false)
     {
         return new UserIdentity();
     }
@@ -67,7 +59,13 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseCors();
+app.UseCors(corsBuilder => corsBuilder
+    .WithOrigins("http://localhost:3000", "https://localhost:3000")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
+);
+
 app.UseAuthentication();
 app.UseAuthorization();
 // Configure the HTTP request pipeline.
