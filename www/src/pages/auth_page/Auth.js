@@ -48,7 +48,7 @@ export default function Auth() {
             axios({//библа для нодджс для http запросов, можно юзать потом для других штук в проекте
                 method: 'post',//тип хттп запроса
                 withCredentials: true,//для прокидки куки
-                url: "http://localhost:7279/User/login?login=" + register.login + "&password=" + register.password,//7279 это порт из апи, откуда он будет слушать,,, константа реджистер сверху, в ней написали что передать в форму
+                url: "http://localhost:5131/User/login?login=" + register.login + "&password=" + register.password,//7279 это порт из апи, откуда он будет слушать,,, константа реджистер сверху, в ней написали что передать в форму
                 headers: {accept: '*/*', credentials: 'include'}//для куки
             })
                 .then(res => {//запрос прошёл успешно
@@ -59,7 +59,7 @@ export default function Auth() {
             let isAuthor = document.getElementById('isAuthor').checked//регистрация
             axios({//вызов метода апи, можно юзать потом для других штук в проекте
                 method: 'post',
-                url: "http://localhost:7279/User/create",//можно спросить у михи че как используется в свагере
+                url: "http://localhost:5131/User/create",//можно спросить у михи че как используется в свагере
                 withCredentials: true,//для прокидки куки
                 headers: {accept: '*/*', 'Content-Type': 'application/json', credentials: 'include'},
                 data: {//возможно регистрация не работает из-за обновленного бека, там больше полей для данных, не все параметры передаются(смотреть свагер)

@@ -82,6 +82,9 @@ header {
     margin-right: 60px;
     background: linear-gradient(90deg, rgba(195, 0, 109, 0.9) 5%, rgba(115, 0, 64, 0.9) 100%);
 }
+.header__signup:hover{
+    background: linear-gradient(90deg, rgba(223, 0, 126, 0.9) 5%, rgba(168, 0, 93, 0.9) 100%); /* Выглядит странно зато интерактив */
+}
 .header_user_logo {
     display: none;
     user-select: none;
@@ -145,7 +148,12 @@ header {
     line-height: 42px;
     color: #FFFFFF;
     padding: 20px 40px;
-    border: 3px solid #B00062;
+    border: 4px solid #B00062;
+}
+.left__btn:hover{
+    box-shadow:inset 0px 0px 0px 5px #B00062;
+    -webkit-box-shadow:inset 0px 0px 0px 5px #B00062;
+    -moz-box-shadow:inset 0px 0px 0px 5px #B00062;
 }
 .right {
     flex: 0 1 50%;
@@ -280,6 +288,11 @@ header {
     padding: 90px 10px;
     text-align: center;
 }
+.Author:hover {
+    box-shadow:inset 0px 0px 0px 7px #B00062;
+    -webkit-box-shadow:inset 0px 0px 0px 7px #B00062;
+    -moz-box-shadow:inset 0px 0px 0px 7px #B00062;
+}
 .Authoravatar {
     flex-shrink: 0;
     margin-bottom: 12px;
@@ -295,6 +308,12 @@ header {
     font-weight: 600;
     margin-bottom: 10px;
 }
+.AuthorStatus {
+    font-size: 20px;
+    color: #C0C0C0;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
 .Authorlink {
     line-height: 22px;
     box-sizing: border-box;
@@ -303,7 +322,7 @@ header {
     color: #F10086;
     cursor: pointer;
     font-size: 23px;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     transition: border-color .2s;
 }
@@ -665,4 +684,280 @@ a:active {
 .pp_goal__main {
     line-height: 19px;
     color: #C0C0C0;
+}
+.slick-prev:before {
+    color: #F10086;
+    width: 30px;/* Пока не работают, для кастомных пикч нужно */
+    height: 30px;
+}
+.slick-next:before {
+    color: #F10086;
+    width: 30px;
+    height: 30px;
+}
+
+
+
+
+
+/* ==========Страница настроек========= */
+.us_body {
+    background-color: #eee;
+    display: flex;
+    flex-direction: column;
+    font-family: Inter,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    min-height: 100%;
+    padding: 0;
+}
+.Settings_contentContainer_CVL6Y {
+    flex-grow: 1;
+    min-height: 100%;
+    padding: 0 0 35px;
+}
+.Settings_title_sAREq {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    margin: 0 0 30px;
+    padding: 0;
+}
+.SettingsEdit_container_ycz84 {
+    position: relative;
+}
+.SettingsEdit_form_EEYht {
+    margin-right: 40px;
+    max-width: 570px;
+    display: flex;
+    flex-direction: column;
+}
+.SettingsEdit_photoBlock_iom21 {
+    display: flex;
+    flex-direction: column;
+}
+.SettingsEdit_blockTitle_lMypl {
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+.SettingsEdit_photoFieldContainer_rHg3Z {
+    align-items: flex-end;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+    width: 100%;
+}
+.SettingsEditPhotoField_photo_DEj6F {
+    border-radius: 3px;
+    margin-right: 20px;
+    overflow: hidden;
+}
+.SettingsEditPhotoPreview_centredBox_mNKUc {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+.SettingsEditPhotoPreview_image_NVmL8 {
+    object-fit: cover;
+}
+.SettingsEditPhotoField_upload_OiNqw {
+    vertical-align: bottom;
+}
+.SettingsEditPhotoField_buttonWrapper_FMHFl {
+    display: inline-block;
+}
+.CirclesAnimation_content_Dfcn9, .CirclesAnimation_wrapper_BLZ9e {
+    position: relative;
+}
+.FileButton_container_S5fmr {
+    display: inline-block;
+}
+.FileButton_label_wRR_W {
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    max-width: 172px;
+    padding: 10px 14px;
+    transition: border-color .2s;
+    width: 100%;
+}
+.FileButton_input__fX_o {
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 0.1px;
+    z-index: -1;
+}
+button, input, keygen, select, textarea {
+    font: inherit;
+    margin: 0;
+}
+.FileButton_icon_Owzfl {
+    display: inline-block;
+    height: 20px;
+    margin-right: 14px;
+    vertical-align: middle;
+    width: 17px;
+}
+.Icon_block_Hvwi5 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.Icon_svg__DRUh {
+    max-height: 100%;
+    width: 100%;
+}
+.FileButton_text_sAKVP {
+    display: inline-block;
+    font-weight: 500;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.SettingsEditPhotoField_fileDescription_Wfpmg {
+    word-wrap: break-word;
+    color: #7c7c7c;
+    margin-top: 10px;
+    word-break: break-word;
+}
+.Input_container_M2APT {
+    position: relative;
+}
+.Label_label_jOBgY {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.Input_inputContainer_lPXgf {
+    position: relative;
+    width: 100%;
+}
+.InputField_inputField_vzhmi {
+    appearance: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-variant-ligatures: common-ligatures;
+    line-height: 22px;
+    outline: none;
+    padding: 11px 15px;
+    width: 100%;
+}
+.Input_descriptionBottomCaption_Nh7D_ {
+    color: #7c7c7c;
+    font-size: 13px;
+    margin-top: 5px;
+}
+.Form_standard_f_1gD {
+    margin-bottom: 36px;
+}
+.SettingsEditPhoneField_label_VrC8H {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.SettingsEditPhoneField_container_T4BnJ {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    height: 24px;
+    position: relative;
+}
+.SettingsEditPhoneField_button_uwOfF {
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+    justify-content: flex-start;
+}
+.LinkButton_button_LwwDl {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: #f15f2c;
+    cursor: pointer;
+    font-size: 13px;
+    font-size: 14px;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    transition: border-color .2s;
+}
+.SettingsEditPhoneField_icon_oVqRB {
+    fill: #f15f2c;
+    color: #f15f2c;
+    height: 18px;
+    margin-right: 8px;
+    width: 18px;
+}
+.Icon_block_Hvwi5 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.Icon_svg__DRUh {
+    max-height: 100%;
+    width: 100%;
+}
+.Input_container_M2APT {
+    position: relative;
+}
+.Label_label_jOBgY {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.Input_inputContainer_lPXgf {
+    position: relative;
+    width: 100%;
+}
+.InputField_inputField_vzhmi {
+    appearance: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-variant-ligatures: common-ligatures;
+    line-height: 22px;
+    outline: none;
+    padding: 11px 15px;
+    width: 100%;
+}
+input:disabled {
+    cursor: default;
+    background-color: -internal-light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+    color: -internal-light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
+    border-color: rgba(118, 118, 118, 0.3);
+}
+input[type="text" i] {
+    padding: 1px 2px;
+}
+.Input_rightElement_UfudP {
+    right: 15px;
+}
+.Input_rightElement_UfudP, .Input_staticText_b7u8D {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.InlineButton_inlineBtn_YwyQe {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    color: #f15f2c;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    padding: 0;
+    text-transform: uppercase;
+}
+.Input_descriptionBottomCaption_Nh7D_ {
+    color: #7c7c7c;
+    font-size: 13px;
+    margin-top: 5px;
 }
