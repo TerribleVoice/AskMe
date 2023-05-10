@@ -1,7 +1,9 @@
+import { IUserRegistration } from "@/models/IUserRegistration";
 import { askMeApiAxiosInstance } from "./askMeApiAxiosInstance";
 
-export const userRegistration = async () => {
-  const response = await askMeApiAxiosInstance.post(`/User/login`, {});
+export const userRegistration = async (userReg:IUserRegistration) => {
+  const response = await askMeApiAxiosInstance.post(`/User/login`, userReg);
+  //   const response = await askMeApiAxiosInstance.post(`/posts`, userReg); // это запрос на фейк апи 
   const res = response.data;
   return res;
 };

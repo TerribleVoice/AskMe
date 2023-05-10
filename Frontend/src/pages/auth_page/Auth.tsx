@@ -1,3 +1,8 @@
+// НЕ УДАЛЯЙ
+// ПУСТЬ КАК РЕФЕРЕНС ПОКА БУДЕТ
+
+
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
@@ -18,21 +23,20 @@ export const Auth = () => {
     };
   });
 
-  const onAuthClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onAuthClick = (event: any) => {
     // event.target.classList.add("active-btn"); //добавляем класс активной кнопки(типо большая надпись)
     // event.target.previousElementSibling.classList.remove("active-btn"); //убираем этот же класс из предыдущей надписи
-    // document.getElementById("mail").setAttribute("type", "text"); //отмена проверки почты
-    // document.querySelector(".left-reg__mail").classList.add("hide"); //скрываем поля которые не должны видеть
-    // document.querySelector(".left-reg__isAuthor").classList.add("hide"); //скрываем поля которые не должны видеть
+    // document.getElementById("mail")!.setAttribute("type", "text"); //отмена проверки почты
+    // document.querySelector(".left-reg__mail")!.classList.add("hide"); //скрываем поля которые не должны видеть
+    // document.querySelector(".left-reg__isAuthor")!.classList.add("hide"); //скрываем поля которые не должны видеть
   };
 
-  const onRegClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    userRegistration
+  const onRegClick = (event: any) => {
     // event.target.classList.add("active-btn"); //добавляем класс активной кнопки(типо большая надпись)
     // event.target.nextElementSibling.classList.remove("active-btn"); //убираем этот же класс из предыдущей надписи
-    // document.getElementById("mail").setAttribute("type", "email"); //будет проверять почта ли это (есть @ичето.еще)
-    // document.querySelector(".left-reg__mail").classList.remove("hide"); //скрываем поля которые не должны видеть
-    // document.querySelector(".left-reg__isAuthor").classList.remove("hide"); //скрываем поля которые не должны видеть
+    // document.getElementById("mail")!.setAttribute("type", "email"); //будет проверять почта ли это (есть @ичето.еще)
+    // document.querySelector(".left-reg__mail")!.classList.remove("hide"); //скрываем поля которые не должны видеть
+    // document.querySelector(".left-reg__isAuthor")!.classList.remove("hide"); //скрываем поля которые не должны видеть
   };
 
   const changeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
