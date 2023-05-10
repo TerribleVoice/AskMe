@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Author1(props) {
     return (
-
+    <div>
+    <Link to="/NeDlaProdagi">
     <div className="Author">
             <div className="Authoravatar">
             <img src="img/profile/avatar4.jpg" height="180" width="180"/>
@@ -10,11 +11,14 @@ export default function Author1(props) {
             <div className="Authorname">
             NeDlaProdagi
             </div>
-            <div className="Authorlink" >
-            <Link to="/NeDlaProdagi">
-                Перейти в блог
-            </Link>
+            <div className="AuthorStatus">
+                Один такой
             </div>
+            <div className="Authorlink">
+                Перейти в блог
+            </div>
+    </div>
+    </Link>
     </div>
     )
 };

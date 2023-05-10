@@ -25,15 +25,7 @@ public class UserController : CustomControllerBase
         this.userViewModelBuilder = userViewModelBuilder;
     }
 
-    [HttpGet(Name = "getUsersList_only_for_test")]
-    [Obsolete]
-    public IEnumerable<UserDto> GetUsersList()
-    {
-        var users = userService.GetAll();
-        return users.Value!;
-    }
-
-    [HttpPost("сreate")]
+    [HttpPost("create")]
     public async Task<IActionResult> CreateAsync(UserCreationForm creationForm)
     {
         var creationResult = await userService.CreateUser(creationForm);
