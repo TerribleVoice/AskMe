@@ -48,7 +48,7 @@ export default function Auth() {
             axios({//библа для нодджс для http запросов, можно юзать потом для других штук в проекте
                 method: 'post',//тип хттп запроса
                 withCredentials: true,//для прокидки куки
-                url: "http://localhost:5131/User/login?login=" + register.login + "&password=" + register.password,//7279 это порт из апи, откуда он будет слушать,,, константа реджистер сверху, в ней написали что передать в форму
+                url: `http://localhost:7279/User/login?login=${register.login}&password=${register.password}`,//7279 это порт из апи, откуда он будет слушать,,, константа реджистер сверху, в ней написали что передать в форму
                 headers: {accept: '*/*', credentials: 'include'}//для куки
             })
                 .then(res => {//запрос прошёл успешно
@@ -73,7 +73,7 @@ export default function Auth() {
                 ).catch(err => alert(err))  
         }
         event.preventDefault();//костыль чтобы не слетели цсс стили при авторизации
-        location.reload();//часть костыля, перезагружает страницу
+        // location.reload();//часть костыля, перезагружает страницу
     };
 /*
 Handlelogin написанный сверху приравнивается к onsumbit(при нажатии на кнопку)
