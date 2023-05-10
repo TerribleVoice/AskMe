@@ -9,7 +9,6 @@ import { Profile1 } from "@/pages/profile_page/profile1";
 import { Profile2 } from "@/pages/profile_page/profile2";
 import { Profile3 } from "@/pages/profile_page/profile3";
 
-import { ScrollUp } from "@/components/scroll/scrollUp";
 import { Layout } from "@/components/Layout";
 import { AuthVal } from "./pages/auth_page/AuthVal";
 
