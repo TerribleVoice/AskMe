@@ -25,4 +25,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 as final
 WORKDIR /publish
 COPY --from=publish /publish .
 EXPOSE 80
-CMD ["dotnet", "AskMe.WebApi.dll", "--environment=Development"]
+
+ENTRYPOINT ["dotnet", "AskMe.WebApi.dll"]
