@@ -32,9 +32,6 @@ export const AuthVal = () => {
               </div>
             </div>
             <div className="left-reg__welcome">Добро пожаловать</div>
-            <div className="left-reg__text">
-              Введите адрес электронной почты, придумайте логин и пароль
-            </div>
             {authReg ? <AuthForm /> : <RegForm />}
           </div>
           <div className="reg__right">

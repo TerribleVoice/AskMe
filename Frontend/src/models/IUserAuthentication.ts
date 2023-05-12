@@ -1,4 +1,4 @@
 export interface IUserAuthentication {
-    login: string;
-    password: string;
+  login: string;
+  password: string;
 }

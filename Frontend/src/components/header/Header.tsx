@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 
 export const Header = () => {
-    const { login } = localStorage;
+    const login = localStorage.getItem("login");
+
     const button = login ? (
-        <button type="button" onClick={() => { localStorage.clear(); document.location.reload(); }}>
+        <button type="button" className="header__signup" onClick={() => { localStorage.clear(); document.location.reload();}}>
             Выйти
         </button>
     ) : (

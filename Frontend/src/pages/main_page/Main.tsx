@@ -1,14 +1,13 @@
 //import "./main_page.css";
 
 import { Ask } from "@/components/Ask/Ask";
-import { Footer } from "@/components/main/footer/Footer";
-import { Let } from "@/components/main/let/Let";
+import { Let } from "@/components/Main/Let/Let";
 import { Service } from "@/components/service/Service";
-import { Author1 } from "@/components/main/ourauthors/Author1";
-import { Author2 } from "@/components/main/ourauthors/Author2";
-import { Author3 } from "@/components/main/ourauthors/Author3";
-import { Author4 } from "@/components/main/ourauthors/Author4";
-import { Ourauthors } from "@/components/main/ourauthors/Ourauthors";
+import { Author1 } from "@/components/Main/Ourauthors/Author1";
+import { Author2 } from "@/components/Main/Ourauthors/Author2";
+import { Author3 } from "@/components/Main/Ourauthors/Author3";
+import { Author4 } from "@/components/Main/Ourauthors/Author4";
+import { Ourauthors } from "@/components/Main/Ourauthors/Ourauthors";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -36,23 +35,13 @@ export const Main = () => {
       </div>
       <div className="container">
         <Slider {...settings}>
-          <div className="container1">
-            <Author1 />
-          </div>
-          <div className="container1">
-            <Author2 />
-          </div>
-          <div className="container1">
-            <Author3 />
-          </div>
-          <div className="container1">
-            <Author4 />
-          </div>
+          {/* Здесь нужен эндпоинт на получение авторов */}
+          <Author1 />
+          <Author2 />
+          <Author3 />
+          <Author4 />
         </Slider>
       </div>
-      <footer className="footer">
-        <Footer />
-      </footer>
     </div>
   );
 };

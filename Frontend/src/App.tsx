@@ -11,6 +11,7 @@ import { Profile3 } from "@/pages/profile_page/profile3";
 
 import { Layout } from "@/components/Layout";
 import { AuthVal } from "./pages/auth_page/AuthVal";
+import { ProfilePageVa } from "./pages/profile_page/profile_page_val";
 
 export const App = () => {
   return (
@@ -19,10 +20,13 @@ export const App = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Main />} />
           <Route path="auth" element={<AuthVal />} />
+          <Route path="TestVal" element={<ProfilePageVa />} />
+
           <Route path="TheOnlyOne1" element={<Profile />} />
           <Route path="ObabMaster" element={<Profile1 />} />
           <Route path="YOUNG77" element={<Profile2 />} />
           <Route path="NeDlaProdagi" element={<Profile3 />} />
+
         </Route>
       </Routes>
     </>
