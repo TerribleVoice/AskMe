@@ -1,6 +1,7 @@
 import { IUserProfilePage } from "@/models/IUserProfilePage";
 import { getUserProfilePage } from "@/services/getUserProfilePage";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const zaglushka: IUserProfilePage = {
   login: "Shaman",
@@ -21,16 +22,22 @@ const zaglushka: IUserProfilePage = {
 };
 
 export const ProfilePageVal = () => {
+  const { LoginName } = useParams();
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState<IUserProfilePage>();
 
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const data = await getUserProfilePage("TheOnlyOne1");
-        if (data === undefined) {
-          setProfileData(zaglushka);
+        if (LoginName !== undefined) {
+          const data = await getUserProfilePage(LoginName);
+          if (data === undefined) {
+            setProfileData(zaglushka);
+          } else {
+            setProfileData(data);
+          }
         } else {
-          setProfileData(data);
+          navigate("/404")
         }
       };
       fetchData();
@@ -39,7 +46,7 @@ export const ProfilePageVal = () => {
     } finally {
       setProfileData(zaglushka);
     }
-  }, []);
+  }, [LoginName]);
 
   return (
     <div className="container">
