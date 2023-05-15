@@ -33,11 +33,11 @@ public class UserController : CustomControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody]string login, [FromBody]string password, string? returnUrl)
+    public async Task<IActionResult> Login([FromBody]UserLoginForm form, string? returnUrl)
     {
-        if ((await userService.AuthenticateUser(login, password)).IsSuccess)
+        if ((await userService.AuthenticateUser(form.Login, form.Password)).IsSuccess)
         {
-            var userResult = await userService.FindUserByLogin(login);
+            var userResult = await userService.FindUserByLogin(form.Login);
             if (userResult.IsFailure)
             {
                 return BadRequest(userResult.ErrorMsg);
@@ -46,7 +46,7 @@ public class UserController : CustomControllerBase
             var claims = new List<Claim>
             {
                 new("/id", user.Id.ToString()),
-                new(ClaimTypes.Name, login),
+                new(ClaimTypes.Name, form.Login),
                 new(ClaimTypes.Email, user.Email ?? string.Empty),
                 new(ClaimTypes.Role, user.IsAuthor ? Roles.Author : Roles.Reader),
             };
