@@ -26,14 +26,14 @@ public class UserController : CustomControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateAsync(UserCreationForm creationForm)
+    public async Task<IActionResult> CreateAsync([FromBody]UserCreationForm creationForm)
     {
         var creationResult = await userService.CreateUser(creationForm);
         return ProcessResult(creationResult);
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(string login, string password, string? returnUrl)
+    public async Task<IActionResult> Login([FromBody]string login, [FromBody]string password, string? returnUrl)
     {
         if ((await userService.AuthenticateUser(login, password)).IsSuccess)
         {

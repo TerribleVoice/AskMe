@@ -35,7 +35,7 @@ public class SubscriptionController : CustomControllerBase
         return ProcessResult(deletionResult);
     }
 
-    [HttpPost("/update")]
+    [HttpPost("{subscriptionId}/update")]
     [Authorize]
     public async Task<IActionResult> Update(Guid subscriptionId, [FromBody] SubscriptionRequest subscriptionRequest)
     {
