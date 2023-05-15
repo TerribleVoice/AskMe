@@ -5,9 +5,9 @@ export const Footer = () => {
         <div className="footer__body">
           <div className="footer__left">
             <ul>
-              <li>Поддержка</li>
-              <li>Политика конфиденциальности</li>
-              <li>Пользовательское соглашение</li>
+              <li className="footer__link">Поддержка</li>
+              <li className="footer__link">Политика конфиденциальности</li>
+              <li className="footer__link">Пользовательское соглашение</li>
             </ul>
           </div>
           <div className="footer__right">

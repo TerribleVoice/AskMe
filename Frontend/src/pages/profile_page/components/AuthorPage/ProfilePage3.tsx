@@ -1,6 +1,6 @@
 //import './style.css';
 
-export const Profile_page3 = () => {
+export const ProfilePage3 = () => {
   return (
     <body className="pp_body">
       <div className="pp_main">

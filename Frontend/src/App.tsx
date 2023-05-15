@@ -22,7 +22,7 @@ export const App = () => {
           <Route index element={<Main />} />
           <Route path="auth" element={<AuthVal />} />
           <Route path=":LoginName" element={<ProfilePageVa />} />
-          <Route path="settings" element={<UserSettingsPage/>} />
+          <Route path=":LoginName/settings" element={<UserSettingsPage/>} />
 
           <Route path="TheOnlyOne1" element={<Profile />} />
           <Route path="ObabMaster" element={<Profile1 />} />

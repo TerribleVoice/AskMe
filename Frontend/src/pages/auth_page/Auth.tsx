@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios"; //Регистрация ща не работает, AxiosError: Request failed with status code 401
-import { userRegistration } from "@/services/userRegistration";
 
 export const Auth = () => {
   const navigate = useNavigate();

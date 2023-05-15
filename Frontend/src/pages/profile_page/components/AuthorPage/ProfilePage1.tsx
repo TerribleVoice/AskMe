@@ -1,6 +1,6 @@
 //import './style.css';
 
-export const Profile_page2 = () => {
+export const ProfilePage1 = () => {
   return (
     <body className="pp_body">
       <div className="pp_main">
@@ -15,11 +15,26 @@ export const Profile_page2 = () => {
           </div>
           <div className="pp_post">
             <div className="pp_post__title">
-              <div className="pp_post__text">Укрепление и развитие</div>
+              <div className="pp_post__text">Разнообразный и богатый опыт</div>
               <div className="pp_post__date">29 января 2021, пт</div>
             </div>
             <div className="pp_post__img pp_blurred">
-              <img src="img/profile/photo2.jpg" alt="photo"></img>
+              <img src="img/profile/photo1.jpg" alt="photo"></img>
+              <div className="pp_post__text2">
+                <span>Пост только для платных подписчиков</span>
+                <img src="img/profile/lock.svg" alt=""></img>
+              </div>
+            </div>
+          </div>
+          <br />
+          <br />
+          <div className="pp_post">
+            <div className="pp_post__title">
+              <div className="pp_post__text">Разнообразный и богатый опыт</div>
+              <div className="pp_post__date">29 января 2021, пт</div>
+            </div>
+            <div className="pp_post__img pp_blurred">
+              <img src="img/profile/photo1.jpg" alt="photo"></img>
               <div className="pp_post__text2">
                 <span>Пост только для платных подписчиков</span>
                 <img src="img/profile/lock.svg" alt=""></img>
@@ -28,11 +43,11 @@ export const Profile_page2 = () => {
           </div>
           <aside className="pp_left">
             <div className="pp_left__img">
-              <img src="img/profile/avatar3.jpg" alt="avatar"></img>
+              <img src="img/profile/avatar2.jpg" alt="avatar"></img>
             </div>
             <div className="pp_left__body pp_body-left">
-              <div className="pp_body-left__nick">YOUNG77</div>
-              <div className="pp_body-left__job">Молодой и перспективный</div>
+              <div className="pp_body-left__nick">ObabMaster</div>
+              <div className="pp_body-left__job">Лучший в своём деле</div>
               <div className="pp_body-left__subscribe">Подписаться</div>
             </div>
           </aside>
@@ -50,9 +65,9 @@ export const Profile_page2 = () => {
             </div>
             <div className="pp_left__top pp_goal">
               <div className="pp_goal__text">Цель</div>
-              <div className="pp_goal__progress">464 из 1500 рублей</div>
+              <div className="pp_goal__progress">234 из 1000 рублей</div>
               <div className="pp_goal__main">
-                На значимые проблемы и крупные проекты
+                На идейные соображения высшего порядка
               </div>
             </div>
           </aside>

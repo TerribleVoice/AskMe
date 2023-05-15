@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./Auth.css";
 
-import { AuthForm } from "@/components/AuthForm/AuthForm";
-import { RegForm } from "@/components/RegForm/RegForm";
+import { AuthForm } from "@/pages/auth_page/components/AuthForm/AuthForm";
+import { RegForm } from "@/pages/auth_page/components/RegForm/RegForm";
 
 export const AuthVal = () => {
   const [authReg, setAuthReg] = useState(false);

@@ -1,13 +1,13 @@
 //import "./main_page.css";
 
-import { Ask } from "@/components/Ask/Ask";
-import { Let } from "@/components/Main/Let/Let";
-import { Service } from "@/components/service/Service";
-import { Author1 } from "@/components/Main/Ourauthors/Author1";
-import { Author2 } from "@/components/Main/Ourauthors/Author2";
-import { Author3 } from "@/components/Main/Ourauthors/Author3";
-import { Author4 } from "@/components/Main/Ourauthors/Author4";
-import { Ourauthors } from "@/components/Main/Ourauthors/Ourauthors";
+import { Ask } from "@/pages/main_page/components/Ask/Ask";
+import { Let } from "@/pages/main_page/components/Main/Let/Let";
+import { Service } from "@/pages/main_page/components/Service/Service";
+import { Author1 } from "@/pages/main_page/components/Main/Ourauthors/Author1";
+import { Author2 } from "@/pages/main_page/components/Main/Ourauthors/Author2";
+import { Author3 } from "@/pages/main_page/components/Main/Ourauthors/Author3";
+import { Author4 } from "@/pages/main_page/components/Main/Ourauthors/Author4";
+import { Ourauthors } from "@/pages/main_page/components/Main/Ourauthors/Ourauthors";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -22,17 +22,11 @@ export const Main = () => {
     slidesToScroll: 3,
   };
   return (
-    <div>
-      <div className="container">
-        <Ask />
-      </div>
+    <>
+      <Ask />
       <Service />
-      <div className="container">
-        <Let />
-      </div>
-      <div className="container1">
-        <Ourauthors />
-      </div>
+      <Let />
+      <Ourauthors />
       <div className="container">
         <Slider {...settings}>
           {/* Здесь нужен эндпоинт на получение авторов */}
@@ -42,6 +36,6 @@ export const Main = () => {
           <Author4 />
         </Slider>
       </div>
-    </div>
+    </>
   );
 };
