@@ -32,6 +32,11 @@ services:
         limits:
           cpus: '1'
           memory: 1G
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
 #  payment:
 #    restart: unless-stopped
