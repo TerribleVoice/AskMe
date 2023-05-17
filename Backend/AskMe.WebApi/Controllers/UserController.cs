@@ -7,7 +7,6 @@ using AskMe.WebApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskMe.WebApi.Controllers;
@@ -28,27 +27,22 @@ public class UserController : CustomControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> CreateAsync([FromBody]UserCreationForm creationForm)
     {
-        var creationResult = await userService.CreateUser(creationForm);
-        return ProcessResult(creationResult);
+        await userService.CreateUserAsync(creationForm);
+        return Ok();
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]UserLoginForm form, string? returnUrl)
     {
-        if ((await userService.AuthenticateUser(form.Login, form.Password)).IsSuccess)
+        if ((await userService.AuthenticateUserAsync(form.Login, form.Password)).IsSuccess)
         {
-            var userResult = await userService.FindUserByLogin(form.Login);
-            if (userResult.IsFailure)
-            {
-                return BadRequest(userResult.ErrorMsg);
-            }
-            var user = userResult.Value!;
+            var user = await userService.FindUserByLoginAsync(form.Login);
+
             var claims = new List<Claim>
             {
                 new("/id", user.Id.ToString()),
                 new(ClaimTypes.Name, form.Login),
                 new(ClaimTypes.Email, user.Email ?? string.Empty),
-                new(ClaimTypes.Role, user.IsAuthor ? Roles.Author : Roles.Reader),
             };
             var claimIdentity = new ClaimsIdentity(claims, "Cookies");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
@@ -73,17 +67,28 @@ public class UserController : CustomControllerBase
     }
 
     [HttpGet("{userLogin}")]
-    public async Task<IActionResult> GetUserProfile(string userLogin)
+    public async Task<ActionResult<UserViewModel>> GetUserProfile(string userLogin)
     {
-        var user = await userService.FindUserByLogin(userLogin);
-        if (user.IsFailure)
+        try
         {
-            return NotFound(user.ErrorMsg);
+            await userService.FindUserByLoginAsync(userLogin);
         }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+
         return Ok(await userViewModelBuilder.Build(userLogin));
     }
 
-    [HttpGet("get_current_user_only_for_test"), Authorize]
+    [HttpGet("top_authors")]
+    public Task<UserViewModel> GetTopAuthors()
+    {
+        var result = userService.GetTopAuthorsAsync();
+        throw new NotImplementedException();
+    }
+
+    [HttpGet("get_all_users_only_for_test"), Authorize]
     [Obsolete]
     public IActionResult GetUser()
     {

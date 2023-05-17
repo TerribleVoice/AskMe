@@ -5,12 +5,12 @@ namespace AskMe.Service.Services;
 
 public interface ISubscriptionService
 {
-    public Task<Result> CreateOrUpdate(SubscriptionRequest request, Guid? subscriptionId = null);
-    public Task<Result> Delete(Guid id);
-    public Task<SubscriptionResponse[]> GetAuthorSubscriptions(string userLogin);
-    public Task<SubscriptionResponse[]> GetReaderSubscriptions(string userLogin);
-    public Task<Result> Subscribe(Guid subscriptionId);
-    public Task<Result> Unsubscribe(Guid subscriptionId);
+    public Task CreateOrUpdateAsync(SubscriptionRequest request, Guid? subscriptionId = null);
+    public Task DeleteAsync(Guid id);
+    public Task<SubscriptionResponse[]> GetAuthorSubscriptionsAsync(string userLogin);
+    public Task<SubscriptionResponse[]> GetReaderSubscriptionsAsync(string userLogin);
+    public Task<Result> SubscribeAsync(Guid subscriptionId);
+    public Task<Result> UnsubscribeAsync(Guid subscriptionId);
 
 
 }

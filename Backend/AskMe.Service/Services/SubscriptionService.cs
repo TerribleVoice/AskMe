@@ -1,100 +1,97 @@
 using AskMe.Core.Models;
-using AskMe.Core.StorageLayer.Repositories;
+using AskMe.Core.Models.Dbo;
+using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskMe.Service.Services;
 
 public class SubscriptionService : ISubscriptionService
 {
-    private readonly ISubscriptionRepository subscriptionRepository;
     private readonly ISubscriptionConverter subscriptionConverter;
     private readonly IUserIdentity userIdentity;
     private readonly IUserService userService;
-    private readonly IUserSubscriptionRepository userSubscriptionRepository;
+    private readonly PostgresDbContext dbContext;
 
-    public SubscriptionService(ISubscriptionRepository subscriptionRepository,
-        ISubscriptionConverter subscriptionConverter,
+    public SubscriptionService(ISubscriptionConverter subscriptionConverter,
         IUserIdentity userIdentity,
         IUserService userService,
-        IUserSubscriptionRepository userSubscriptionRepository)
+        PostgresDbContext dbContext
+    )
     {
-        this.subscriptionRepository = subscriptionRepository;
         this.subscriptionConverter = subscriptionConverter;
         this.userIdentity = userIdentity;
         this.userService = userService;
-        this.userSubscriptionRepository = userSubscriptionRepository;
+        this.dbContext = dbContext;
     }
 
-    public async Task<Result> CreateOrUpdate(SubscriptionRequest request, Guid? subscriptionId = null)
+    public async Task CreateOrUpdateAsync(SubscriptionRequest request, Guid? subscriptionId = null)
     {
         if (subscriptionId.HasValue)
         {
-            var canBeEditedResult = await CanBeEdited(subscriptionId.Value);
-            if (canBeEditedResult.IsFailure)
-            {
-                return canBeEditedResult;
-            }
+            await ThrowIfCantBeEditedAsync(subscriptionId.Value);
         }
 
         var id = subscriptionId ?? Guid.NewGuid();
         var authorId = userIdentity.CurrentUser!.Id;
         var postDbo = subscriptionConverter.Convert(id, authorId, request);
 
-        return subscriptionId.HasValue
-            ? await subscriptionRepository.Update(postDbo)
-            : await subscriptionRepository.Create(postDbo);
-    }
-
-    public async Task<Result> Delete(Guid id)
-    {
-        var canBeEditedResult = await CanBeEdited(id);
-        if (canBeEditedResult.IsFailure)
+        if (subscriptionId.HasValue)
         {
-            return canBeEditedResult;
+            dbContext.Subscription.Update(postDbo);
         }
-
-        return await subscriptionRepository.Delete(id);
+        else
+        {
+            await dbContext.Subscription.AddAsync(postDbo);
+        }
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<SubscriptionResponse[]> GetAuthorSubscriptions(string userLogin)
+    public async Task DeleteAsync(Guid id)
     {
-        var userResult = (await userService.FindUserByLogin(userLogin)).ThrowIfFailure();
+        await ThrowIfCantBeEditedAsync(id);
 
-        var result = await subscriptionRepository.SelectByAuthorId(userResult.Id);
-        return result.Select(subscriptionConverter.Convert).ToArray();
-
+        var subscription = await dbContext.ReadAsync<Subscription>(id);
+        dbContext.Subscription.Remove(subscription);
     }
 
-    public async Task<SubscriptionResponse[]> GetReaderSubscriptions(string userLogin)
+    public async Task<SubscriptionResponse[]> GetAuthorSubscriptionsAsync(string userLogin)
     {
-        var userResult = (await userService.FindUserByLogin(userLogin)).ThrowIfFailure();
-        var subscriptionIds = await userSubscriptionRepository.SelectSubscriptionIdsByUserId(userResult.Id);
-        var subscriptions = await subscriptionRepository.SelectByIds(subscriptionIds);
+        var subscriptions = await dbContext.Subscription
+            .Where(x=>x.Author.Login == userLogin)
+            .ToArrayAsync();
 
         return subscriptions.Select(subscriptionConverter.Convert).ToArray();
     }
 
-    public async Task<Result> Subscribe(Guid subscriptionId)
+    public async Task<SubscriptionResponse[]> GetReaderSubscriptionsAsync(string userLogin)
     {
-        return await userSubscriptionRepository.Create(userIdentity.CurrentUser!.Id, subscriptionId);
+        var subscriptions = await dbContext.BoughtSubscriptions
+            .Where(x => x.Owner.Login == userLogin)
+            .Select(x => x.Subscription)
+            .ToArrayAsync();
+
+        return subscriptions.Select(subscriptionConverter.Convert).ToArray();
     }
 
-    public async Task<Result> Unsubscribe(Guid subscriptionId)
+    public async Task<Result> SubscribeAsync(Guid subscriptionId)
     {
-        return await userSubscriptionRepository.Delete(userIdentity.CurrentUser!.Id, subscriptionId);
+        throw new NotImplementedException("Нужно разобраться с тем как оплачивать");
     }
 
-    private async Task<Result> CanBeEdited(Guid subscriptionId)
+    public async Task<Result> UnsubscribeAsync(Guid subscriptionId)
     {
-        var readResult = await subscriptionRepository.Read(subscriptionId);
-        if (readResult.IsFailure)
+        throw new NotImplementedException("Нужно подумать с циклом оплаты подписки");
+    }
+
+    private async Task ThrowIfCantBeEditedAsync(Guid subscriptionId)
+    {
+        var subscription = await dbContext.ReadAsync<Subscription>(subscriptionId);;
+
+        if (subscription.AuthorId != userIdentity.CurrentUser!.Id)
         {
-            return readResult;
+            throw new Exception($"Подписка {subscriptionId} не может быть редактирована пользователем {userIdentity.CurrentUser.Login}");
         }
-
-        return readResult.Value!.AuthorId == userIdentity.CurrentUser!.Id
-            ? Result.Ok()
-            : Result.Fail("Авторизованный пользователь не является автором поста. Он не имет прав на действия с постом");
     }
 }

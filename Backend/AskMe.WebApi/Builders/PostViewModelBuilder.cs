@@ -14,8 +14,8 @@ public class PostViewModelBuilder
 
     public async Task<PostViewModel[]> BuildUserPosts(string userLogin)
     {
-        var userPosts = await feedService.Select(userLogin);
-        var haveAccessToPost = await feedService.IsUserHaveAccessByPostId(userLogin, userPosts.Select(x => x.Id).ToArray());
+        var userPosts = await feedService.SelectAsync(userLogin);
+        var haveAccessToPost = await feedService.IsUserHaveAccessToPostAsync(userLogin, userPosts.Select(x => x.Id).ToArray());
         return userPosts.Select(x => haveAccessToPost[x.Id]
                 ? PostViewModel.CreateHaveAccess(x)
                 : PostViewModel.CreateNoAccess(x))

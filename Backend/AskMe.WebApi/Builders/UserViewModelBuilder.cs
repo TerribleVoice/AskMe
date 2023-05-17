@@ -17,22 +17,17 @@ public class UserViewModelBuilder
 
     public async Task<UserViewModel> Build(string userLogin)
     {
-        var userDto = (await userService.FindUserByLogin(userLogin)).ThrowIfFailure();
+        var userDto = await userService.FindUserByLoginAsync(userLogin);
 
         var userViewModel = new UserViewModel
         {
             Description = userDto.Description,
-            IsAuthor = userDto.IsAuthor,
             Links = userDto.Links,
             Login = userLogin
         };
 
-        if (!userDto.IsAuthor)
-        {
-            return userViewModel;
-        }
-
-        userViewModel.Posts = await postViewModelBuilder.BuildUserPosts(userLogin);
+        //todo вынести в отдельный запрос
+        //userViewModel.Posts = await postViewModelBuilder.BuildUserPosts(userLogin);
         return userViewModel;
     }
 }

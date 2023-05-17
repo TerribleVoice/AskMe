@@ -18,7 +18,6 @@ public class UserIdentity : IUserIdentity
             Id = Guid.Parse(claimsPrincipal.FindFirst("/id")!.Value),
             Email = claimsPrincipal.FindFirst(ClaimTypes.Email)!.Value,
             Login = claimsPrincipal.FindFirst(ClaimTypes.Name)!.Value,
-            IsAuthor = claimsPrincipal.FindFirst(ClaimTypes.Role)!.Value == Roles.Author
         };
     }
     public UserDto? CurrentUser { get; }

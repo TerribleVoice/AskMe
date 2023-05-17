@@ -1,7 +1,6 @@
 using AskMe.Service.Models;
 using AskMe.Service.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskMe.WebApi.Controllers;
@@ -17,38 +16,34 @@ public class SubscriptionController : CustomControllerBase
         this.subscriptionService = subscriptionService;
     }
 
-    [HttpPost("/create")]
+    [HttpPost("create")]
     [Authorize]
     public async Task<IActionResult> Create([FromBody] SubscriptionRequest subscriptionRequest)
     {
-        AssertUserIsAuthor();
-        var creationResult = await subscriptionService.CreateOrUpdate(subscriptionRequest);
-        return ProcessResult(creationResult);
+        await subscriptionService.CreateOrUpdateAsync(subscriptionRequest);
+        return Ok();
     }
 
-    [HttpDelete("/delete")]
+    [HttpDelete("delete")]
     [Authorize]
     public async Task<IActionResult> Delete(Guid id)
     {
-        AssertUserIsAuthor();
-        var deletionResult = await subscriptionService.Delete(id);
-        return ProcessResult(deletionResult);
+        await subscriptionService.DeleteAsync(id);
+        return Ok();
     }
 
     [HttpPost("{subscriptionId}/update")]
     [Authorize]
     public async Task<IActionResult> Update(Guid subscriptionId, [FromBody] SubscriptionRequest subscriptionRequest)
     {
-        AssertUserIsAuthor();
-        var updateResult = await subscriptionService.CreateOrUpdate(subscriptionRequest, subscriptionId);
-        return ProcessResult(updateResult);
+        await subscriptionService.CreateOrUpdateAsync(subscriptionRequest, subscriptionId);
+        return Ok();
     }
 
     [HttpGet("{id:guid}/buy")]
     [Authorize]
     public async Task BuySubscription(Guid id)
     {
-        AssertUserIsReader();
         throw new NotImplementedException();
     }
 
@@ -57,8 +52,7 @@ public class SubscriptionController : CustomControllerBase
     [Authorize]
     public async Task<SubscriptionResponse[]> AuthorSubscriptions(string userLogin)
     {
-        AssertUserIsAuthor();
-        var subscriptions = await subscriptionService.GetAuthorSubscriptions(userLogin);
+        var subscriptions = await subscriptionService.GetAuthorSubscriptionsAsync(userLogin);
         return subscriptions;
     }
 
@@ -67,8 +61,7 @@ public class SubscriptionController : CustomControllerBase
     [Authorize]
     public async Task<SubscriptionResponse[]> UserSubscriptions(string userLogin)
     {
-        AssertUserIsReader();
-        var subscriptions = await subscriptionService.GetReaderSubscriptions(userLogin);
+        var subscriptions = await subscriptionService.GetReaderSubscriptionsAsync(userLogin);
         return subscriptions;
     }
 
@@ -76,8 +69,7 @@ public class SubscriptionController : CustomControllerBase
     [Authorize]
     public async Task<IActionResult> Unsubscribe(Guid id)
     {
-        AssertUserIsReader();
-        var result = await subscriptionService.Unsubscribe(id);
+        var result = await subscriptionService.UnsubscribeAsync(id);
         return ProcessResult(result);
     }
 

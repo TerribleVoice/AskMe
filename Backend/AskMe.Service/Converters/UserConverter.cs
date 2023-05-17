@@ -14,7 +14,6 @@ public class UserConverter : IUserConverter
             Email = creationDto.Email,
             Login = creationDto.Login,
             Password = creationDto.Password,
-            IsAuthor = creationDto.IsAuthor,
             QiwiToken = creationDto.QiwiToken,
             Description = creationDto.Description,
             Links = creationDto.Links
@@ -25,7 +24,6 @@ public class UserConverter : IUserConverter
     {
         return new UserDto
         {
-            IsAuthor = user.IsAuthor,
             Id = user.Id,
             Email = user.Email,
             Login = user.Login,

@@ -1,7 +1,6 @@
 ﻿using AskMe.Service.Models;
 using AskMe.Service.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskMe.WebApi.Controllers;
@@ -11,72 +10,61 @@ namespace AskMe.WebApi.Controllers;
 public class FeedController : CustomControllerBase
 {
     private readonly IFeedService feedService;
-    private readonly IUserIdentity userIdentity;
 
     public FeedController(IFeedService feedService, IUserIdentity userIdentity) : base(userIdentity)
     {
         this.feedService = feedService;
-        this.userIdentity = userIdentity;
     }
 
     [HttpGet("{userLogin}/feed")]
     [Authorize]
     public async Task<PostResponse[]> ShowFeed(string userLogin)
     {
-        return await feedService.Select(userLogin);
+        return await feedService.SelectAsync(userLogin);
     }
 
     [HttpGet("{postId:guid}")]
     [Authorize]
     public async Task<PostResponse> GetPost(Guid postId)
     {
-        return await feedService.Read(postId);
+        return await feedService.ReadAsync(postId);
     }
 
     [HttpGet("{userLogin}/feed_after")]
     [Authorize]
     public async Task<PostResponse[]> FeedAfter(string userLogin, DateTime timeAfter)
     {
-        return await feedService.Select(userLogin, timeAfter);
+        return await feedService.SelectAsync(userLogin, timeAfter);
     }
 
     [HttpPost("create")]
     [Authorize]
     public async Task<IActionResult> Create([FromBody] PostRequest request)
     {
-        AssertUserIsAuthor();
-        var creationResult =  await feedService.CreateOrUpdate(request);
-
-        return ProcessResult(creationResult);
+        await feedService.CreateOrUpdateAsync(request);
+        return Ok();
     }
 
     [HttpDelete("{postId:guid}")]
     [Authorize]
     public async Task<IActionResult> Delete(Guid postId)
     {
-        AssertUserIsAuthor();
-        var deletionResult = await feedService.Delete(postId);
-
-        return ProcessResult(deletionResult);
+        await feedService.DeleteAsync(postId);
+        return Ok();
     }
 
     [HttpPost("{postId:guid}/update")]
     [Authorize]
     public async Task<IActionResult> Update(Guid postId, [FromBody] PostRequest request)
     {
-        AssertUserIsAuthor();
-        var updateResult =  await feedService.CreateOrUpdate(request, postId);
-
-        return ProcessResult(updateResult);
+        await feedService.CreateOrUpdateAsync(request, postId);
+        return Ok();
     }
 
     [HttpGet("{postId:guid}/buy")]
     [Authorize]
     public IActionResult BuyPost(Guid postId)
     {
-        AssertUserIsReader();
         throw new NotImplementedException();
     }
-
-
 }

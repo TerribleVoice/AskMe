@@ -23,20 +23,4 @@ public class CustomControllerBase : ControllerBase
 
         return Ok();
     }
-
-    protected void AssertUserIsAuthor()
-    {
-        if (!userIdentity.CurrentUser.IsAuthor)
-        {
-            throw new Exception("Необходимо, чтобы текущий пользователь имел роль \"Автор\"");
-        }
-    }
-
-    protected void AssertUserIsReader()
-    {
-        if (userIdentity.CurrentUser.IsAuthor)
-        {
-            throw new Exception("Необходимо, чтобы текущий пользователь не имел роль \"Автор\"");
-        }
-    }
 }

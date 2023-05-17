@@ -5,10 +5,10 @@ namespace AskMe.Service.Services;
 
 public interface IFeedService
 {
-    Task<PostResponse[]> Select(string userLogin, DateTime? timeAfter = null);
-    Task<PostResponse> Read(Guid postId);
-    Task<Result> CreateOrUpdate(PostRequest request, Guid? postId = null);
-    Task<Result> Delete(Guid postId);
+    Task<PostResponse[]> SelectAsync(string userLogin, DateTime? timeAfter = null);
+    Task CreateOrUpdateAsync(PostRequest request, Guid? postId = null);
+    Task DeleteAsync(Guid postId);
     Result Buy(Guid postId);
-    Task<Dictionary<Guid, bool>> IsUserHaveAccessByPostId(string userLogin, Guid[] postIds);
+    Task<Dictionary<Guid, bool>> IsUserHaveAccessToPostAsync(string userLogin, Guid[] postIds);
+    Task<PostResponse> ReadAsync(Guid postId);
 }
