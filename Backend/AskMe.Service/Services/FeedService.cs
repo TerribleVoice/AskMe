@@ -1,98 +1,120 @@
 using AskMe.Core.Models;
-using AskMe.Core.StorageLayer.Repositories;
+using AskMe.Core.Models.Dbo;
+using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskMe.Service.Services;
 
 public class FeedService : IFeedService
 {
-    private readonly IPostRepository postRepository;
+    private readonly PostgresDbContext dbContext;
     private readonly IUserService userService;
     private readonly IPostConverter postConverter;
     private readonly IUserIdentity userIdentity;
+    private readonly ISubscriptionService subscriptionService;
 
     public FeedService(
-        IPostRepository postRepository,
+        PostgresDbContext dbContext,
         IUserService userService,
         IPostConverter postConverter,
-        IUserIdentity userIdentity
+        IUserIdentity userIdentity,
+        ISubscriptionService subscriptionService
         )
     {
-        this.postRepository = postRepository;
+        this.dbContext = dbContext;
         this.userService = userService;
         this.postConverter = postConverter;
         this.userIdentity = userIdentity;
+        this.subscriptionService = subscriptionService;
     }
 
-    public async Task<PostResponse[]> Select(string userLogin, DateTime? timeAfter = null)
+    public async Task<PostResponse[]> GetFeedAsync(string userLogin, DateTime? timeAfter = null)
     {
-        var userResult = (await userService.FindUserByLogin(userLogin)).ThrowIfFailure();
+        var user = await userService.ReadUserByLoginAsync(userLogin);
 
-        var result = await postRepository.SelectByAuthorId(userResult.Id, timeAfter);
-        return result.Select(postConverter.Convert).ToArray();
+        var posts = await dbContext.BoughtSubscriptions
+            .Where(x => x.OwnerId == user.Id)
+            .SelectMany(x => x.Subscription.Posts)
+            .OrderByDescending(x => x.CreatedAt)
+            .FilterByTime(timeAfter)
+            .ToArrayAsync();
+
+        return posts.Select(postConverter.Convert).ToArray();
     }
 
-    public async Task<PostResponse> Read(Guid postId)
+    public async Task<PostResponse> ReadAsync(Guid postId)
     {
-        var readResult = (await postRepository.Read(postId)).ThrowIfFailure();
+        var post = await dbContext.ReadAsync<Post>(postId);
 
-        return postConverter.Convert(readResult);
+        return postConverter.Convert(post);
     }
 
-    public async Task<Result> CreateOrUpdate(PostRequest request, Guid? postId = null)
+    public async Task<PostResponse[]> GetUserPostsAsync(string userLogin)
+    {
+        var posts = await dbContext.Users
+            .Where(x => x.Login == userLogin)
+            .SelectMany(x => x.Posts)
+            .ToArrayAsync();
+
+        return posts.Select(x => postConverter.Convert(x)).ToArray();
+    }
+
+    public async Task CreateOrUpdateAsync(PostRequest request, Guid? postId = null)
     {
         if (postId.HasValue)
         {
-            var canBeEditedResult = await CanBeEdited(postId.Value);
-            if (canBeEditedResult.IsFailure)
-            {
-                return canBeEditedResult;
-            }
+            await ThrowIfCantEdit(postId.Value);
         }
 
         var id = postId ?? Guid.NewGuid();
         var authorId = userIdentity.CurrentUser!.Id;
         var postDbo = postConverter.Convert(id, authorId, DateTime.Now, request);
+        postDbo.TimeToUtc();
 
-        return postId.HasValue
-            ? await postRepository.Update(postDbo)
-            : await postRepository.Create(postDbo);
-    }
-
-    private async Task<Result> CanBeEdited(Guid postId)
-    {
-        var readResult = await postRepository.Read(postId);
-        if (readResult.IsFailure)
+        if (postId.HasValue)
         {
-            return readResult;
+            dbContext.Posts.Update(postDbo);
+        }
+        else
+        {
+            dbContext.Posts.Add(postDbo);
         }
 
-        return readResult.Value!.AuthorId == userIdentity.CurrentUser!.Id
-            ? Result.Ok()
-            : Result.Fail("Авторизованный пользователь не является автором поста. Он не имет прав на действия с постом");
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<Result> Delete(Guid postId)
+    public async Task DeleteAsync(Guid postId)
     {
-        var canBeEditedResult = await CanBeEdited(postId);
-        if (canBeEditedResult.IsFailure)
-        {
-            return canBeEditedResult;
-        }
+        await ThrowIfCantEdit(postId);
 
-        return await postRepository.Delete(postId);
+        var post = await dbContext.ReadAsync<Post>(postId);
+        dbContext.Posts.Remove(post);
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<Dictionary<Guid, bool>> IsUserHaveAccessByPostId(string userLogin, Guid[] postIds)
+    public async Task<Dictionary<Guid, bool>> IsUserHaveAccessToPostsAsync(string userLogin, PostResponse[] posts)
     {
-        var userPosts = await postRepository.SelectByIds(postIds);
-        //todo доделать проверку доступов
-        return userPosts.ToDictionary(x => x.Id, _=> true);
+        var userSubscriptions = await subscriptionService.GetReaderSubscriptionsFlatTreeAsync(userLogin);
+
+        return posts.ToDictionary(
+            post => post.Id,
+            post => userSubscriptions.Any(subscription => post.SubscriptionId == subscription.Id));
     }
 
     public Result Buy(Guid postId)
     {
         throw new NotImplementedException();
+    }
+
+    private async Task ThrowIfCantEdit(Guid postId)
+    {
+        var readResult = await dbContext.Posts.FirstAsync(x => x.Id == postId);
+
+        if (readResult.AuthorId != userIdentity.CurrentUser!.Id)
+        {
+            throw new Exception("Авторизованный пользователь не является автором поста. Он не имет прав на действия с постом");
+        }
     }
 }

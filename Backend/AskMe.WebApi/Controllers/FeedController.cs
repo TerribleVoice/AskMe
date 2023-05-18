@@ -1,7 +1,8 @@
 ﻿using AskMe.Service.Models;
 using AskMe.Service.Services;
+using AskMe.WebApi.Builders;
+using AskMe.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AskMe.WebApi.Controllers;
@@ -11,72 +12,103 @@ namespace AskMe.WebApi.Controllers;
 public class FeedController : CustomControllerBase
 {
     private readonly IFeedService feedService;
-    private readonly IUserIdentity userIdentity;
+    private readonly IUserService userService;
+    private readonly PostViewModelBuilder postViewModelBuilder;
 
-    public FeedController(IFeedService feedService, IUserIdentity userIdentity) : base(userIdentity)
+    public FeedController(IFeedService feedService,
+        IUserService userService,
+        IUserIdentity userIdentity,
+        PostViewModelBuilder postViewModelBuilder
+        ) : base(userIdentity)
     {
         this.feedService = feedService;
-        this.userIdentity = userIdentity;
+        this.userService = userService;
+        this.postViewModelBuilder = postViewModelBuilder;
     }
 
     [HttpGet("{userLogin}/feed")]
     [Authorize]
-    public async Task<PostResponse[]> ShowFeed(string userLogin)
+    public async Task<ActionResult<PostViewModel[]>> GetUserFeed(string userLogin)
     {
-        return await feedService.Select(userLogin);
+        var posts = Array.Empty<PostViewModel>();
+        try
+        {
+            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin);
+        }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+        return posts;
+    }
+
+    [HttpGet("{userLogin}/feed_after")]
+    [Authorize]
+    public async Task<ActionResult<PostViewModel[]>> FeedAfter(string userLogin, DateTime timeAfter)
+    {
+        var posts = Array.Empty<PostViewModel>();
+        try
+        {
+            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin, timeAfter);
+        }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+        return posts;
+    }
+
+    [HttpGet("{userLogin}/posts")]
+    public async Task<ActionResult<PostViewModel[]>> GetUserPosts(string userLogin)
+    {
+        try
+        {
+            await userService.ReadUserByLoginAsync(userLogin);
+        }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+
+        var posts = await postViewModelBuilder.BuildUserPostsAsync(userLogin);
+        return posts;
     }
 
     [HttpGet("{postId:guid}")]
     [Authorize]
     public async Task<PostResponse> GetPost(Guid postId)
     {
-        return await feedService.Read(postId);
-    }
-
-    [HttpGet("{userLogin}/feed_after")]
-    [Authorize]
-    public async Task<PostResponse[]> FeedAfter(string userLogin, DateTime timeAfter)
-    {
-        return await feedService.Select(userLogin, timeAfter);
+        return await feedService.ReadAsync(postId);
     }
 
     [HttpPost("create")]
     [Authorize]
     public async Task<IActionResult> Create([FromBody] PostRequest request)
     {
-        AssertUserIsAuthor();
-        var creationResult =  await feedService.CreateOrUpdate(request);
-
-        return ProcessResult(creationResult);
+        await feedService.CreateOrUpdateAsync(request);
+        return Ok();
     }
 
     [HttpDelete("{postId:guid}")]
     [Authorize]
     public async Task<IActionResult> Delete(Guid postId)
     {
-        AssertUserIsAuthor();
-        var deletionResult = await feedService.Delete(postId);
-
-        return ProcessResult(deletionResult);
+        await feedService.DeleteAsync(postId);
+        return Ok();
     }
 
     [HttpPost("{postId:guid}/update")]
     [Authorize]
     public async Task<IActionResult> Update(Guid postId, [FromBody] PostRequest request)
     {
-        AssertUserIsAuthor();
-        var updateResult =  await feedService.CreateOrUpdate(request, postId);
-
-        return ProcessResult(updateResult);
+        await feedService.CreateOrUpdateAsync(request, postId);
+        return Ok();
     }
 
     [HttpGet("{postId:guid}/buy")]
     [Authorize]
     public IActionResult BuyPost(Guid postId)
     {
-        AssertUserIsReader();
         throw new NotImplementedException();
     }
-
-
 }

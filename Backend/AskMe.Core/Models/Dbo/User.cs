@@ -27,10 +27,6 @@ public class User : Dbo
     [MaxLength(100)]
     public string Password { get; set; }
 
-    [Column("is_author")]
-    [Required]
-    public bool IsAuthor { get; set; }
-
     [Column("qiwi_token")]
     [MaxLength(200)]
     public string? QiwiToken { get; set; }
@@ -40,4 +36,8 @@ public class User : Dbo
 
     [Column("links")]
     public string? Links { get; set; }
+
+    public ICollection<Subscription> CreatedSubscriptions { get; set; }
+    public ICollection<BoughtSubscription> BoughtSubscriptions { get; set; }
+    public ICollection<Post> Posts { get; set; }
 }

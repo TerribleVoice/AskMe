@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AskMe.Core.Models.Dbo;
 
+[Table("subscriptions")]
 public class Subscription : Dbo
 {
     public Subscription()
@@ -32,4 +33,8 @@ public class Subscription : Dbo
     //Другими словами родительская подписка ниже уровнем.
     [Column("parent_subscription_id")]
     public Guid? ParentSubscriptionId { get; set; }
+
+    public User Author { get; set; }
+    public ICollection<Post> Posts { get; set; }
+    public ICollection<BoughtSubscription> BoughtSubscriptions { get; set; }
 }

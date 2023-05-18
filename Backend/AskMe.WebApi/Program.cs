@@ -1,5 +1,4 @@
 using AskMe.Core.StorageLayer;
-using AskMe.Core.StorageLayer.Repositories;
 using AskMe.Service.Converters;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
@@ -19,18 +18,14 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors();
 
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserConverter, UserConverter>();
 
 builder.Services.AddScoped<IFeedService, FeedService>();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostConverter, PostConverter>();
 
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
-builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ISubscriptionConverter, SubscriptionConverter>();
 
-builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 builder.Services.AddScoped<UserViewModelBuilder>();
 builder.Services.AddScoped<PostViewModelBuilder>();
 

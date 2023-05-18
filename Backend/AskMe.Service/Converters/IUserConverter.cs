@@ -6,5 +6,5 @@ namespace AskMe.Service.Converters;
 public interface IUserConverter
 {
     public User ToDbo(UserCreationForm creationDto);
-    public UserDto ToDto(User user);
+    public UserDto? ToDto(User? user);
 }

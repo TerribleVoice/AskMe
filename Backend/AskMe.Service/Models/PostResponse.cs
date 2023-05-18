@@ -11,4 +11,5 @@ public class PostResponse
     public string Content { get; set; }
     public uint? Price { get; set; }
     public DateTime CreateAt { get; set; }
+    public Guid SubscriptionId { get; set; }
 }

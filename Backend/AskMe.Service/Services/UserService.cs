@@ -1,54 +1,64 @@
 ﻿using AskMe.Core.Models;
-using AskMe.Core.Models.Dbo;
-using AskMe.Core.StorageLayer.Repositories;
+using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskMe.Service.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository userRepository;
+    private readonly PostgresDbContext dbContext;
     private readonly IUserConverter userConverter;
 
-    public UserService(IUserRepository userRepository, IUserConverter userConverter)
+    public UserService(PostgresDbContext dbContext,
+        IUserConverter userConverter)
     {
-        this.userRepository = userRepository;
+        this.dbContext = dbContext;
         this.userConverter = userConverter;
     }
 
-    public async Task<Result> CreateUser(UserCreationForm creationDto)
+    public async Task CreateUserAsync(UserCreationForm creationDto)
     {
         var dbo = userConverter.ToDbo(creationDto);
-        return await userRepository.CreateAsync(dbo);
+
+        await dbContext.AddAsync(dbo);
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<Result> AuthenticateUser(string login, string password)
+    public async Task<Result> AuthenticateUserAsync(string login, string password)
     {
-        var actualPasswordResult = await userRepository.GetPasswordAsync(login);
-        if (actualPasswordResult.IsFailure)
+        var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.Login == login);
+        if (user == null)
         {
-            return actualPasswordResult;
+            return Result.Fail($"Пользователь с логином {login} не найден");
         }
 
-        return actualPasswordResult.Value == password
+        return user.Password == password
             ? Result.Ok()
-            : Result.Fail("Wrong login or password");
+            : Result.Fail("Неверный пароль");
     }
 
-    public async Task<Result<UserDto>> FindUserByLogin(string login)
+    public async Task<UserDto?> ReadUserByLoginAsync(string login)
     {
-        var userResult = await userRepository.ReadByLogin(login);
-        if (userResult.IsFailure)
+        var user = await FindUserByLoginAsync(login);
+        if (user == null)
         {
-            return Result.Fail<UserDto, User>(userResult);
+            throw new Exception($"Пользователь с логином {login} не найден");
         }
-        return Result.Ok(userConverter.ToDto(userResult.Value!));
+
+        return user;
     }
 
-    public Result<IEnumerable<UserDto>> GetAll()
+    public async Task<UserDto?> FindUserByLoginAsync(string login)
     {
-        var dbos = userRepository.GetAll();
-        return Result.Ok(dbos.Value!.Select(x => new UserDto { Id = x.Id }));
+        var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.Login == login);
+
+        return userConverter.ToDto(user);
+    }
+
+    public Task<UserDto[]> GetTopAuthorsAsync()
+    {
+        throw new NotImplementedException();
     }
 }

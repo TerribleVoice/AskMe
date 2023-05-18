@@ -3,24 +3,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AskMe.Core.Models.Dbo;
 
-public class UserSubscription : Dbo
+[Table("bought_subscriptions")]
+public class BoughtSubscription : Dbo
 {
-    public UserSubscription()
+    public BoughtSubscription()
     {
     }
 
-    public UserSubscription(Guid userId, Guid subscriptionId)
+    public BoughtSubscription(Guid ownerId, Guid subscriptionId)
     {
         Id = Guid.NewGuid();
-        UserId = userId;
+        OwnerId = ownerId;
         SubscriptionId = subscriptionId;
     }
 
     [Column("user_id")]
     [Required]
-    public Guid UserId { get; set; }
+    public Guid OwnerId { get; set; }
 
     [Column("subscription_id")]
     [Required]
     public Guid SubscriptionId { get; set; }
+
+    public User Owner { get; set; }
+    public Subscription Subscription {get; set; }
 }
