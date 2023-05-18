@@ -64,13 +64,11 @@ app.UseCors(corsBuilder => corsBuilder
 app.UseAuthentication();
 app.UseAuthorization();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsEnvironment("docker")|| app.Environment.IsEnvironment("local"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.MapControllers();
 
