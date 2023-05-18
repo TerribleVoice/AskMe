@@ -9,4 +9,5 @@ public interface IUserService
     Task<Result> AuthenticateUserAsync(string email, string password);
     Task<UserDto> ReadUserByLoginAsync(string login);
     Task<UserDto[]> GetTopAuthorsAsync();
+    Task<UserDto?> FindUserByLoginAsync(string login);
 }

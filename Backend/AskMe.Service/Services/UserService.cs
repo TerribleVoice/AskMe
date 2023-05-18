@@ -39,13 +39,20 @@ public class UserService : IUserService
             : Result.Fail("Неверный пароль");
     }
 
-    public async Task<UserDto> ReadUserByLoginAsync(string login)
+    public async Task<UserDto?> ReadUserByLoginAsync(string login)
     {
-        var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.Login == login);
+        var user = await FindUserByLoginAsync(login);
         if (user == null)
         {
             throw new Exception($"Пользователь с логином {login} не найден");
         }
+
+        return user;
+    }
+
+    public async Task<UserDto?> FindUserByLoginAsync(string login)
+    {
+        var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.Login == login);
 
         return userConverter.ToDto(user);
     }

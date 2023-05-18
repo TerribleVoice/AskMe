@@ -1,3 +1,4 @@
+using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Models;
 
@@ -6,13 +7,10 @@ namespace AskMe.WebApi.Builders;
 public class UserViewModelBuilder
 {
     private readonly IUserService userService;
-    private readonly PostViewModelBuilder postViewModelBuilder;
 
-    public UserViewModelBuilder(IUserService userService,
-        PostViewModelBuilder postViewModelBuilder)
+    public UserViewModelBuilder(IUserService userService)
     {
         this.userService = userService;
-        this.postViewModelBuilder = postViewModelBuilder;
     }
 
     public async Task<UserViewModel> Build(string userLogin)

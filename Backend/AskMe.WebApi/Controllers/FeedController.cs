@@ -28,11 +28,37 @@ public class FeedController : CustomControllerBase
 
     [HttpGet("{userLogin}/feed")]
     [Authorize]
-    public async Task<PostResponse[]> GetUserFeed(string userLogin)
+    public async Task<ActionResult<PostViewModel[]>> GetUserFeed(string userLogin)
     {
-        return await feedService.GetFeedAsync(userLogin);
+        var posts = Array.Empty<PostViewModel>();
+        try
+        {
+            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin);
+        }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+        return posts;
     }
 
+    [HttpGet("{userLogin}/feed_after")]
+    [Authorize]
+    public async Task<ActionResult<PostViewModel[]>> FeedAfter(string userLogin, DateTime timeAfter)
+    {
+        var posts = Array.Empty<PostViewModel>();
+        try
+        {
+            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin, timeAfter);
+        }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+        return posts;
+    }
+
+    [HttpGet("{userLogin}/posts")]
     public async Task<ActionResult<PostViewModel[]>> GetUserPosts(string userLogin)
     {
         try
@@ -53,13 +79,6 @@ public class FeedController : CustomControllerBase
     public async Task<PostResponse> GetPost(Guid postId)
     {
         return await feedService.ReadAsync(postId);
-    }
-
-    [HttpGet("{userLogin}/feed_after")]
-    [Authorize]
-    public async Task<PostResponse[]> FeedAfter(string userLogin, DateTime timeAfter)
-    {
-        return await feedService.GetFeedAsync(userLogin, timeAfter);
     }
 
     [HttpPost("create")]

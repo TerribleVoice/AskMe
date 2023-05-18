@@ -34,7 +34,13 @@ public class FeedService : IFeedService
     {
         var user = await userService.ReadUserByLoginAsync(userLogin);
 
-        var posts = await dbContext.Posts.Where(x => x.AuthorId == user.Id).FilterByTime(timeAfter).ToArrayAsync();
+        var posts = await dbContext.BoughtSubscriptions
+            .Where(x => x.OwnerId == user.Id)
+            .SelectMany(x => x.Subscription.Posts)
+            .OrderByDescending(x => x.CreatedAt)
+            .FilterByTime(timeAfter)
+            .ToArrayAsync();
+
         return posts.Select(postConverter.Convert).ToArray();
     }
 

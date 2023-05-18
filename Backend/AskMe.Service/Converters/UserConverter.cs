@@ -20,8 +20,13 @@ public class UserConverter : IUserConverter
         };
     }
 
-    public UserDto ToDto(User user)
+    public UserDto? ToDto(User? user)
     {
+        if (user == null)
+        {
+            return null;
+        }
+
         return new UserDto
         {
             Id = user.Id,

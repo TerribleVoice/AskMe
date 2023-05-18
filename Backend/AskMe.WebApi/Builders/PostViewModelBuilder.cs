@@ -6,10 +6,13 @@ namespace AskMe.WebApi.Builders;
 public class PostViewModelBuilder
 {
     private readonly IFeedService feedService;
+    private readonly ISubscriptionService subscriptionService;
 
-    public PostViewModelBuilder(IFeedService feedService)
+    public PostViewModelBuilder(IFeedService feedService,
+        ISubscriptionService subscriptionService)
     {
         this.feedService = feedService;
+        this.subscriptionService = subscriptionService;
     }
 
     public async Task<PostViewModel[]> BuildUserPostsAsync(string userLogin)
@@ -21,5 +24,12 @@ public class PostViewModelBuilder
                 ? PostViewModel.CreateHaveAccess(post)
                 : PostViewModel.CreateNoAccess(post))
             .ToArray();
+    }
+
+    public async Task<PostViewModel[]> BuildUserFeedAsync(string userLogin, DateTime? timeAfter = null)
+    {
+        var posts = await feedService.GetFeedAsync(userLogin, timeAfter);
+
+        return posts.Select(PostViewModel.CreateHaveAccess).ToArray();
     }
 }
