@@ -1,12 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AskMe.Core.Models;
 using AskMe.Core.Models.Dbo;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskMe.Core.StorageLayer;
 
 public class PostgresDbContext : DbContext
 {
-    public PostgresDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+    private readonly IUserIdentity userIdentity;
+    private readonly EntityState[] modifiedTypes = { EntityState.Added, EntityState.Deleted, EntityState.Modified };
+
+    public PostgresDbContext(DbContextOptions dbContextOptions, IUserIdentity userIdentity) : base(dbContextOptions)
     {
+        this.userIdentity = userIdentity;
     }
 
     public DbSet<User> Users { get; set; }
@@ -22,6 +27,25 @@ public class PostgresDbContext : DbContext
             throw new Exception($"{nameof(T)} c id {entityId} не найден");
         }
         return entity;
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        var entries = ChangeTracker.Entries();
+        foreach (var entry in entries)
+        {
+            if (entry.Entity is IHaveAuthor && entry.Entity is Dbo && modifiedTypes.Contains(entry.State))
+            {
+                var entity = (IHaveAuthor)entry.Entity;
+                var dbo = (Dbo)entry.Entity;
+                if (userIdentity.CurrentUser == null || entity.AuthorId != userIdentity.CurrentUser.Id)
+                {
+                    throw new Exception($"Недостаточно прав для редактирования объекта {entry.Entity.GetType().Name} " +
+                                        $"c id {dbo.Id} у пользователя {userIdentity.CurrentUser?.Login}");
+                }
+            }
+        }
+        await base.SaveChangesAsync();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

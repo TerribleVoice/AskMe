@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
@@ -27,6 +28,19 @@ public class UserController : CustomControllerBase
     public async Task<IActionResult> CreateAsync([FromBody]UserCreationForm creationForm)
     {
         await userService.CreateUserAsync(creationForm);
+        return Ok();
+    }
+
+    [HttpPost("update")]
+    [Authorize]
+    public async Task<IActionResult> UpdateAsync([FromBody] UserUpdateForm updateForm)
+    {
+        if (CurrentUser == null || CurrentUser.Login != updateForm.Login)
+        {
+            return Forbid();
+        }
+
+        await userService.UpdateUserAsync(updateForm);
         return Ok();
     }
 
@@ -81,17 +95,10 @@ public class UserController : CustomControllerBase
     }
 
     [HttpGet("top_authors")]
-    public Task<UserViewModel> GetTopAuthors()
+    public async Task<UserViewModel[]> GetTopAuthors(int limit)
     {
-        var result = userService.GetTopAuthorsAsync();
-        throw new NotImplementedException();
-    }
+        var authorsDtos = await userService.GetTopAuthorsAsync(limit);
 
-    [HttpGet("get_all_users_only_for_test"), Authorize]
-    [Obsolete]
-    public IActionResult GetUser()
-    {
-        var user = User;
-        return Ok(new {user.Identity.IsAuthenticated, user.Identity.Name});
+        return authorsDtos.Select(x => new UserViewModel(x)).ToArray();
     }
 }

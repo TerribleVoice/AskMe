@@ -1,4 +1,5 @@
 ﻿using AskMe.Core.Models;
+using AskMe.Core.Models.Dbo;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Models;
@@ -18,11 +19,21 @@ public class UserService : IUserService
         this.userConverter = userConverter;
     }
 
-    public async Task CreateUserAsync(UserCreationForm creationDto)
+    public async Task CreateUserAsync(UserCreationForm createDto)
     {
-        var dbo = userConverter.ToDbo(creationDto);
+        var dbo = userConverter.ToDbo(createDto);
 
         await dbContext.AddAsync(dbo);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateUserAsync(UserUpdateForm updateDto)
+    {
+        var user = await dbContext.Users.SingleAsync(x=>x.Login == updateDto.OldLogin);
+        var dbo = userConverter.ToDbo(updateDto);
+        user.UpdateByDbo(dbo);
+
+        dbContext.Users.Update(user);
         await dbContext.SaveChangesAsync();
     }
 
@@ -39,7 +50,7 @@ public class UserService : IUserService
             : Result.Fail("Неверный пароль");
     }
 
-    public async Task<UserDto?> ReadUserByLoginAsync(string login)
+    public async Task<UserDto> ReadUserByLoginAsync(string login)
     {
         var user = await FindUserByLoginAsync(login);
         if (user == null)
@@ -57,8 +68,24 @@ public class UserService : IUserService
         return userConverter.ToDto(user);
     }
 
-    public Task<UserDto[]> GetTopAuthorsAsync()
+    public async Task<UserDto[]> GetTopAuthorsAsync(int limit)
     {
-        throw new NotImplementedException();
+        var readersBySubscription = await dbContext.Subscription
+            .Select(x => new
+            {
+                x.AuthorId,
+                Count = x.BoughtSubscriptions.DistinctBy(y => y.OwnerId).Count()
+            })
+            .ToArrayAsync();
+
+        var authorIds = readersBySubscription.GroupBy(x => x.AuthorId)
+            .Select(x => new { AuthorId = x.Key, Count = x.Sum(y => y.Count) })
+            .OrderByDescending(x => x.Count)
+            .Select(x=>x.AuthorId)
+            .Take(limit)
+            .ToArray();
+
+        var users = await dbContext.Users.Where(x => authorIds.Contains(x.Id)).ToArrayAsync();
+        return users.Select(userConverter.ToDto).ToArray()!;
     }
 }

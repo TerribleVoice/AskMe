@@ -1,4 +1,5 @@
-﻿using AskMe.Service.Models;
+﻿using AskMe.Core.Models;
+using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
 using AskMe.WebApi.Models;
@@ -75,7 +76,6 @@ public class FeedController : CustomControllerBase
     }
 
     [HttpGet("{postId:guid}")]
-    [Authorize]
     public async Task<PostResponse> GetPost(Guid postId)
     {
         return await feedService.ReadAsync(postId);
