@@ -1,5 +1,4 @@
 ﻿using AskMe.Core.Models;
-using AskMe.Core.Models.Dbo;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Models;
@@ -40,7 +39,7 @@ public class UserService : IUserService
             : Result.Fail("Неверный пароль");
     }
 
-    public async Task<UserDto> FindUserByLoginAsync(string login)
+    public async Task<UserDto> ReadUserByLoginAsync(string login)
     {
         var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.Login == login);
         if (user == null)

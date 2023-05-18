@@ -12,13 +12,14 @@ public class PostViewModelBuilder
         this.feedService = feedService;
     }
 
-    public async Task<PostViewModel[]> BuildUserPosts(string userLogin)
+    public async Task<PostViewModel[]> BuildUserPostsAsync(string userLogin)
     {
-        var userPosts = await feedService.SelectAsync(userLogin);
-        var haveAccessToPost = await feedService.IsUserHaveAccessToPostAsync(userLogin, userPosts.Select(x => x.Id).ToArray());
-        return userPosts.Select(x => haveAccessToPost[x.Id]
-                ? PostViewModel.CreateHaveAccess(x)
-                : PostViewModel.CreateNoAccess(x))
+        var posts = await feedService.GetUserPostsAsync(userLogin);
+        var accessMap = await feedService.IsUserHaveAccessToPostsAsync(userLogin, posts);
+
+        return posts.Select(post => accessMap[post.Id]
+                ? PostViewModel.CreateHaveAccess(post)
+                : PostViewModel.CreateNoAccess(post))
             .ToArray();
     }
 }

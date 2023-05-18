@@ -1,5 +1,7 @@
 ﻿using AskMe.Service.Models;
 using AskMe.Service.Services;
+using AskMe.WebApi.Builders;
+using AskMe.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,17 +12,40 @@ namespace AskMe.WebApi.Controllers;
 public class FeedController : CustomControllerBase
 {
     private readonly IFeedService feedService;
+    private readonly IUserService userService;
+    private readonly PostViewModelBuilder postViewModelBuilder;
 
-    public FeedController(IFeedService feedService, IUserIdentity userIdentity) : base(userIdentity)
+    public FeedController(IFeedService feedService,
+        IUserService userService,
+        IUserIdentity userIdentity,
+        PostViewModelBuilder postViewModelBuilder
+        ) : base(userIdentity)
     {
         this.feedService = feedService;
+        this.userService = userService;
+        this.postViewModelBuilder = postViewModelBuilder;
     }
 
     [HttpGet("{userLogin}/feed")]
     [Authorize]
-    public async Task<PostResponse[]> ShowFeed(string userLogin)
+    public async Task<PostResponse[]> GetUserFeed(string userLogin)
     {
-        return await feedService.SelectAsync(userLogin);
+        return await feedService.GetFeedAsync(userLogin);
+    }
+
+    public async Task<ActionResult<PostViewModel[]>> GetUserPosts(string userLogin)
+    {
+        try
+        {
+            await userService.ReadUserByLoginAsync(userLogin);
+        }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+
+        var posts = await postViewModelBuilder.BuildUserPostsAsync(userLogin);
+        return posts;
     }
 
     [HttpGet("{postId:guid}")]
@@ -34,7 +59,7 @@ public class FeedController : CustomControllerBase
     [Authorize]
     public async Task<PostResponse[]> FeedAfter(string userLogin, DateTime timeAfter)
     {
-        return await feedService.SelectAsync(userLogin, timeAfter);
+        return await feedService.GetFeedAsync(userLogin, timeAfter);
     }
 
     [HttpPost("create")]

@@ -7,4 +7,5 @@ public interface ISubscriptionConverter
 {
     SubscriptionResponse Convert(Subscription subscription);
     Subscription Convert(Guid subscriptionId, Guid authorId, SubscriptionRequest request);
+    Subscription Convert(SubscriptionResponse subscriptionResponse);
 }

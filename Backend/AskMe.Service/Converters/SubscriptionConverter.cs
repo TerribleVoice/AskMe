@@ -30,4 +30,17 @@ public class SubscriptionConverter : ISubscriptionConverter
             ParentSubscriptionId = request.ParentSubscriptionId
         };
     }
+
+    public Subscription Convert(SubscriptionResponse subscriptionResponse)
+    {
+        return new Subscription
+        {
+            Id = subscriptionResponse.Id,
+            AuthorId = subscriptionResponse.AuthorId,
+            Price = subscriptionResponse.Price,
+            Name = subscriptionResponse.Name,
+            Description = subscriptionResponse.Description,
+            ParentSubscriptionId = subscriptionResponse.ParentSubscriptionId
+        };
+    }
 }

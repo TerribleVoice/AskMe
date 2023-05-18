@@ -7,6 +7,6 @@ public interface IUserService
 {
     Task CreateUserAsync(UserCreationForm creationDto);
     Task<Result> AuthenticateUserAsync(string email, string password);
-    Task<UserDto> FindUserByLoginAsync(string login);
+    Task<UserDto> ReadUserByLoginAsync(string login);
     Task<UserDto[]> GetTopAuthorsAsync();
 }

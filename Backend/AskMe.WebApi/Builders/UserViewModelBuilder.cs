@@ -17,7 +17,7 @@ public class UserViewModelBuilder
 
     public async Task<UserViewModel> Build(string userLogin)
     {
-        var userDto = await userService.FindUserByLoginAsync(userLogin);
+        var userDto = await userService.ReadUserByLoginAsync(userLogin);
 
         var userViewModel = new UserViewModel
         {
@@ -26,8 +26,6 @@ public class UserViewModelBuilder
             Login = userLogin
         };
 
-        //todo вынести в отдельный запрос
-        //userViewModel.Posts = await postViewModelBuilder.BuildUserPosts(userLogin);
         return userViewModel;
     }
 }

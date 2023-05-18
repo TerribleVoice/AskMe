@@ -11,6 +11,5 @@ public interface ISubscriptionService
     public Task<SubscriptionResponse[]> GetReaderSubscriptionsAsync(string userLogin);
     public Task<Result> SubscribeAsync(Guid subscriptionId);
     public Task<Result> UnsubscribeAsync(Guid subscriptionId);
-
-
+    Task<SubscriptionResponse[]> GetReaderSubscriptionsFlatTreeAsync(string userLogin);
 }

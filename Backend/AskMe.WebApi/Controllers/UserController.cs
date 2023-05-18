@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
@@ -36,7 +35,7 @@ public class UserController : CustomControllerBase
     {
         if ((await userService.AuthenticateUserAsync(form.Login, form.Password)).IsSuccess)
         {
-            var user = await userService.FindUserByLoginAsync(form.Login);
+            var user = await userService.ReadUserByLoginAsync(form.Login);
 
             var claims = new List<Claim>
             {
@@ -71,7 +70,7 @@ public class UserController : CustomControllerBase
     {
         try
         {
-            await userService.FindUserByLoginAsync(userLogin);
+            await userService.ReadUserByLoginAsync(userLogin);
         }
         catch (Exception e)
         {

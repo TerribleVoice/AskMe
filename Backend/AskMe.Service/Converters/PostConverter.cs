@@ -12,7 +12,8 @@ public class PostConverter : IPostConverter
             Id = post.Id,
             CreateAt = post.CreatedAt,
             Content = post.Content,
-            Price = post.Price
+            Price = post.Price,
+            SubscriptionId = post.SubscriptionId
         };
     }
 

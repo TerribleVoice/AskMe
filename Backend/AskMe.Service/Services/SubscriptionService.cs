@@ -75,6 +75,34 @@ public class SubscriptionService : ISubscriptionService
         return subscriptions.Select(subscriptionConverter.Convert).ToArray();
     }
 
+    public async Task<SubscriptionResponse[]> GetReaderSubscriptionsFlatTreeAsync(string userLogin)
+    {
+        var boughtSubscriptions = await GetReaderSubscriptionsAsync(userLogin);
+        var parentSubscriptionsFlatTreeQuery =
+            GetParentSubscriptionsRecursive(boughtSubscriptions.Select(x => subscriptionConverter.Convert(x)));
+        var parentSubscriptionsFlatTree = parentSubscriptionsFlatTreeQuery == null
+            ? Array.Empty<SubscriptionResponse>()
+            : (await parentSubscriptionsFlatTreeQuery.ToArrayAsync()).Select(subscriptionConverter.Convert).ToArray();
+
+        return boughtSubscriptions.UnionBy(parentSubscriptionsFlatTree, x => x.Id).ToArray();
+
+        IQueryable<Subscription>? GetParentSubscriptionsRecursive(
+            IEnumerable<Subscription> childSubscriptions,
+            IQueryable<Subscription>? query = null)
+        {
+            var parentIds = childSubscriptions.Where(x => x.ParentSubscriptionId.HasValue)
+                .Select(x => x.ParentSubscriptionId).ToArray();
+            if (parentIds.Length > 0)
+            {
+                var ids = parentIds;
+                var subscriptionQuery = dbContext.Subscription.Where(x => ids.Contains(x.Id));
+                query = query?.UnionBy(subscriptionQuery, x => x.Id) ?? subscriptionQuery;
+                GetParentSubscriptionsRecursive(subscriptionQuery, query);
+            }
+            return query;
+        }
+    }
+
     public async Task<Result> SubscribeAsync(Guid subscriptionId)
     {
         throw new NotImplementedException("Нужно разобраться с тем как оплачивать");
