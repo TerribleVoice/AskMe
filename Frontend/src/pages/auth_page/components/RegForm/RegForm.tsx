@@ -21,7 +21,6 @@ export const RegForm = () => {
       if (response.status < 300) {
         localStorage.setItem("login", data.login);
         navigate("/", { replace: true });
-        document.location.reload();
       } else {
         reset();
         alert("LSADJ:LASDJLA");

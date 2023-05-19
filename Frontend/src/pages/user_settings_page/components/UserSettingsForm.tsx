@@ -25,7 +25,6 @@ export const UserSettingsForm = () => {
       console.error(error);
     }
   }
-
   return (
     <form onSubmit={handleSubmit(onSettingsSubmit)}>
       <div className="left-reg__login">
