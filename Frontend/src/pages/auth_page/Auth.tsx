@@ -4,7 +4,7 @@ import "./Auth.css";
 import { AuthForm } from "@/pages/auth_page/components/AuthForm/AuthForm";
 import { RegForm } from "@/pages/auth_page/components/RegForm/RegForm";
 
-export const AuthVal = () => {
+export const Auth = () => {
   const [authReg, setAuthReg] = useState(false);
   const handleSwitchAuthReg = () => {
     setAuthReg(!authReg);

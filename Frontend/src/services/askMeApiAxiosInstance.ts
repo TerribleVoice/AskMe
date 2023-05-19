@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const askMeApiAxiosInstance = axios.create({
-  baseURL: process.env.ASK_ME_API_URL,
+  baseURL: "http://localhost:7279",
   // baseURL: 'https://jsonplaceholder.typicode.com', // фейк апи
   withCredentials: true,
   headers: {

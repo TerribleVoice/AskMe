@@ -44,9 +44,9 @@ export const Main = () => {
       <Ourauthors />
       <div className="container">
         <Slider {...settings}>
-          {authorData.map((author) => {
+          {/* {authorData.map((author) => {
             return <Author login={author.login} description={author.description} links={author.links}/>
-          })}
+          })} */}
         </Slider>
       </div>
     </>

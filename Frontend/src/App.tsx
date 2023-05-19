@@ -10,7 +10,7 @@ import { Profile2 } from "@/pages/profile_page/profile2";
 import { Profile3 } from "@/pages/profile_page/profile3";
 
 import { Layout } from "@/components/Layout";
-import { AuthVal } from "./pages/auth_page/AuthVal";
+import { Auth } from "./pages/auth_page/Auth";
 import { ProfilePageVa } from "./pages/profile_page/profile_page";
 import { UserSettingsPage } from "./pages/user_settings_page/user_settings_page";
 
@@ -27,7 +27,7 @@ export const App = () => {
           <Route path="YOUNG77" element={<Profile2 />} />
           <Route path="NeDlaProdagi" element={<Profile3 />} />
         </Route>
-        <Route path="auth" element={<AuthVal />} />
+        <Route path="auth" element={<Auth />} />
       </Routes>
     </>
   );
