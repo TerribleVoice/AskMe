@@ -59,7 +59,7 @@ export default function Auth() {
             let isAuthor = document.getElementById('isAuthor').checked//регистрация
             axios({//вызов метода апи, можно юзать потом для других штук в проекте
                 method: 'post',
-                url: "http://localhost:5131/User/create",//можно спросить у михи че как используется в свагере
+                url: "http://localhost:7279/User/create",//можно спросить у михи че как используется в свагере
                 withCredentials: true,//для прокидки куки
                 headers: {accept: '*/*', 'Content-Type': 'application/json', credentials: 'include'},
                 data: {//возможно регистрация не работает из-за обновленного бека, там больше полей для данных, не все параметры передаются(смотреть свагер)
@@ -70,7 +70,7 @@ export default function Auth() {
                 }
             }).then(res => {//обработка результата для авторизации и регистрации, рес=ответ от сервера
                 }
-                ).catch(err => alert(err))  
+                ).catch(err => alert(err))
         }
         event.preventDefault();//костыль чтобы не слетели цсс стили при авторизации
         // location.reload();//часть костыля, перезагружает страницу
