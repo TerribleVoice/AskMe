@@ -10,4 +10,8 @@
       <ProjectReference Include="..\AskMe.Core\AskMe.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AWSSDK.S3" Version="3.7.104.17" />
+    </ItemGroup>
+
 </Project>

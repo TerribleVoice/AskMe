@@ -3,6 +3,7 @@ using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
+using AskMe.WebApi.Enums;
 using AskMe.WebApi.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,7 +19,10 @@ public class UserController : CustomControllerBase
     private readonly IUserService userService;
     private readonly UserViewModelBuilder userViewModelBuilder;
 
-    public UserController(IUserIdentity userIdentity, IUserService userService, UserViewModelBuilder userViewModelBuilder) : base(userIdentity)
+    public UserController(IUserIdentity userIdentity,
+        IUserService userService,
+        UserViewModelBuilder userViewModelBuilder
+    ) : base(userIdentity)
     {
         this.userService = userService;
         this.userViewModelBuilder = userViewModelBuilder;
@@ -35,6 +39,15 @@ public class UserController : CustomControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateAsync([FromBody] UserUpdateForm updateForm)
     {
+        try
+        {
+            AssertUserLoginIs(updateForm.OldLogin);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
         if (CurrentUser == null || CurrentUser.Login != updateForm.Login)
         {
             return Forbid();
@@ -100,5 +113,42 @@ public class UserController : CustomControllerBase
         var authorsDtos = await userService.GetTopAuthorsAsync(limit);
 
         return authorsDtos.Select(x => new UserViewModel(x)).ToArray();
+    }
+
+    [HttpPost("{userLogin}/profile_image")]
+    [Authorize]
+    public async Task<IActionResult> UploadProfileImage(string userLogin, IFormFile image)
+    {
+        try
+        {
+            AssertFileTypeIs(image, FileType.Image);
+            AssertUserLoginIs(userLogin);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        await using var stream = image.OpenReadStream();
+
+        await userService.UploadProfileImage(userLogin, stream);
+        return Ok();
+    }
+
+    [HttpDelete("{userLogin}/profile_image")]
+    [Authorize]
+    public async Task<IActionResult> DeleteProfileImage(string userLogin)
+    {
+        try
+        {
+            AssertUserLoginIs(userLogin);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        await userService.DeleteUserProfileImage(userLogin);
+        return Ok();
     }
 }
