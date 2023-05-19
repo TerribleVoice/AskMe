@@ -48,12 +48,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseCors(corsBuilder => corsBuilder
-    .WithOrigins("http://localhost:3000", "https://localhost:3000")
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials()
-);
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -64,8 +58,14 @@ if (app.Environment.IsEnvironment("docker")|| app.Environment.IsEnvironment("loc
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
+app.UseCors(corsBuilder => corsBuilder
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .SetIsOriginAllowed(_ => true)
+    .AllowCredentials()
+);
 
+app.MapControllers();
 app.Run();
 
 
