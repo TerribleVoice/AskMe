@@ -1,4 +1,3 @@
-using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Models;
 
@@ -17,11 +16,13 @@ public class UserViewModelBuilder
     {
         var userDto = await userService.ReadUserByLoginAsync(userLogin);
 
+        var profileImageUrl = await userService.GetUserProfileImageUrl(userLogin);
         var userViewModel = new UserViewModel
         {
             Description = userDto.Description,
             Links = userDto.Links,
-            Login = userLogin
+            Login = userLogin,
+            ProfileImageUrl = profileImageUrl
         };
 
         return userViewModel;

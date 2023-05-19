@@ -11,4 +11,7 @@ public interface IUserService
     Task<UserDto> ReadUserByLoginAsync(string login);
     Task<UserDto?> FindUserByLoginAsync(string login);
     Task<UserDto[]> GetTopAuthorsAsync(int limit);
+    Task UploadProfileImage(string userLogin, Stream imageStream);
+    Task<string?> GetUserProfileImageUrl(string userLogin);
+    Task DeleteUserProfileImage(string userLogin);
 }

@@ -1,6 +1,10 @@
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Transfer;
 using AskMe.Core.Models;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
+using AskMe.Service.Handlers;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -29,18 +33,7 @@ builder.Services.AddScoped<ISubscriptionConverter, SubscriptionConverter>();
 builder.Services.AddScoped<UserViewModelBuilder>();
 builder.Services.AddScoped<PostViewModelBuilder>();
 
-builder.Services.AddScoped<IUserIdentity, UserIdentity>(sp =>
-{
-    var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
-    if (httpContextAccessor == null ||
-        httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated is false)
-    {
-        return new UserIdentity();
-    }
-    var claimsPrincipal = httpContextAccessor.HttpContext!.Request.HttpContext.User;
-    var identity =  new UserIdentity(claimsPrincipal);
-    return identity;
-});
+AddUserIdentity(builder);
 
 builder.Services.AddDbContext<PostgresDbContext>(optionsBuilder =>
 {
@@ -48,8 +41,9 @@ builder.Services.AddDbContext<PostgresDbContext>(optionsBuilder =>
     optionsBuilder.UseNpgsql(dbConnectionString);
 });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie();
+AddS3StorageHandler(builder);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -73,3 +67,40 @@ if (app.Environment.IsEnvironment("docker")|| app.Environment.IsEnvironment("loc
 app.MapControllers();
 
 app.Run();
+
+
+
+
+void AddUserIdentity(WebApplicationBuilder webApplicationBuilder)
+{
+    webApplicationBuilder.Services.AddScoped<IUserIdentity, UserIdentity>(sp =>
+    {
+        var httpContextAccessor = sp.GetService<IHttpContextAccessor>();
+        if (httpContextAccessor == null ||
+            httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated is false)
+        {
+            return new UserIdentity();
+        }
+        var claimsPrincipal = httpContextAccessor.HttpContext!.Request.HttpContext.User;
+        var identity = new UserIdentity(claimsPrincipal);
+        return identity;
+    });
+}
+
+void AddS3StorageHandler(WebApplicationBuilder builder1)
+{
+    builder1.Services.AddSingleton<IS3StorageHandler, S3StorageHandler>(_ =>
+    {
+        var amazonS3Config = new AmazonS3Config
+        {
+            RegionEndpoint = RegionEndpoint.USEast1,
+            ServiceURL = "https://s3.yandexcloud.net"
+        };
+        var s3Client = new AmazonS3Client("YCAJEOvh1uMB1fiQ_3jOziPuU",
+            "YCPsl1Nvdu-h9YpS-eBQuX0zGcZcvOYhTgLs1GXa",
+            amazonS3Config);
+        var transferUtility = new TransferUtility(s3Client);
+
+        return new S3StorageHandler(transferUtility);
+    });
+}

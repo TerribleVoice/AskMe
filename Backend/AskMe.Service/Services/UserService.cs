@@ -2,6 +2,7 @@
 using AskMe.Core.Models.Dbo;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
+using AskMe.Service.Handlers;
 using AskMe.Service.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +12,15 @@ public class UserService : IUserService
 {
     private readonly PostgresDbContext dbContext;
     private readonly IUserConverter userConverter;
+    private readonly IS3StorageHandler s3StorageHandler;
 
     public UserService(PostgresDbContext dbContext,
-        IUserConverter userConverter)
+        IUserConverter userConverter,
+        IS3StorageHandler s3StorageHandler)
     {
         this.dbContext = dbContext;
         this.userConverter = userConverter;
+        this.s3StorageHandler = s3StorageHandler;
     }
 
     public async Task CreateUserAsync(UserCreationForm createDto)
@@ -87,5 +91,38 @@ public class UserService : IUserService
 
         var users = await dbContext.Users.Where(x => authorIds.Contains(x.Id)).ToArrayAsync();
         return users.Select(userConverter.ToDto).ToArray()!;
+    }
+
+    public async Task UploadProfileImage(string userLogin, Stream imageStream)
+    {
+        var user = await ReadUserByLoginAsync(userLogin);
+        var path = CreateFilePathForProfileImage(user.Id);
+
+        await s3StorageHandler.DeleteIfExists(path);
+        await s3StorageHandler.UploadFile(imageStream, path);
+    }
+
+    public async Task<string?> GetUserProfileImageUrl(string userLogin)
+    {
+        var user = await ReadUserByLoginAsync(userLogin);
+        var path = CreateFilePathForProfileImage(user.Id);
+        if (await s3StorageHandler.IsExists(path))
+        {
+            return s3StorageHandler.GetFileUrl(path);
+        }
+        return null;
+    }
+
+    public async Task DeleteUserProfileImage(string userLogin)
+    {
+        var user = await ReadUserByLoginAsync(userLogin);
+        var path = CreateFilePathForProfileImage(user.Id);
+
+        await s3StorageHandler.DeleteIfExists(path);
+    }
+
+    private static string CreateFilePathForProfileImage(Guid userId)
+    {
+        return S3StorageHandler.CreatePath("userProfileImages", userId.ToString("D"), "avatar");
     }
 }
