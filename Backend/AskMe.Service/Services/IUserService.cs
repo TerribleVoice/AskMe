@@ -5,9 +5,10 @@ namespace AskMe.Service.Services;
 
 public interface IUserService
 {
-    Task CreateUserAsync(UserCreationForm creationDto);
+    Task CreateUserAsync(UserCreationForm createDto);
+    Task UpdateUserAsync(UserUpdateForm updateDto);
     Task<Result> AuthenticateUserAsync(string email, string password);
     Task<UserDto> ReadUserByLoginAsync(string login);
-    Task<UserDto[]> GetTopAuthorsAsync();
     Task<UserDto?> FindUserByLoginAsync(string login);
+    Task<UserDto[]> GetTopAuthorsAsync(int limit);
 }

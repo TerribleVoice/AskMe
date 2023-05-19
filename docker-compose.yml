@@ -3,7 +3,7 @@ services:
   web-api:
     build: ./Backend/
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=docker
     ports:
       - "7279:80"
 

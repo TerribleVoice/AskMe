@@ -1,5 +1,5 @@
 //import "./profile.css";
-import { ProfilePage3 } from "@/pages/profile_page/components/AuthorPage/ProfilePage3";
+import { ProfilePage3 } from "@/pages/profile_page/components/AuthorPageZaglushka/ProfilePage3";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

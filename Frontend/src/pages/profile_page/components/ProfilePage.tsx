@@ -2,6 +2,8 @@ import { IUserProfilePage } from "@/models/IUserProfilePage";
 import { getUserProfilePage } from "@/services/getUserProfilePage";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { CreatePost } from "./CreatePost/CreatePost";
+import { CreateSubscription } from "./CreateSubscription/CreateSubscription";
 
 const zaglushka: IUserProfilePage = {
   login: "Shaman",
@@ -21,7 +23,7 @@ const zaglushka: IUserProfilePage = {
   ],
 };
 
-export const ProfilePageVal = () => {
+export const ProfilePage = () => {
   const { LoginName } = useParams();
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<IUserProfilePage>();
@@ -34,6 +36,7 @@ export const ProfilePageVal = () => {
           if (data === undefined) {
             setProfileData(zaglushka);
           } else {
+            console.log(data);
             setProfileData(data);
           }
         } else {
@@ -56,15 +59,11 @@ export const ProfilePageVal = () => {
           {profileData?.description ? profileData.description : ""}
         </div>
       </div>
-      <div className="pp_sort">
-        <div className="pp_sort__text">Сортировать</div>
-        <div className="pp_sort__arrow">
-          <img src="img/profile/dropdown.svg" alt="arrow"></img>
-        </div>
-      </div>
       {profileData?.posts?.map((post) => {
         return (
           <div key={post.id} className="pp_post">
+            <CreatePost />
+
             <div className="pp_post__title">
               <div className="pp_post__text">
                 {/* Здесь нужно поле Оглавление */}
@@ -74,7 +73,7 @@ export const ProfilePageVal = () => {
             </div>
             {post.haveAccess ? (
               <div className="pp_post__img">
-                <img src="img/profile/photo.jpg" alt="profile"></img>
+                {/* <img src="img/profile/photo.jpg" alt="profile"></img> */}
                 <div className="pp_post__text2">{post.content}</div>
               </div>
             ) : (
@@ -82,7 +81,7 @@ export const ProfilePageVal = () => {
                 <img src="img/profile/photo.jpg" alt="profile"></img>
                 <div className="pp_post__text2">
                   <p>Пост только для платных подписчиков</p>
-                  <img src="img/profile/lock.svg" alt="lock.svg"></img>
+                  {/* <img src="img/profile/lock.svg" alt="lock.svg"></img> */}
                   <p>{post.subscriptionName}</p>
                   <p>{`${post.price}$$`}</p>
                 </div>
@@ -98,7 +97,6 @@ export const ProfilePageVal = () => {
         <div className="pp_left__body pp_body-left">
           <div className="pp_body-left__nick">{LoginName}</div>
           <div className="pp_body-left__job">{profileData?.status}</div>
-          <div className="pp_body-left__subscribe">Подписаться</div>
         </div>
       </aside>
       <aside className="pp_right">
@@ -112,6 +110,7 @@ export const ProfilePageVal = () => {
             ))}
           </ul>
         </div>
+        <CreateSubscription />
       </aside>
     </>
   );

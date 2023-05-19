@@ -56,12 +56,6 @@ export const RegForm = () => {
             type="password"
           />
         </div>
-        <div className="left-reg__isAuthor">
-          <input {...register("isAuthor")} type="checkbox" id="isAuthor" />
-          <label className="left-reg__isAuthor_text" htmlFor="isAuthor">
-            Хочу стать автором
-          </label>
-        </div>
         <div className="left-reg__submit">
           <button type="submit">Далее</button>
         </div>

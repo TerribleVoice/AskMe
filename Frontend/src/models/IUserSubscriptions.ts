@@ -6,3 +6,4 @@ export interface IUserSubscriptions {
   description: string;
   parentSubscriptionId: string;
 }
+export type IUserCreateSubscription = Omit<IUserSubscriptions, "id" | "authorId">

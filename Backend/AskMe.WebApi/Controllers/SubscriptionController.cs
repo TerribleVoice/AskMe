@@ -1,3 +1,4 @@
+using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -72,6 +73,4 @@ public class SubscriptionController : CustomControllerBase
         var result = await subscriptionService.UnsubscribeAsync(id);
         return ProcessResult(result);
     }
-
-
 }

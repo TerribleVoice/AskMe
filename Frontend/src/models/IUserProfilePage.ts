@@ -4,9 +4,9 @@ export interface IUserProfilePage {
   description?: string;
   status?: string;
   links?: string[];
-  posts?: PostViewModel[];
+  posts?: IUserPost[];
 }
-export interface PostViewModel {
+export interface IUserPost {
   id: string;
   content?: string;
   price?: number;
@@ -14,3 +14,7 @@ export interface PostViewModel {
   haveAccess: boolean;
   subscriptionName?: string;
 }
+export type IUserCreatePost = Required<Pick<
+  IUserPost,
+  "content" | "price" | "subscriptionName"
+>>;

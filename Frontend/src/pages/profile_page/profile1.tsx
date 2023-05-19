@@ -1,4 +1,4 @@
-import { ProfilePage1 } from "@/pages/profile_page/components/AuthorPage/ProfilePage1";
+import { ProfilePage1 } from "@/pages/profile_page/components/AuthorPageZaglushka/ProfilePage1";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

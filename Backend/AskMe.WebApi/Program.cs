@@ -1,10 +1,10 @@
+using AskMe.Core.Models;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,13 +64,11 @@ app.UseCors(corsBuilder => corsBuilder
 app.UseAuthentication();
 app.UseAuthorization();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsEnvironment("docker")|| app.Environment.IsEnvironment("local"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.MapControllers();
 
