@@ -3,7 +3,7 @@ services:
   web-api:
     build: ./Backend/
     environment:
-      - ASPNETCORE_ENVIRONMENT=docker
+      - ASPNETCORE_ENVIRONMENT=Docker
     ports:
       - "7279:80"
 
@@ -32,11 +32,18 @@ services:
         limits:
           cpus: '1'
           memory: 1G
+  
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
+
+  frontend:
+    build: ./www/
+    ports:
+      - "3000:3000"
+
 
 #  payment:
 #    restart: unless-stopped
