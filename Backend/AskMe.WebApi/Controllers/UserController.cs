@@ -48,11 +48,6 @@ public class UserController : CustomControllerBase
             return BadRequest(e.Message);
         }
 
-        if (CurrentUser == null || CurrentUser.Login != updateForm.Login)
-        {
-            return Forbid();
-        }
-
         await userService.UpdateUserAsync(updateForm);
         return Ok();
     }
