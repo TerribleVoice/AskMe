@@ -43,13 +43,13 @@ CREATE TABLE public.subscriptions (
 	CONSTRAINT subscriptions_fk FOREIGN KEY (author_id) REFERENCES public.users(id)
 );
 
-CREATE TABLE public.user_subscription (
+CREATE TABLE public.bought_subscriptions (
 	id uuid NOT NULL,
 	user_id uuid NOT NULL,
 	subscription_id uuid NOT NULL,
-	CONSTRAINT user_subscription_pk PRIMARY KEY (id),
-	CONSTRAINT user_subscription_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL,
-	CONSTRAINT user_subscription_fk_1 FOREIGN KEY (subscription_id) REFERENCES public.subscriptions(id)
+	CONSTRAINT bought_subscriptions_pk PRIMARY KEY (id),
+	CONSTRAINT bought_subscriptions_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL,
+	CONSTRAINT bought_subscriptions_fk_1 FOREIGN KEY (subscription_id) REFERENCES public.subscriptions(id)
 );
 
 

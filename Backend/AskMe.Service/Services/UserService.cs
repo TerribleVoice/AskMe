@@ -78,7 +78,7 @@ public class UserService : IUserService
             .Select(x => new
             {
                 x.AuthorId,
-                Count = x.BoughtSubscriptions.DistinctBy(y => y.OwnerId).Count()
+                x.BoughtSubscriptions.Count
             })
             .ToArrayAsync();
 
