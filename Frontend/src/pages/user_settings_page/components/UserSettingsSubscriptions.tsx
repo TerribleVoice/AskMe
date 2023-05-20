@@ -2,41 +2,7 @@ import { IUserSubscriptions } from "@/models/IUserSubscriptions";
 import { getUserBoughtSubscriptions } from "@/services/getUserBoughtSubscriptions";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-const zaglushka: IUserSubscriptions[] = [
-  {
-    id: "Shaman",
-    authorId: "1",
-    price: 100,
-    name: "Shaman",
-    description: "eti rolexu mne muzh kupil",
-    parentSubscriptionId: "asdjksla",
-  },
-  {
-    id: "Shaman",
-    authorId: "1",
-    price: 100,
-    name: "Shaman",
-    description: "eti rolexu mne muzh kupil",
-    parentSubscriptionId: "asdjksla",
-  },
-  {
-    id: "Shaman",
-    authorId: "1",
-    price: 100,
-    name: "Shaman",
-    description: "eti rolexu mne muzh kupil",
-    parentSubscriptionId: "asdjksla",
-  },
-  {
-    id: "Shaman",
-    authorId: "1",
-    price: 100,
-    name: "Shaman",
-    description: "eti rolexu mne muzh kupil",
-    parentSubscriptionId: "asdjksla",
-  },
-];
+import { zaglushka } from "./subscriptions_data";
 
 export const UserSettingsSubscriptions = () => {
   const [boughtSubscription, setBoughtSubscription] = useState<
@@ -65,6 +31,10 @@ export const UserSettingsSubscriptions = () => {
     }
   }, [LoginName]);
 
+  const handleUnsubscribe = () => {
+    
+  }
+
   return (
     <div>
       <h2>Подписки</h2>
@@ -77,6 +47,7 @@ export const UserSettingsSubscriptions = () => {
             <span>{bs.name}</span>
             <p>{bs.price}</p>
             <p>{bs.description}</p>
+            <button>Отписаться</button>
           </div>
         );
       })}

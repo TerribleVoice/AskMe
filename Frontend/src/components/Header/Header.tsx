@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export const Header = () => {
   const login = localStorage.getItem("login");
 
-  const handeleLogin = (login: string) => {
+  const handleLogin = (login: string) => {
     if (login && login.length > 14) {
       const shortLogin = login.substring(0, 14) + '...';
       return shortLogin
@@ -15,7 +15,7 @@ export const Header = () => {
   
   const buttons = login ? (
     <div className="header__dropdown">
-      <button className="header__dropdown-button">{handeleLogin(login)}</button>
+      <button className="header__dropdown-button">{handleLogin(login)}</button>
       <div className="header__dropdown-content">
       <Link to={login}>
         Профиль
