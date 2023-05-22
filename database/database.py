@@ -49,6 +49,32 @@ class Database:
                         );
                         """)
             self.connection.commit()
+            
+            cursor.execute(f"""
+                        CREATE TABLE {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')} (
+                            id uuid NOT NULL,
+                            author_id uuid NOT NULL,
+                            price int NOT NULL,
+                            name varchar NOT NULL,
+                            description varchar NOT NULL,
+                            parent_subscription_id uuid NULL,
+                            CONSTRAINT subscriptions_pk PRIMARY KEY (id),
+                            CONSTRAINT subscriptions_fk FOREIGN KEY (author_id) REFERENCES public.users(id)
+                        );
+                        """)
+            self.connection.commit()
+            
+            cursor.execute(f"""   
+                        CREATE TABLE {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} (
+                            id uuid NOT NULL,
+                            user_id uuid NOT NULL,
+                            subscription_id uuid NOT NULL,
+                            CONSTRAINT user_subscription_pk PRIMARY KEY (id),
+                            CONSTRAINT user_subscription_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE SET NULL,
+                            CONSTRAINT user_subscription_fk_1 FOREIGN KEY (subscription_id) REFERENCES public.subscriptions(id)
+                        );
+                        """)
+            
             cursor.execute(f"""
                         CREATE TABLE IF NOT EXISTS {config.get('TABLES', 'TABLE_ACTIVE')} (
                             id_telegram BIGINT NOT NULL,
@@ -58,10 +84,15 @@ class Database:
                         """)
             self.connection.commit()
             
+            
     def delete_tables(self):
         with self.connection.cursor() as cursor:
             cursor.execute(f'''DROP TABLE {config.get('TABLES', 'TABLE_USERS')} CASCADE;
-                               DROP TABLE {config.get('TABLES', 'TABLE_POSTS')} CASCADE;''')
+                               DROP TABLE {config.get('TABLES', 'TABLE_POSTS')} CASCADE;
+                               DROP TABLE {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} CASCADE;
+                               DROP TABLE {config.get('TABLES', 'TABLE_ACTIVE')} CASCADE;
+                               DROP TABLE {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')} CASCADE;
+                            ''')
             
             self.connection.commit()
             self.close()
@@ -83,7 +114,7 @@ class Database:
     def check_user_active(self, telegram_id: int):
         with self.connection.cursor() as cursor:
             select = f"""
-            SELECT id_telegram
+            SELECT id_user
             FROM {config.get('TABLES', 'TABLE_ACTIVE')}
             WHERE id_telegram = {telegram_id}           
             """
@@ -113,7 +144,54 @@ class Database:
             
             cursor.execute(delete)
             self.connection.commit()
+            
+    # Поиск пользователя 
+    def seacrh_user(self, nickname):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT *
+            FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')}
+            WHERE name = {repr(nickname)}           
+            """
+
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
     
+    # Поиск пользователей, похожих на пользователя
+    def search_many_user(self, nickname):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT * FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} WHERE name LIKE {repr(nickname)+'%'};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+    
+    # Проверка, подписан ли пользователь на автора
+    def check_user_subscription(self, user_id, subscription_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT * FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')}
+            WHERE user_id = {user_id} AND subscription_id = {subscription_id};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+    
+    # Узнать id автора
+    def get_author_id(self, nickname):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT * FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')}
+            WHERE name = {repr(nickname)};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
             
 db = Database(db_name=config_db_name,
               db_user=config_db_user,
