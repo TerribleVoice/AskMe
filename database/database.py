@@ -39,13 +39,21 @@ class Database:
                         """)
             self.connection.commit()
             cursor.execute(f"""
-                        CREATE TABLE {config.get('TABLES', 'TABLE_POSTS')} (
+                        CREATE TABLE IF NOT EXISTS {config.get('TABLES', 'TABLE_POSTS')} (
                             id uuid NOT NULL,
                             author_id uuid NOT NULL,
                             subscription_id uuid NOT NULL,
                             content text NOT NULL,
                             created_at timestamp without time zone NOT NULL,
                             price integer
+                        );
+                        """)
+            self.connection.commit()
+            cursor.execute(f"""
+                        CREATE TABLE IF NOT EXISTS {config.get('TABLES', 'TABLE_ACTIVE')} (
+                            id_telegram BIGINT NOT NULL,
+                            id_user uuid,
+                            FOREIGN KEY (id_user) REFERENCES {config.get('TABLES', 'TABLE_USERS')}(id)
                         );
                         """)
             self.connection.commit()
@@ -57,6 +65,55 @@ class Database:
             
             self.connection.commit()
             self.close()
+            
+    # Сверяем логин и пароль
+    def check_auth(self, login, password):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT id
+            FROM {config.get('TABLES', 'TABLE_USERS')}
+            WHERE login = {repr(login)} AND password = {repr(password)}                     
+            """
+
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+    
+    # Проверка на активный сеанс
+    def check_user_active(self, telegram_id: int):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT id_telegram
+            FROM {config.get('TABLES', 'TABLE_ACTIVE')}
+            WHERE id_telegram = {telegram_id}           
+            """
+
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+        
+    # Добавление активного сеанса
+    def add_user_active(self, telegram_id: int, user_id: int):
+        with self.connection.cursor() as cursor:
+            insert = f"""
+            INSERT INTO {config.get('TABLES', 'TABLE_ACTIVE')} (id_telegram, id_user)
+            VALUES ({telegram_id}, {user_id})
+            """
+            
+            cursor.execute(insert)
+            self.connection.commit()
+            
+    # Удаление активного сеанса
+    def delete_user_active(self, telegram_id: int):
+        with self.connection.cursor() as cursor:
+            delete = f"""
+            DELETE FROM {config.get('TABLES', 'TABLE_ACTIVE')}
+            WHERE id_telegram = {telegram_id}
+            """
+            
+            cursor.execute(delete)
+            self.connection.commit()
+    
             
 db = Database(db_name=config_db_name,
               db_user=config_db_user,
