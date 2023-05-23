@@ -5,7 +5,7 @@ sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\database')
 
 from aiogram import Bot, Dispatcher, executor, types
 from database import db
-from keyboard import keyboard_start, keyboard_auth, keyboard_search_user_subscribe, keyboard_search_user
+from keyboard import keyboard_start, keyboard_auth, keyboard_search_user_subscribe, keyboard_search_user, keyboard_subs
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
@@ -77,7 +77,7 @@ async def auth_password(message: types.Message, state: FSMContext):
 Вы успешно авторизовались!
 """, reply_markup=keyboard_auth)
             await state.finish()
-            
+                
     except Exception as ex:
         await Auth.password.set()
         await message.answer(f"""
@@ -100,9 +100,9 @@ async def find_user_nickname(message: types.Message, state: FSMContext):
         if search_user == []:
             anybody = db.search_many_user(nickname=data['nickname'])
             if anybody == []:
-                await message.answer("Данный пользователь не найден!\nНо мы нашли вам похожих пользователей, возможно вы искали их!\n")
-            else:    
                 await message.answer("Данный пользователь не найден!")
+            else:    
+                await message.answer("Данный пользователь не найден!\nНо мы нашли вам похожих пользователей, возможно вы искали их!\n")
         else:
             user_id = db.check_user_active(telegram_id=message.chat.id)[0][0]
             author_id = db.get_author_id(nickname=data['nickname'])[0][0]
@@ -119,7 +119,25 @@ async def find_user_nickname(message: types.Message, state: FSMContext):
         await message.answer(f"""
 Введите никнейм пользователя повторно!
 """)
+        
+@dp.callback_query_handler(text='subscribe_user')
+async def subscribe_user_command(call: types.CallbackQuery):
+    pass
 
+@dp.callback_query_handler(text='list_subs')
+async def list_subs_command(call: types.CallbackQuery):
+    user_id = db.check_user_active(telegram_id=call.message.chat.id)[0][0]
+    all_subs = db.get_all_subscriptions(user_id = user_id)
+    if all_subs == []:
+        await call.message.answer("У вас нет подписок!")
+    else:
+        for sub in all_subs:
+            sub_id = all_subs[0][2]
+            sub_info = db.get_info_subs(sub_id = sub_id)[0]
+            await call.message.answer(f"""
+Имя: {sub_info[3]}\n
+Описание: {sub_info[4]}                                      
+""", reply_markup=keyboard_subs)
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
