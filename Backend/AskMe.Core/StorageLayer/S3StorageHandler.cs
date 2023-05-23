@@ -4,7 +4,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 
-namespace AskMe.Service.Handlers;
+namespace AskMe.Core.StorageLayer;
 
 public class S3StorageHandler : IS3StorageHandler
 {
@@ -20,9 +20,9 @@ public class S3StorageHandler : IS3StorageHandler
 
     private IAmazonS3 S3Client => transferUtility.S3Client;
 
-    public async Task UploadFile(Stream fileStream, string fileKey)
+    public Task UploadFileAsync(Stream fileStream, string fileKey)
     {
-        await transferUtility.UploadAsync(fileStream, bucketName, fileKey);
+        return transferUtility.UploadAsync(fileStream, bucketName, fileKey);
     }
 
     public async Task DeleteIfExists(string fileKey)
@@ -50,7 +50,7 @@ public class S3StorageHandler : IS3StorageHandler
         }
     }
 
-    public string? GetFileUrl(string fileKey)
+    public string GetFileUrl(string fileKey)
     {
         var request = new GetPreSignedUrlRequest
         {
@@ -61,6 +61,18 @@ public class S3StorageHandler : IS3StorageHandler
         var url = S3Client.GetPreSignedURL(request);
 
         return url;
+    }
+
+    public async Task<string[]> GeFileKeysInDirectoryAsync(string directoryKey)
+    {
+        var request = new ListObjectsRequest
+        {
+            BucketName = bucketName,
+            Prefix = directoryKey
+        };
+
+        var objectsResponse = await S3Client.ListObjectsAsync(request);
+        return objectsResponse.S3Objects.Select(x => GetFileUrl(x.Key)).ToArray()!;
     }
 
     public static string CreatePath(params string[] parts)

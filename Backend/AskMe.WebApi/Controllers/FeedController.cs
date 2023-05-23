@@ -43,22 +43,6 @@ public class FeedController : CustomControllerBase
         return posts;
     }
 
-    [HttpGet("{userLogin}/feed_after")]
-    [Authorize]
-    public async Task<ActionResult<PostViewModel[]>> FeedAfter(string userLogin, DateTime timeAfter)
-    {
-        var posts = Array.Empty<PostViewModel>();
-        try
-        {
-            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin, timeAfter);
-        }
-        catch (Exception e)
-        {
-            NotFound(e.Message);
-        }
-        return posts;
-    }
-
     [HttpGet("{userLogin}/posts")]
     public async Task<ActionResult<PostViewModel[]>> GetUserPosts(string userLogin)
     {
@@ -83,10 +67,47 @@ public class FeedController : CustomControllerBase
 
     [HttpPost("create")]
     [Authorize]
-    public async Task<IActionResult> Create([FromBody] PostRequest request)
+    public async Task<ActionResult<Guid>> Create([FromBody] PostRequest request, IFormFileCollection files)
     {
-        await feedService.CreateOrUpdateAsync(request);
+        var createdId = await feedService.CreateOrUpdateAsync(request);
+        await AttachFiles(createdId, files);
+        return Ok(createdId);
+    }
+
+    [HttpPost("{postId:guid}/attachFiles")]
+    public async Task<IActionResult> AttachFiles(Guid postId, IFormFileCollection files)
+    {
+        var attachmentRequests = files.Select(x=> new AttachmentRequest
+        {
+            Name = x.Name,
+            Type = AttachmentService.GetFileType(x.ContentType),
+            FileStream = x.OpenReadStream()
+        }).ToArray();
+
+        await feedService.AttachFilesAsync(postId, attachmentRequests);
         return Ok();
+    }
+
+    [HttpGet("{postId:guid}/attachments")]
+    public async Task<ActionResult<AttachmentResponse[]>> GetAttachments(Guid postId)
+    {
+        return Ok(await feedService.GetPostAttachmentUrls(postId));
+    }
+
+    [HttpGet("{userLogin}/feed_after")]
+    [Authorize]
+    public async Task<ActionResult<PostViewModel[]>> FeedAfter(string userLogin, DateTime timeAfter)
+    {
+        var posts = Array.Empty<PostViewModel>();
+        try
+        {
+            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin, timeAfter);
+        }
+        catch (Exception e)
+        {
+            NotFound(e.Message);
+        }
+        return posts;
     }
 
     [HttpDelete("{postId:guid}")]
@@ -103,12 +124,5 @@ public class FeedController : CustomControllerBase
     {
         await feedService.CreateOrUpdateAsync(request, postId);
         return Ok();
-    }
-
-    [HttpGet("{postId:guid}/buy")]
-    [Authorize]
-    public IActionResult BuyPost(Guid postId)
-    {
-        throw new NotImplementedException();
     }
 }

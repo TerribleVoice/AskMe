@@ -48,6 +48,22 @@ public class PostgresDbContext : DbContext
         await base.SaveChangesAsync();
     }
 
+    public async Task<bool> CanUserEdit<T>(Guid entityId, Guid userId) where T : Dbo, IHaveAuthor
+    {
+        var entityAuthorId = await Set<T>().Where(x => x.Id == entityId).Select(x => x.AuthorId).FirstAsync();
+        return entityAuthorId == userId;
+    }
+
+    public async Task<bool> CanCurrentUserEdit<T>(Guid entityId) where T : Dbo, IHaveAuthor
+    {
+        if (userIdentity.CurrentUser == null)
+        {
+            throw new Exception("Пользователь не авторизован");
+        }
+
+        return await CanUserEdit<T>(entityId, userIdentity.CurrentUser!.Id);
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

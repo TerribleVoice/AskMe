@@ -116,7 +116,7 @@ public class UserController : CustomControllerBase
     {
         try
         {
-            AssertFileTypeIs(image, FileType.Image);
+            AttachmentService.AssertFileTypeIs(image.ContentType, FileType.Image);
             AssertUserLoginIs(userLogin);
         }
         catch (Exception e)

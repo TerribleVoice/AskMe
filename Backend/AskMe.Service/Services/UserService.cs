@@ -2,7 +2,6 @@
 using AskMe.Core.Models.Dbo;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
-using AskMe.Service.Handlers;
 using AskMe.Service.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -99,10 +98,10 @@ public class UserService : IUserService
         var path = CreateFilePathForProfileImage(user.Id);
 
         await s3StorageHandler.DeleteIfExists(path);
-        await s3StorageHandler.UploadFile(imageStream, path);
+        await s3StorageHandler.UploadFileAsync(imageStream, path);
     }
 
-    public async Task<string?> GetUserProfileImageUrl(string userLogin)
+    public async Task<string> GetUserProfileImageUrl(string userLogin)
     {
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);
