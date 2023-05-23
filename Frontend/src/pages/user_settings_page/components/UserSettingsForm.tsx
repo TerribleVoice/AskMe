@@ -33,12 +33,18 @@ export const UserSettingsForm = () => {
       <h1>Профиль</h1>
       <form className="settings_form" onSubmit={handleSubmit(onSettingsSubmit)}>
         <div className="left-reg__login">
-          <label htmlFor="login">Логин</label>
+          <label htmlFor="login">Имя</label>
           <input {...register("login")} type="text" name="login" id="login" />
+          <label className="settings_caption" htmlFor="login">
+            Имя будет показываться на вашей странице
+          </label>
         </div>
         <div className="left-reg__login">
           <label htmlFor="email">Почта</label>
           <input {...register("email")} type="email" name="email" id="email" />
+          <label className="settings_caption" htmlFor="login">
+            Используется для входа в аккаунт
+          </label>
         </div>
         <div className="left-reg__login">
           <label htmlFor="password">Пароль</label>
@@ -48,10 +54,16 @@ export const UserSettingsForm = () => {
             name="password"
             id="password"
           />
+          <label className="settings_caption" htmlFor="login">
+            Используется для входа в аккаунт
+          </label>
         </div>
         <div className="left-reg__login">
           <label htmlFor="links">Ссылки</label>
           <input {...register("links")} type="text" name="links" id="links" />
+          <label className="settings_caption" htmlFor="login">
+            Ссылки будут показываться на вашей странице
+          </label>
         </div>
         <div className="settings_description">
           <label htmlFor="description">Описание</label>
@@ -60,10 +72,13 @@ export const UserSettingsForm = () => {
             name="description"
             id="description"
           />
+          <label className="settings_caption" htmlFor="login">
+            Описание будет показываться на вашей странице
+          </label>
         </div>
-        <div className="left-reg__submit">
+        <p className="left-reg__submit">
           <button type="submit">Сохранить</button>
-        </div>
+        </p>
       </form>
     </div>
   );

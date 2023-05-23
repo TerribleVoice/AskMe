@@ -1,10 +1,7 @@
-import { NavLink, Outlet, useLocation, useMatch } from "react-router-dom";
+import { NavLink, Navigate, Outlet } from "react-router-dom";
 
-export const UserSettingsLayout = () => {
+export const FeedLayout = () => {
   const login = localStorage.getItem("login");
-
-  const match = useMatch(":LoginName/settings/*");
-  const url = match?.pathnameBase ?? "";
   return (
     <div className="settings_wrapper">
       <aside className="settings_aside_left">
@@ -26,7 +23,7 @@ export const UserSettingsLayout = () => {
             className={({ isActive }) =>
               isActive ? "settings_nav_link active" : "settings_nav_link"
             }
-            to={`${url}`}
+            to={`/${login}/settings/profile`}
           >
             <img
               className="settings_img_link"
@@ -53,45 +50,6 @@ export const UserSettingsLayout = () => {
       <Outlet />
       <aside className="settings_aside_right">
         <nav className="settings_nav">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "settings_nav_link active" : "settings_nav_link"
-            }
-            to={`${url}/profile`}
-          >
-            <img
-              className="settings_img_link"
-              src="/img/settings/Userlogo.svg"
-              alt="settings_profile"
-            />
-            Настройки профиля
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "settings_nav_link active" : "settings_nav_link"
-            }
-            to={`${url}/subscriptions`}
-          >
-            <img
-              className="settings_img_link"
-              src="/img/settings/SubscrLogo.svg"
-              alt="settings_subscription"
-            />
-            Мои подписки
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "settings_nav_link active" : "settings_nav_link"
-            }
-            to={`${url}/payments`}
-          >
-            <img
-              className="settings_img_link"
-              src="/img/settings/SubscrLogo2.svg"
-              alt="settings_subscription"
-            />
-            Платежная информация
-          </NavLink>
         </nav>
       </aside>
     </div>

@@ -32,7 +32,7 @@ header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 .header__logo {
   margin-right: auto;
@@ -241,6 +241,11 @@ header {
   font-size: 24px;
   line-height: 140.69%;
   color: #c0c0c0;
+}
+.Author:hover {
+  box-shadow:inset 0px 0px 0px 7px #B00062;
+  -webkit-box-shadow:inset 0px 0px 0px 7px #B00062;
+  -moz-box-shadow:inset 0px 0px 0px 7px #B00062;
 }
 
 /* ======================== */
@@ -685,35 +690,42 @@ a:active {
 .settings_wrapper {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   margin-top: 40px;
 }
-.settings_aside_nav {
-  display: flex;
-  margin-right: 13%;
+.settings_aside_left {
+  position: absolute;
+  margin-right: 60vw;
+}
+.settings_aside_right {
+  position: absolute;
+  margin-left: 60vw;
 }
 .settings_nav {
   display: flex;
   flex-direction: column;
   width: 260px;
+  background-color: #181818;
 }
 .settings_nav_link {
-  margin-left: 30px;
-  padding-top: 40px;
+  padding-top: 10px;
   padding-left: 15px;
-  padding-bottom: 40px;
-  margin-bottom: 10px;
-  border: solid;
-  border-width: 1px;
-  border-color: #f10086;
-  border-radius: 5px;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
   font-weight: 600;
   font-size: large;
   color: #ffffff;
 }
-.settings_nav_link:active {
-  color:#b00062
+.settings_nav_link.active {
+  border: 1px solid #f10086;
 }
 .settings_form_wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #181818;
+  padding: 1vw;
+  min-width: 477px;
 }
 .settings_form {
   padding-top: 30px;
@@ -757,4 +769,50 @@ a:active {
 }
 .settings_description textarea:focus {
   outline: 1px solid#f10086;
+}
+.settings_caption {
+  font-weight: 200;
+  font-size: small;
+}
+.settings_img_link {
+  height: 30px;
+  margin-right: 10px;
+}
+.settings_subscription_wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 2vw;
+}
+.settings_subscription_card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-width: 15vw;
+  margin: 1vw;
+  background-color: #202020;
+  padding: 1vw;
+}
+.settings_subscription_unsub {
+  position: relative;
+  float: right;
+  cursor: pointer;
+  left: 6vw;
+  width: 20px;
+}
+.settings_subscription_name {
+  font-weight: 600;
+  font-size: larger;
+}
+.settings_subscription_description {
+  margin-top: 3vw;
+  margin-bottom: 3vw;
+}
+.settings_subscription_price {
+  background-color: #860049;
+  padding: 1vw;
+}
+/* Лента */
+.feed_authors_slider {
+  max-width: 600px;
+  max-height: 300px;
 }

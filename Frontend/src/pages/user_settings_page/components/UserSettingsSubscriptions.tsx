@@ -31,26 +31,25 @@ export const UserSettingsSubscriptions = () => {
     }
   }, [LoginName]);
 
-  const handleUnsubscribe = () => {
-    
-  }
+  const handleUnsubscribe = () => {};
 
   return (
-    <div>
-      <h2>Подписки</h2>
-      {boughtSubscription?.map((bs) => {
-        return (
-          <div
-            key={bs.id}
-            style={{ display: "flex", margin: "10px", flexDirection: "column" }}
-          >
-            <span>{bs.name}</span>
-            <p>{bs.price}</p>
-            <p>{bs.description}</p>
-            <button>Отписаться</button>
-          </div>
-        );
-      })}
+    <div className="settings_form_wrapper">
+      <h1>Подписки</h1>
+      <div className="settings_subscription_wrapper">
+        {boughtSubscription?.map((bs) => {
+          return (
+            <div key={bs.id} className="settings_subscription_card">
+              <span className="settings_subscription_unsub"><img src="/img/settings/Crest.svg" alt="Delete" /></span>
+              <span className="settings_subscription_name">{bs.name}</span>
+              <p className="settings_subscription_description">
+                {bs.description}
+              </p>
+              <p className="settings_subscription_price">{bs.price}$ в месяц</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
