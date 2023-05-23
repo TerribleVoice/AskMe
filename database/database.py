@@ -51,7 +51,7 @@ class Database:
             self.connection.commit()
             
             cursor.execute(f"""
-                        CREATE TABLE {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')} (
+                        CREATE TABLE IF NOT EXISTS {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')} (
                             id uuid NOT NULL,
                             author_id uuid NOT NULL,
                             price int NOT NULL,
@@ -65,7 +65,7 @@ class Database:
             self.connection.commit()
             
             cursor.execute(f"""   
-                        CREATE TABLE {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} (
+                        CREATE TABLE IF NOT EXISTS {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} (
                             id uuid NOT NULL,
                             user_id uuid NOT NULL,
                             subscription_id uuid NOT NULL,
@@ -124,11 +124,11 @@ class Database:
             return result
         
     # Добавление активного сеанса
-    def add_user_active(self, telegram_id: int, user_id: int):
+    def add_user_active(self, telegram_id, user_id):
         with self.connection.cursor() as cursor:
             insert = f"""
             INSERT INTO {config.get('TABLES', 'TABLE_ACTIVE')} (id_telegram, id_user)
-            VALUES ({telegram_id}, {user_id})
+            VALUES ({telegram_id}, {repr(user_id)})
             """
             
             cursor.execute(insert)
@@ -150,7 +150,7 @@ class Database:
         with self.connection.cursor() as cursor:
             select = f"""
             SELECT *
-            FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')}
+            FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')}
             WHERE name = {repr(nickname)}           
             """
 
@@ -162,7 +162,8 @@ class Database:
     def search_many_user(self, nickname):
         with self.connection.cursor() as cursor:
             select = f"""
-            SELECT * FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} WHERE name LIKE {repr(nickname)+'%'};
+            SELECT * FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')} 
+            WHERE name LIKE {repr(nickname)+repr('%')}
             """
             
             cursor.execute(select)
@@ -173,8 +174,8 @@ class Database:
     def check_user_subscription(self, user_id, subscription_id):
         with self.connection.cursor() as cursor:
             select = f"""
-            SELECT * FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')}
-            WHERE user_id = {user_id} AND subscription_id = {subscription_id};
+            SELECT * FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')}
+            WHERE user_id = {repr(user_id)} AND subscription_id = {repr(subscription_id)}
             """
             
             cursor.execute(select)
@@ -185,8 +186,32 @@ class Database:
     def get_author_id(self, nickname):
         with self.connection.cursor() as cursor:
             select = f"""
-            SELECT * FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')}
+            SELECT * FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')}
             WHERE name = {repr(nickname)};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+        
+    # Получить все подписки пользователя
+    def get_all_subscriptions(self, user_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT * FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')}
+            WHERE user_id = {repr(user_id)};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+        
+    # Получить информацию о блогере
+    def get_info_subs(self, sub_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT * FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')}
+            WHERE id = {repr(sub_id)};
             """
             
             cursor.execute(select)

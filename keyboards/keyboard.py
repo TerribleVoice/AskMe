@@ -16,10 +16,15 @@ keyboard_auth.add(keyboard_auth_button3)
 
 # Нет подписки
 keyboard_search_user = InlineKeyboardMarkup()
-keyboard_search_user_button1 = InlineKeyboardButton(text="Подписаться", callback_data="find_user")
+keyboard_search_user_button1 = InlineKeyboardButton(text="Подписаться", callback_data="subscribe_user")
 keyboard_search_user.add(keyboard_search_user_button1)
 
 # Есть подписка
 keyboard_search_user_subscribe = InlineKeyboardMarkup()
 keyboard_search_user_subscribe_button1 = InlineKeyboardButton(text="Посмотреть последние 10 постов", callback_data="last_posts")
 keyboard_search_user_subscribe.add(keyboard_search_user_subscribe_button1)
+
+# Кнопка, когда человек смотрит свои подписки
+keyboard_subs = InlineKeyboardMarkup()
+keyboard_subs_button1 = InlineKeyboardButton(text="Посмотреть посты 👁", callback_data="view_posts")
+keyboard_subs.add(keyboard_subs_button1)
