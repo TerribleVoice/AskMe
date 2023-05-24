@@ -1,8 +1,10 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 keyboard_start = InlineKeyboardMarkup()
-keyboard_start_button1 = InlineKeyboardButton(text="Авторизоваться ✅", callback_data="auth")
+keyboard_start_button1 = InlineKeyboardButton(text="Войти", callback_data="auth")
+keyboard_start_button2 = InlineKeyboardButton(text="Зарегистрироваться", callback_data="register")
 keyboard_start.add(keyboard_start_button1)
+keyboard_start.add(keyboard_start_button2)
 
 keyboard_auth = InlineKeyboardMarkup()
 keyboard_auth_button1 = InlineKeyboardButton(text="Найти пользователя 🔎", callback_data="find_user")
@@ -28,3 +30,18 @@ keyboard_search_user_subscribe.add(keyboard_search_user_subscribe_button1)
 keyboard_subs = InlineKeyboardMarkup()
 keyboard_subs_button1 = InlineKeyboardButton(text="Посмотреть посты 👁", callback_data="view_posts")
 keyboard_subs.add(keyboard_subs_button1)
+
+# Клавиатура для возвращения обратно при вводе логина или емайла
+keyboard_login = InlineKeyboardMarkup()
+keyboard_login_return = InlineKeyboardButton(text='Вернутся на шаг назад 🚪', callback_data='exit_login')
+keyboard_login.add(keyboard_login_return)
+
+# Клавиатура для возвращения обратно при вводе пароля
+keyboard_password = InlineKeyboardMarkup()
+keyboard_password_return = InlineKeyboardButton(text='Вернутся на шаг назад 🚪', callback_data='exit_password')
+keyboard_password.add(keyboard_password_return)
+
+# Кнопка для прохождения авторизации снова
+keyboard_auth_again = InlineKeyboardMarkup()
+keyboard_auth_again_button1 = InlineKeyboardButton(text="Ввести логин и пароль снова", callback_data="auth_again")
+keyboard_auth_again.add(keyboard_auth_again_button1)

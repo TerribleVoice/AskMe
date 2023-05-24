@@ -103,7 +103,7 @@ class Database:
             select = f"""
             SELECT id
             FROM {config.get('TABLES', 'TABLE_USERS')}
-            WHERE login = {repr(login)} AND password = {repr(password)}                     
+            WHERE login = {repr(login)} AND password = {repr(password)} OR email = {repr(login)} AND password = {repr(password)}                   
             """
 
             cursor.execute(select)
