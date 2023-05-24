@@ -9,25 +9,29 @@ public class PostViewModel
     public DateTime CreateAt { get; set; }
     public bool HaveAccess { get; set; }
 
-    public static PostViewModel CreateNoAccess(PostResponse post)
+    public UserViewModel AuthorViewModel { get; set; }
+
+    public static PostViewModel CreateNoAccess(PostResponse post, UserViewModel authorViewModel)
     {
         return new PostViewModel
         {
             HaveAccess = false,
             Id = post.Id,
             Content = null,
-            CreateAt = post.CreateAt
+            CreateAt = post.CreateAt,
+            AuthorViewModel = authorViewModel
         };
     }
 
-    public static PostViewModel CreateHaveAccess(PostResponse post)
+    public static PostViewModel CreateHaveAccess(PostResponse post, UserViewModel authorViewModel)
     {
         return new PostViewModel
         {
             HaveAccess = true,
             Id = post.Id,
             Content = post.Content,
-            CreateAt = post.CreateAt
+            CreateAt = post.CreateAt,
+            AuthorViewModel = authorViewModel
         };
     }
 }
