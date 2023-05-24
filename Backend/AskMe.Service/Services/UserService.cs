@@ -2,7 +2,6 @@
 using AskMe.Core.Models.Dbo;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
-using AskMe.Service.Handlers;
 using AskMe.Service.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -78,7 +77,7 @@ public class UserService : IUserService
             .Select(x => new
             {
                 x.AuthorId,
-                Count = x.BoughtSubscriptions.DistinctBy(y => y.OwnerId).Count()
+                x.BoughtSubscriptions.Count
             })
             .ToArrayAsync();
 
@@ -93,16 +92,32 @@ public class UserService : IUserService
         return users.Select(userConverter.ToDto).ToArray()!;
     }
 
+    public async Task<UserDto[]> SearchAsync(string query, int limit)
+    {
+        var innerQuery = query.Trim();
+        var startsWith = await dbContext.Users
+            .Where(x => x.Login.StartsWith(innerQuery, StringComparison.InvariantCultureIgnoreCase))
+            .ToArrayAsync();
+        var result = startsWith;
+        if (startsWith.Length < limit)
+        {
+            var contains = await dbContext.Users.Where(x => x.Login.Contains(innerQuery)).ToArrayAsync();
+            result = startsWith.UnionBy(contains, x => x.Id).ToArray();
+        }
+
+        return result.Select(userConverter.ToDto).ToArray()!;
+    }
+
     public async Task UploadProfileImage(string userLogin, Stream imageStream)
     {
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);
 
         await s3StorageHandler.DeleteIfExists(path);
-        await s3StorageHandler.UploadFile(imageStream, path);
+        await s3StorageHandler.UploadFileAsync(imageStream, path);
     }
 
-    public async Task<string?> GetUserProfileImageUrl(string userLogin)
+    public async Task<string> GetUserProfileImageUrl(string userLogin)
     {
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);

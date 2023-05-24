@@ -4,7 +4,6 @@ using Amazon.S3.Transfer;
 using AskMe.Core.Models;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
-using AskMe.Service.Handlers;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
 using Microsoft.AspNetCore.Authentication.Cookies;

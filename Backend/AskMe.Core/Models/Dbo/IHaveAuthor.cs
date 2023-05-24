@@ -1,6 +1,6 @@
 ﻿namespace AskMe.Core.Models.Dbo;
 
-public class IHaveAuthor
+public interface IHaveAuthor
 {
     public Guid AuthorId { get; set; }
 }

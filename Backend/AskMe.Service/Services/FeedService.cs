@@ -3,6 +3,7 @@ using AskMe.Core.Models.Dbo;
 using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Models;
+using AskMe.WebApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AskMe.Service.Services;
@@ -14,13 +15,15 @@ public class FeedService : IFeedService
     private readonly IPostConverter postConverter;
     private readonly IUserIdentity userIdentity;
     private readonly ISubscriptionService subscriptionService;
+    private readonly S3StorageHandler s3StorageHandler;
 
     public FeedService(
         PostgresDbContext dbContext,
         IUserService userService,
         IPostConverter postConverter,
         IUserIdentity userIdentity,
-        ISubscriptionService subscriptionService
+        ISubscriptionService subscriptionService,
+        S3StorageHandler s3StorageHandler
         )
     {
         this.dbContext = dbContext;
@@ -28,6 +31,7 @@ public class FeedService : IFeedService
         this.postConverter = postConverter;
         this.userIdentity = userIdentity;
         this.subscriptionService = subscriptionService;
+        this.s3StorageHandler = s3StorageHandler;
     }
 
     public async Task<PostResponse[]> GetFeedAsync(string userLogin, DateTime? timeAfter = null)
@@ -61,7 +65,37 @@ public class FeedService : IFeedService
         return posts.Select(x => postConverter.Convert(x)).ToArray();
     }
 
-    public async Task CreateOrUpdateAsync(PostRequest request, Guid? postId = null)
+    public async Task AttachFilesAsync(Guid postId, AttachmentRequest[] attachmentRequests)
+    {
+        if (await dbContext.CanCurrentUserEdit<Post>(postId))
+        {
+            throw new Exception($"У {userIdentity.CurrentUser!.Login} доступа на редактирование поста {postId}");
+        }
+
+        var tasks = new List<Task>();
+        foreach (var request in attachmentRequests)
+        {
+            await using var stream = request.FileStream;
+            var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString()}-{request.Name}");
+            tasks.Add(s3StorageHandler.UploadFileAsync(stream, path));
+        }
+
+        await Task.WhenAll(tasks);
+    }
+
+    public async Task<AttachmentResponse[]> GetPostAttachmentUrls(Guid postId)
+    {
+        var path = S3StorageHandler.CreatePath("posts", postId.ToString());
+        var fileKeys =  await s3StorageHandler.GeFileKeysInDirectoryAsync(path);
+
+        return fileKeys.Select(name => new AttachmentResponse
+        {
+            FileType = AttachmentService.GetFileType(name),
+            SourceUrl = s3StorageHandler.GetFileUrl(name)
+        }).ToArray();
+    }
+
+    public async Task<Guid> CreateOrUpdateAsync(PostRequest request, Guid? postId = null)
     {
         if (postId.HasValue)
         {
@@ -83,6 +117,7 @@ public class FeedService : IFeedService
         }
 
         await dbContext.SaveChangesAsync();
+        return postDbo.Id;
     }
 
     public async Task DeleteAsync(Guid postId)
@@ -103,10 +138,7 @@ public class FeedService : IFeedService
             post => userSubscriptions.Any(subscription => post.SubscriptionId == subscription.Id));
     }
 
-    public Result Buy(Guid postId)
-    {
-        throw new NotImplementedException();
-    }
+    // public async Task<>
 
     private async Task ThrowIfCantEdit(Guid postId)
     {

@@ -48,11 +48,6 @@ public class UserController : CustomControllerBase
             return BadRequest(e.Message);
         }
 
-        if (CurrentUser == null || CurrentUser.Login != updateForm.Login)
-        {
-            return Forbid();
-        }
-
         await userService.UpdateUserAsync(updateForm);
         return Ok();
     }
@@ -104,7 +99,7 @@ public class UserController : CustomControllerBase
             NotFound(e.Message);
         }
 
-        return Ok(await userViewModelBuilder.Build(userLogin));
+        return Ok(await userViewModelBuilder.BuildAsync(userLogin));
     }
 
     [HttpGet("top_authors")]
@@ -121,7 +116,7 @@ public class UserController : CustomControllerBase
     {
         try
         {
-            AssertFileTypeIs(image, FileType.Image);
+            AttachmentService.AssertFileTypeIs(image.ContentType, FileType.Image);
             AssertUserLoginIs(userLogin);
         }
         catch (Exception e)
@@ -133,6 +128,16 @@ public class UserController : CustomControllerBase
 
         await userService.UploadProfileImage(userLogin, stream);
         return Ok();
+    }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<UserViewModel>> Search(string query, int limit)
+    {
+        var userDtos = await userService.SearchAsync(query, limit);
+        var tasks = userDtos.Select(userViewModelBuilder.BuildAsync).ToArray();
+        var viewModels = await Task.WhenAll(tasks);
+
+        return Ok(viewModels);
     }
 
     [HttpDelete("{userLogin}/profile_image")]

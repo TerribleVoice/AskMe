@@ -40,7 +40,7 @@ services:
       - "8080:8080"
 
   frontend:
-    build: ./www/
+    build: ./Frontend/
     ports:
       - "3000:3000"
 

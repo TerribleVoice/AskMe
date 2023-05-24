@@ -19,5 +19,5 @@ public class UserViewModel
     public string Login { get; set; }
     public string? Description { get; set; }
     public string? Links { get; set; }
-    public string? ProfileImageUrl { get; set; }
+    public string ProfileImageUrl { get; set; }
 }

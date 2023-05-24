@@ -4,16 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AskMe.Core.Models.Dbo;
 
 [Table("posts")]
-public class Post : Dbo
+public class Post : Dbo, IHaveAuthor
 {
     public Post()
     {
         Content = string.Empty;
     }
-
-    [Column("author_id")]
-    [Required]
-    public Guid AuthorId { get; set; }
 
     [Column("subscription_id")]
     [Required]
@@ -33,6 +29,9 @@ public class Post : Dbo
     public User Author { get; set; }
     public Subscription Subscription { get; set; }
 
+    [Column("author_id")]
+    [Required]
+    public Guid AuthorId { get; set; }
 }
 
 public static class PostExt
