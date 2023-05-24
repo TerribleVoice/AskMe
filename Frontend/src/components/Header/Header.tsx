@@ -3,33 +3,31 @@ import { Link } from "react-router-dom";
 export const Header = () => {
   const login = localStorage.getItem("login");
 
-  const handeleLogin = (login: string) => {
+  const handleLogin = (login: string) => {
     if (login && login.length > 14) {
-      const shortLogin = login.substring(0, 14) + '...';
-      return shortLogin
+      const shortLogin = login.substring(0, 14) + "...";
+      return shortLogin;
     } else {
-      return login
+      return login;
     }
-  }
+  };
 
-  
   const buttons = login ? (
     <div className="header__dropdown">
-      <button className="header__dropdown-button">{handeleLogin(login)}</button>
+      <button className="header__dropdown-button">{handleLogin(login)}</button>
       <div className="header__dropdown-content">
-      <Link to={login}>
-        Профиль
-      </Link>
-      <Link to={`${login}/settings`}>Настройки</Link>
-      <Link
-        to={"/"}
-        reloadDocument
-        onClick={() => {
-          localStorage.clear();
-        }}
-      >
-        Выйти
-      </Link>
+        <Link to={login}>Профиль</Link>
+        <Link to={`feed`}>Лента</Link>
+        <Link to={`${login}/settings`}>Настройки</Link>
+        <Link
+          to={"/"}
+          reloadDocument
+          onClick={() => {
+            localStorage.clear();
+          }}
+        >
+          Выйти
+        </Link>
       </div>
     </div>
   ) : (
