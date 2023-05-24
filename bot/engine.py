@@ -1,4 +1,5 @@
 import sys
+import uuid
 
 sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\keyboards')
 sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\database')
@@ -6,7 +7,8 @@ sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\database')
 from aiogram import Bot, Dispatcher, executor, types
 from database import db
 from keyboard import keyboard_start, keyboard_auth, keyboard_search_user_subscribe, keyboard_search_user, keyboard_subs, keyboard_login, keyboard_password, \
-                     keyboard_auth_again
+                     keyboard_auth_again, keyboard_register_login, keyboard_register_email, keyboard_email_wrong, keyboard_register_password, \
+                     keyboard_login_register
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
@@ -17,6 +19,12 @@ config.read('C:\\Users\\Gorob\\Desktop\\bot\\settings\\config.ini')
 
 bot = Bot(token=config.get('BOT', 'TOKEN_BOT'))
 dp = Dispatcher(bot, storage=MemoryStorage())
+
+# Регистрация аккаунта пользователя
+class Register(StatesGroup):
+    login = State()
+    email = State()
+    password = State()
 
 # Авторизация аккаунта пользователя
 class Auth(StatesGroup):
@@ -40,6 +48,14 @@ async def send_welcome(message: types.Message):
 С возвращением!
 """, reply_markup=keyboard_auth)
     
+@dp.callback_query_handler(text='auth_email', state=Register.email)
+async def auth_email_command(call: types.CallbackQuery, state: FSMContext):
+    await state.finish()
+    await call.message.answer("""
+Для входа вам необходимо ввести логин(или email) и пароль. Для начала введите логин(или email)!                           
+""", reply_markup=keyboard_login)
+    await Auth.login.set()
+    
 @dp.callback_query_handler(text='auth')
 async def auth_command(call: types.CallbackQuery):
     await call.message.answer("""
@@ -53,8 +69,15 @@ async def exit_login_command(call: types.CallbackQuery, state: FSMContext):
     await call.message.answer("""
 Здравствуйте, вам необходимо войти в свой аккаунт или пройти регистрацию в Сервисе AskeMe!                        
 """, reply_markup=keyboard_start)
-        
-    
+
+@dp.callback_query_handler(text='exit_login_register', state=Register.login)
+async def exit_login_register_command(call: types.CallbackQuery, state: FSMContext):
+    await state.finish()
+    await call.message.answer("""
+Здравствуйте, вам необходимо войти в свой аккаунт или пройти регистрацию в Сервисе AskeMe!                        
+""", reply_markup=keyboard_start)
+                
+
 @dp.message_handler(state=Auth.login)
 async def auth_login(message: types.Message, state: FSMContext):
     try:
@@ -124,10 +147,19 @@ async def find_user_nickname(message: types.Message, state: FSMContext):
         # Если не нашел - то пользователь не найден
         if search_user == []:
             anybody = db.search_many_user(nickname=data['nickname'])
+            print(anybody)
             if anybody == []:
                 await message.answer("Данный пользователь не найден!")
             else:    
                 await message.answer("Данный пользователь не найден!\nНо мы нашли вам похожих пользователей, возможно вы искали их!\n")
+                for user in anybody:
+                    user_id = db.check_user_active(telegram_id=message.chat.id)[0][0]
+                    author_id = db.get_author_id(nickname=user[3])[0][0]
+                    subscribe_user = db.check_user_subscription(user_id = user_id, subscription_id=author_id)
+                    if subscribe_user == []:   
+                        await message.answer(f"Имя: {user[3]}", reply_markup=keyboard_search_user)
+                    else:
+                        await message.answer(f"Имя: {user[3]}", reply_markup=keyboard_search_user_subscribe)
         else:
             user_id = db.check_user_active(telegram_id=message.chat.id)[0][0]
             author_id = db.get_author_id(nickname=data['nickname'])[0][0]
@@ -163,6 +195,104 @@ async def list_subs_command(call: types.CallbackQuery):
 Имя: {sub_info[3]}\n
 Описание: {sub_info[4]}                                      
 """, reply_markup=keyboard_subs)
+
+@dp.callback_query_handler(text='view_posts')
+async def view_posts_command(call: types.CallbackQuery):
+    info_message = call.message.text
+    nickname = str(info_message.split("Имя: ")[1].split("\n")[0])
+    author_id = db.get_author_id(nickname=nickname)[0][1]
+    posts = db.get_posts_author(author_id=author_id)
+    if posts == []:
+        await call.message.answer(f"Пользователь {nickname} не имеет постов!")
+    else:
+        if len(posts) == 1:
+            await call.message.answer(f"""
+{posts[0]}
+""")
+        for post in posts:
+            await call.message.answer(f"""
+{post[0]}                                      
+""")
+            
+@dp.callback_query_handler(text='posts')
+async def posts_command(call: types.CallbackQuery):
+    user_id = db.check_user_active(telegram_id=call.message.chat.id)[0][0]
+    posts = db.get_posts(user_id=user_id)
+    if posts == []:
+        await call.message.answer("Нет актуальных постов!")
+    else:
+        for post in posts:
+            await call.message.answer(f"""
+{post[0]}                                                                            
+""")
+
+# Регистрационный блок
+@dp.callback_query_handler(text='register')
+async def register_command(call: types.CallbackQuery):
+    await call.message.answer("""
+Для регистрации вам необходимо указать логин, email и пароль. Для начала введите логин!                              
+""", reply_markup=keyboard_login_register)
+    await Register.login.set()
+
+@dp.message_handler(state=Register.login)
+async def register_login_command(message: types.Message, state: FSMContext):    
+    async with state.proxy() as data:
+        data['login'] = message.text
+    
+    check_login = db.check_login(login=data['login'])
+    if check_login == []:
+        await message.answer("Далее введите ваш Email!", reply_markup=keyboard_register_email)
+        await Register.email.set()
+    else:
+        await message.answer("Данный логин уже занят. Придумайте другой логин и введите его", reply_markup=keyboard_register_login)
+        await Register.login.set()
+
+@dp.callback_query_handler(text='exit_login_register', state=Register.login)
+async def exit_login_register_command(call: types.CallbackQuery, state: FSMContext):
+    await call.message.answer("""
+Для регистрации вам необходимо указать логин, email и пароль. Для начала введите логин(или email)!                              
+""", reply_markup=keyboard_login)
+    await Register.login.set()
+
+@dp.callback_query_handler(text='exit_email_register', state=Register.email)
+async def exit_login_register_command(call: types.CallbackQuery, state: FSMContext):
+    await call.message.answer("""
+Для регистрации вам необходимо указать логин, email и пароль. Для начала введите логин(или email)!                              
+""", reply_markup=keyboard_login)
+    await Register.login.set()
+    
+@dp.message_handler(state=Register.email)
+async def register_email_command(message: types.Message, state: FSMContext):    
+    async with state.proxy() as data:
+        data['email'] = message.text
+    
+    check_email = db.check_email(email=data['email'])
+    if check_email == []:
+        await message.answer("Придумайте и введите пароль, минимальная длина пароля 8 символов", reply_markup=keyboard_register_password)
+        await Register.password.set()
+    else:
+        await message.answer("Данный email уже используется. Введите другой email или войдите  в свой аккаунт.", reply_markup=keyboard_email_wrong)
+        await Register.email.set()
+        
+@dp.callback_query_handler(text='exit_password_register', state=Register.email)
+async def exit_password_register_command(call: types.CallbackQuery, state: FSMContext):
+    await call.message.answer("Введите ваш Email!", reply_markup=keyboard_register_email)
+    await Register.email.set()
+
+@dp.message_handler(state=Register.password)
+async def register_password_command(message: types.Message, state: FSMContext):    
+    async with state.proxy() as data:
+        data['password'] = message.text
+    
+    if len(data['password']) < 8:
+        await message.answer("Пароль не соответствует условиям\nПридумайте и введите пароль, минимальная длина пароля 8 символов", reply_markup=keyboard_register_password)
+        await Register.password.set()
+    else:
+        uuid_code = uuid.uuid1()
+        db.create_account(uuid=uuid_code, login=data['login'], password=data['password'], email=data['email'])
+        db.add_user_active(telegram_id=message.chat.id, user_id=uuid_code)
+        await message.answer("Аккаунт успешно создан!\nПропишите /start!")
+        await state.finish()
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)

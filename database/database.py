@@ -163,9 +163,9 @@ class Database:
         with self.connection.cursor() as cursor:
             select = f"""
             SELECT * FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')} 
-            WHERE name LIKE {repr(nickname)+repr('%')}
+            WHERE name LIKE {repr(nickname+'%')}
             """
-            
+                        
             cursor.execute(select)
             result = cursor.fetchall()
             return result
@@ -217,6 +217,74 @@ class Database:
             cursor.execute(select)
             result = cursor.fetchall()
             return result
+        
+    # Получить 10 последних постов определенного автора
+    def get_posts_author(self, author_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT content FROM {config.get('TABLES', 'TABLE_POSTS')}
+            WHERE author_id = {repr(author_id)}
+            ORDER BY created_at DESC
+            LIMIT 10
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+        
+    # Получаем 10 последних постов всех авторов
+    def get_posts(self, user_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT p.content
+            FROM {config.get('TABLES', 'TABLE_POSTS')} p
+            INNER JOIN {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} s ON p.author_id = s.subscription_id
+            WHERE s.user_id = {repr(user_id)}
+            ORDER BY p.created_at DESC
+            LIMIT 10;
+
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+    
+    # Проверка, занят ли логин или нет
+    def check_login(self, login):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT id
+            FROM {config.get('TABLES', 'TABLE_USERS')}
+            WHERE login = {repr(login)}
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+        
+    # Проверка, занят ли емайл или нет
+    def check_email(self, email):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT id
+            FROM {config.get('TABLES', 'TABLE_USERS')}
+            WHERE email = {repr(email)}
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+    
+    # Создание аккаунта пользователя
+    def create_account(self, uuid, login, email, password):
+        with self.connection.cursor() as cursor:
+            insert = f"""
+            INSERT INTO {config.get('TABLES', 'TABLE_USERS')} (id, login, email, password, qiwi_token, description, links)
+            VALUES ({repr(uuid)}, {repr(login)}, {repr(email)}, {repr(password)}, 'None', 'None', 'None')
+            """
+            
+            cursor.execute(insert)
+            self.connection.commit()
             
 db = Database(db_name=config_db_name,
               db_user=config_db_user,
