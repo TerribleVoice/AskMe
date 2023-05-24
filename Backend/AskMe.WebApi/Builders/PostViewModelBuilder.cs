@@ -23,7 +23,7 @@ public class PostViewModelBuilder
         var posts = await feedService.GetUserPostsAsync(userLogin);
         var accessMap = await feedService.IsUserHaveAccessToPostsAsync(userLogin, posts);
 
-        var authorViewModel = await userViewModelBuilder.Build(userLogin);
+        var authorViewModel = await userViewModelBuilder.BuildAsync(userLogin);
         return posts.Select(post => accessMap[post.Id]
                 ? PostViewModel.CreateHaveAccess(post, authorViewModel)
                 : PostViewModel.CreateNoAccess(post, authorViewModel))
@@ -33,7 +33,7 @@ public class PostViewModelBuilder
     public async Task<PostViewModel[]> BuildUserFeedAsync(string userLogin, DateTime? timeAfter = null)
     {
         var posts = await feedService.GetFeedAsync(userLogin, timeAfter);
-        var authorViewModel = await userViewModelBuilder.Build(userLogin);
+        var authorViewModel = await userViewModelBuilder.BuildAsync(userLogin);
 
         return posts.Select(post => PostViewModel.CreateHaveAccess(post, authorViewModel)).ToArray();
     }

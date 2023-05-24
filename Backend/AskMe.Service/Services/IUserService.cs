@@ -14,4 +14,5 @@ public interface IUserService
     Task UploadProfileImage(string userLogin, Stream imageStream);
     Task<string> GetUserProfileImageUrl(string userLogin);
     Task DeleteUserProfileImage(string userLogin);
+    Task<UserDto[]> SearchAsync(string query, int limit);
 }

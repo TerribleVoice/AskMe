@@ -92,6 +92,22 @@ public class UserService : IUserService
         return users.Select(userConverter.ToDto).ToArray()!;
     }
 
+    public async Task<UserDto[]> SearchAsync(string query, int limit)
+    {
+        var innerQuery = query.Trim();
+        var startsWith = await dbContext.Users
+            .Where(x => x.Login.StartsWith(innerQuery, StringComparison.InvariantCultureIgnoreCase))
+            .ToArrayAsync();
+        var result = startsWith;
+        if (startsWith.Length < limit)
+        {
+            var contains = await dbContext.Users.Where(x => x.Login.Contains(innerQuery)).ToArrayAsync();
+            result = startsWith.UnionBy(contains, x => x.Id).ToArray();
+        }
+
+        return result.Select(userConverter.ToDto).ToArray()!;
+    }
+
     public async Task UploadProfileImage(string userLogin, Stream imageStream)
     {
         var user = await ReadUserByLoginAsync(userLogin);

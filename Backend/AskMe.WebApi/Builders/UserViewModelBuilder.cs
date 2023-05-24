@@ -1,3 +1,4 @@
+using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Models;
 
@@ -12,19 +13,23 @@ public class UserViewModelBuilder
         this.userService = userService;
     }
 
-    public async Task<UserViewModel> Build(string userLogin)
+    public async Task<UserViewModel> BuildAsync(string userLogin)
     {
         var userDto = await userService.ReadUserByLoginAsync(userLogin);
 
-        var profileImageUrl = await userService.GetUserProfileImageUrl(userLogin);
-        var userViewModel = new UserViewModel
+        return await BuildAsync(userDto);
+    }
+
+    public async Task<UserViewModel> BuildAsync(UserDto userDto)
+    {
+        var profileImageUrl = await userService.GetUserProfileImageUrl(userDto.Login);
+
+        return new UserViewModel
         {
             Description = userDto.Description,
             Links = userDto.Links,
-            Login = userLogin,
+            Login = userDto.Login,
             ProfileImageUrl = profileImageUrl
         };
-
-        return userViewModel;
     }
 }
