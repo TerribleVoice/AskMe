@@ -5,7 +5,8 @@ sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\database')
 
 from aiogram import Bot, Dispatcher, executor, types
 from database import db
-from keyboard import keyboard_start, keyboard_auth, keyboard_search_user_subscribe, keyboard_search_user, keyboard_subs
+from keyboard import keyboard_start, keyboard_auth, keyboard_search_user_subscribe, keyboard_search_user, keyboard_subs, keyboard_login, keyboard_password, \
+                     keyboard_auth_again
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
@@ -32,7 +33,7 @@ async def send_welcome(message: types.Message):
     check_conn = db.check_user_active(telegram_id=telegram_id)
     if check_conn == []:
         await message.answer("""
-Здравствуйте, вам необходимо авторизоваться в ваш аккаунт!                             
+Здравствуйте, вам необходимо войти в свой аккаунт или пройти регистрацию в Сервисе AskeMe!                        
 """, reply_markup=keyboard_start)
     else:
         await message.answer("""
@@ -42,16 +43,24 @@ async def send_welcome(message: types.Message):
 @dp.callback_query_handler(text='auth')
 async def auth_command(call: types.CallbackQuery):
     await call.message.answer("""
-Для авторизации вам необходимо ввести логин и пароль. Для начала введите логин!                              
-""")
+Для входа вам необходимо ввести логин(или email) и пароль. Для начала введите логин(или email)!                           
+""", reply_markup=keyboard_login)
     await Auth.login.set()
+    
+@dp.callback_query_handler(text='exit_login', state=Auth.login)
+async def exit_login_command(call: types.CallbackQuery, state: FSMContext):
+    await state.finish()
+    await call.message.answer("""
+Здравствуйте, вам необходимо войти в свой аккаунт или пройти регистрацию в Сервисе AskeMe!                        
+""", reply_markup=keyboard_start)
+        
     
 @dp.message_handler(state=Auth.login)
 async def auth_login(message: types.Message, state: FSMContext):
     try:
         async with state.proxy() as data:
             data['login'] = message.text
-        await message.answer(text="👇Теперь введите пароль!")
+        await message.answer(text="👇Теперь введите пароль!", reply_markup=keyboard_password)
         await Auth.password.set()
         
     except Exception as ex:
@@ -60,6 +69,15 @@ async def auth_login(message: types.Message, state: FSMContext):
 Введите логин повторно!
 """)
         
+@dp.callback_query_handler(text='exit_password', state=Auth.password)
+async def exit_password_command(call: types.CallbackQuery, state: FSMContext):
+    await call.message.answer("""
+Для входа вам необходимо ввести логин(или email) и пароль. Для начала введите логин(или email)!                           
+""", reply_markup=keyboard_login)
+    await Auth.login.set()
+        
+    
+
 @dp.message_handler(state=Auth.password)
 async def auth_password(message: types.Message, state: FSMContext):
     try:
@@ -68,9 +86,10 @@ async def auth_password(message: types.Message, state: FSMContext):
         auth = db.check_auth(login=data['login'], password=data['password'])
         if auth == []:
             await message.answer("""
-Логин или пароль введены неверно!
-""")
+Логин или пароль введены неверно! Введите данные снова или зарегистрируйтесь.  
+""", reply_markup=keyboard_auth_again)
             await state.finish()
+            
         else:
             db.add_user_active(telegram_id=message.chat.id, user_id=auth[0][0])
             await message.answer("""
@@ -83,6 +102,12 @@ async def auth_password(message: types.Message, state: FSMContext):
         await message.answer(f"""
 Введите пароль повторно!
 """)
+        
+@dp.callback_query_handler(text='auth_again')
+async def auth_again_command(call: types.CallbackQuery):
+    await message.answer("""
+Здравствуйте, вам необходимо войти в свой аккаунт или пройти регистрацию в Сервисе AskeMe!                        
+""", reply_markup=keyboard_start)
     
 @dp.callback_query_handler(text='find_user')
 async def find_user_command(call: types.CallbackQuery):
