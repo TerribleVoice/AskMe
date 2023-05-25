@@ -7,15 +7,18 @@ config.read('C:\\Users\\Gorob\\Desktop\\bot\\settings\\config.ini')
 config_db_name = config.get('DATABASE', 'NAME_DB')
 config_db_user = config.get('DATABASE', 'USER_DB')
 config_db_name_password = config.get('DATABASE', 'PASSWORD_DB')
+config_db_host = config.get('DATABASE', 'HOST_DB')
+config_db_port = config.get('DATABASE', 'PORT_DB')
 
 class Database:
-    def __init__(self, db_name, db_user, db_password, db_host=None, db_port=None):
+    def __init__(self, db_name, db_user, db_password, db_host, db_port):
         self.db_name = db_name
         self.db_user = db_user
         self.db_password = db_password
         self.db_host = db_host
         self.db_port = db_port
-        self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, password=self.db_password)
+        self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, password=self.db_password,
+                                           host=db_host, port=db_port)
     
     def check_connection(self):
         return self.connection
@@ -365,6 +368,8 @@ class Database:
             
 db = Database(db_name=config_db_name,
               db_user=config_db_user,
-              db_password=config_db_name_password)
+              db_password=config_db_name_password,
+              db_host=config_db_host,
+              db_port=config_db_port)
 
 db.create_tables()
