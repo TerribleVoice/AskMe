@@ -12,7 +12,7 @@ public interface IUserService
     Task<UserDto?> FindUserByLoginAsync(string login);
     Task<UserDto[]> GetTopAuthorsAsync(int limit);
     Task UploadProfileImage(string userLogin, Stream imageStream);
-    Task<string> GetUserProfileImageUrl(string userLogin);
+    Task<string?> GetUserProfileImageUrl(string userLogin);
     Task DeleteUserProfileImage(string userLogin);
     Task<UserDto[]> SearchAsync(string query, int limit);
 }

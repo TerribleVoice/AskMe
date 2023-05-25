@@ -24,6 +24,11 @@ public class UserService : IUserService
 
     public async Task CreateUserAsync(UserCreationForm createDto)
     {
+        var existUser = await FindUserByLoginAsync(createDto.Login);
+        if (existUser != null)
+        {
+            throw new Exception($"Пользователь с логином {createDto.Login} уже существует");
+        }
         var dbo = userConverter.ToDbo(createDto);
 
         await dbContext.AddAsync(dbo);
@@ -117,7 +122,7 @@ public class UserService : IUserService
         await s3StorageHandler.UploadFileAsync(imageStream, path);
     }
 
-    public async Task<string> GetUserProfileImageUrl(string userLogin)
+    public async Task<string?> GetUserProfileImageUrl(string userLogin)
     {
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);
