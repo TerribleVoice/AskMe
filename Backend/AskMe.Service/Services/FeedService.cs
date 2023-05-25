@@ -36,11 +36,10 @@ public class FeedService : IFeedService
 
     public async Task<PostResponse[]> GetFeedAsync(string userLogin, DateTime? timeAfter = null)
     {
-        var user = await userService.ReadUserByLoginAsync(userLogin);
+        var subscriptionIds = (await subscriptionService.GetReaderSubscriptionsFlatTreeAsync(userLogin)).Select(x=>x.Id).ToArray();
 
-        var posts = await dbContext.BoughtSubscriptions
-            .Where(x => x.OwnerId == user.Id)
-            .SelectMany(x => x.Subscription.Posts)
+        var posts = await dbContext.Posts
+            .Where(x=>subscriptionIds.Contains(x.SubscriptionId))
             .OrderByDescending(x => x.CreatedAt)
             .FilterByTime(timeAfter)
             .ToArrayAsync();
