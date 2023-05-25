@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, executor, types
 from database import db
 from keyboard import keyboard_start, keyboard_auth, keyboard_search_user_subscribe, keyboard_search_user, keyboard_subs, keyboard_login, keyboard_password, \
                      keyboard_auth_again, keyboard_register_login, keyboard_register_email, keyboard_email_wrong, keyboard_register_password, \
-                     keyboard_login_register
+                     keyboard_login_register, keyboard_subscribe_back
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
@@ -48,6 +48,12 @@ async def send_welcome(message: types.Message):
     else:
         await message.answer("""
 С возвращением!
+""", reply_markup=keyboard_auth)
+    
+@dp.callback_query_handler(text='subscribe_back')
+async def keyboard_subscribe_back_command(call: types.CallbackQuery):
+    await call.message.answer("""
+Выберите интересующее вас действие!
 """, reply_markup=keyboard_auth)
     
 @dp.callback_query_handler(text='auth_email', state=Register.email)
@@ -167,9 +173,9 @@ async def find_user_nickname(message: types.Message, state: FSMContext):
             author_id = db.get_author_id(nickname=data['nickname'])[0][0]
             subscribe_user = db.check_user_subscription(user_id = user_id, subscription_id=author_id)
             if subscribe_user == []:   
-                await message.answer("Данный пользователь найден!", reply_markup=keyboard_search_user)
+                await message.answer(f"Имя: {data['nickname']}\nДанный пользователь найден!", reply_markup=keyboard_search_user)
             else:
-                await message.answer("Данный пользователь найден!", reply_markup=keyboard_search_user_subscribe)
+                await message.answer(f"Имя: {data['nickname']}\nДанный пользователь найден!", reply_markup=keyboard_search_user_subscribe)
         
         await state.finish()
         
@@ -178,10 +184,6 @@ async def find_user_nickname(message: types.Message, state: FSMContext):
         await message.answer(f"""
 Введите никнейм пользователя повторно!
 """)
-        
-@dp.callback_query_handler(text='subscribe_user')
-async def subscribe_user_command(call: types.CallbackQuery):
-    pass
 
 @dp.callback_query_handler(text='list_subs')
 async def list_subs_command(call: types.CallbackQuery):
@@ -191,7 +193,7 @@ async def list_subs_command(call: types.CallbackQuery):
         await call.message.answer("У вас нет подписок!")
     else:
         for sub in all_subs:
-            sub_id = all_subs[0][2]
+            sub_id = sub[2]
             sub_info = db.get_info_subs(sub_id = sub_id)[0]
             await call.message.answer(f"""
 Имя: {sub_info[3]}\n
@@ -209,10 +211,11 @@ async def view_posts_command(call: types.CallbackQuery):
     else:
         if len(posts) == 1:
             await call.message.answer(f"""
-{posts[0]}
+{posts[0][0]}
 """)
-        for post in posts:
-            await call.message.answer(f"""
+        else:
+            for post in posts:
+                await call.message.answer(f"""
 {post[0]}                                      
 """)
             
@@ -296,28 +299,14 @@ async def register_password_command(message: types.Message, state: FSMContext):
         await message.answer("Аккаунт успешно создан!\nПропишите /start!")
         await state.finish()
         
-# Отправка уведомления о выходе нового поста пользователя
-async def send_notification():
-    
-    while True:
-        print(1)
-        await asyncio.sleep(60)
-        
-    # while True:
-    #     posts = db.get_unactive_posts()
-    #     for post in posts:
-    #         sub_id = post[0]
-    #         subscribers = db.get_all_subscribers(sub_id=sub_id)
-    #         for subscriber in subscribers:
-    #             user_id = subscriber[0]
-    #             telegram_id = db.get_telegram_id_user(user_id=user_id)[0][0]
-    #             print(telegram_id)
-                    
-                    
-        # message = "Новый пост появился в базе данных!"
-        # await bot.send_message(chat_id, message)
-
-        # # ждем 1 минуту и повторяем цикл
+@dp.callback_query_handler(text='subscribe_user')
+async def subscribe_user_command(call: types.CallbackQuery):
+    uuid_code = uuid.uuid1()
+    user_id = db.check_user_active(telegram_id=call.message.chat.id)[0][0]
+    nickname = str(call.message.text.split("Имя: ")[1])
+    author_id = db.get_author_id(nickname=nickname)[0][1]
+    db.subscribe_user(uuid=uuid_code, user_id=user_id, subscription_id=author_id)
+    await call.message.answer("Вы успешно подписались", reply_markup=keyboard_subscribe_back)
 
 async def scheduled(wait_for):
      while True:
@@ -328,7 +317,8 @@ async def scheduled(wait_for):
             for subscriber in subscribers:
                 user_id = subscriber[0]
                 telegram_id = db.get_telegram_id_user(user_id=user_id)[0][0]
-                await bot.send_message(chat_id=telegram_id, text=post[1])
+                nickname_author = db.get_name_author(author_id=sub_id)[0][0]
+                await bot.send_message(chat_id=telegram_id, text=f"""У {nickname_author} вышел новый пост!\n\n{post[1]}""")
             db.add_post_active(id_post=post[2])
         
         await asyncio.sleep(wait_for)
