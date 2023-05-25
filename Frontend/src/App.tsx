@@ -13,11 +13,15 @@ import { Layout } from "@/components/Layout";
 import { Auth } from "./pages/auth_page/Auth_Page";
 import { ProfilePageVa } from "./pages/profile_page/Profile_Page";
 import { UserSettingsLayout } from "./pages/user_settings_page/components/UserSettingsLayout";
-import { UserSettingsForm } from "./pages/user_settings_page/components/UserSettingsForm";
+import { UserSettingsForm } from "./pages/user_settings_page/components/UserSettingsForm/UserSettingsForm";
 import { UserSettingsSubscriptions } from "./pages/user_settings_page/components/UserSettingsSubscriptions";
 import { UserSettingsPayments } from "./pages/user_settings_page/components/UserSettingsPayments";
 import { FeedPage } from "./pages/feed_page/Feed_Page";
 import { FeedLayout } from "./pages/feed_page/components/FeedLayout";
+import { CreateSubscription } from "./pages/profile_page/components/CreateSubscription/CreateSubscription";
+import { CreatePost } from "./pages/profile_page/components/CreatePost/CreatePost";
+import { CreateDescription } from "./pages/profile_page/components/CreateDescription/CreateDescription";
+import { Error_Page } from "./pages/Error_Page";
 
 export const App = () => {
   return (
@@ -25,19 +29,28 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Main />} />
-          <Route path=":LoginName" element={<ProfilePageVa />} />
-          <Route path="feed" element={<FeedLayout />}>
-            <Route index element={<FeedPage />}/>
+          <Route path=":LoginName/">
+            <Route index element={<ProfilePageVa />}/>
+            <Route path="create_description" element={<CreateDescription />}/>
+            <Route path="create_post" element={<CreatePost />}/>
+            <Route path="create_subscription" element={<CreateSubscription />}/>
           </Route>
+          <Route path="feed" element={<FeedLayout />}>
+            <Route index element={<FeedPage />} />
+          </Route>
+          <Route path="404" element={<Error_Page />} />
           <Route path="TheOnlyOne1" element={<Profile />} />
           <Route path="ObabMaster" element={<Profile1 />} />
           <Route path="YOUNG77" element={<Profile2 />} />
           <Route path="NeDlaProdagi" element={<Profile3 />} />
-          <Route path=":LoginName/settings/" element={<UserSettingsLayout />} >
-            <Route index element={<Navigate to={"profile"} replace/>}/>
-            <Route path="profile" element={<UserSettingsForm />}/>
-            <Route path="subscriptions" element={<UserSettingsSubscriptions/>} />
-            <Route path="payments" element={<UserSettingsPayments />}/>
+          <Route path=":LoginName/settings/" element={<UserSettingsLayout />}>
+            <Route index element={<Navigate to={"profile"} replace />} />
+            <Route path="profile" element={<UserSettingsForm />} />
+            <Route
+              path="subscriptions"
+              element={<UserSettingsSubscriptions />}
+            />
+            <Route path="payments" element={<UserSettingsPayments />} />
           </Route>
         </Route>
         <Route path="auth" element={<Auth />} />

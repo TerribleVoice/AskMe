@@ -1,5 +1,5 @@
 .left-reg__mail input {
-  margin-top: 5px;
+  margin: 10px 0 5px;
   border: 0;
   font-family: "Roboto";
   font-style: normal;
@@ -11,6 +11,9 @@
 
   color: #ffffff;
   background: #202020;
+}
+.left-reg__mail input:focus {
+  border-bottom: #b00062 1px solid;
 }
 .left-reg__mail {
   margin-bottom: 12px;
@@ -25,7 +28,7 @@ input:focus {
 }
 
 .left-reg__login input {
-  margin-top: 5px;
+  margin: 10px 0 5px;
   border: 0;
   font-family: "Roboto";
   font-style: normal;
@@ -34,6 +37,9 @@ input:focus {
   line-height: 23px;
   color: #ffffff;
   background: #202020;
+}
+.left-reg__login input:focus {
+  border-bottom: #b00062 1px solid;
 }
 .left-reg__login {
   margin-bottom: 12px;
@@ -43,7 +49,7 @@ input:focus {
   flex-direction: column;
 }
 .left-reg__password input {
-  margin-top: 5px;
+  margin: 10px 0 5px;
   border: 0;
   font-family: "Roboto";
   font-style: normal;
@@ -52,6 +58,9 @@ input:focus {
   line-height: 23px;
   color: #ffffff;
   background: #202020;
+}
+.left-reg__password input:focus {
+  border-bottom: #b00062 1px solid;
 }
 .left-reg__password {
   padding: 10px;
@@ -69,8 +78,6 @@ input:focus {
   border: 3px solid #b00062;
   color: #ffffff;
   padding: 12px 24px;
-}
-.left-reg__submit:hover {
   cursor: pointer;
 }
 .left-reg__submit button {

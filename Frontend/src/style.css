@@ -28,6 +28,24 @@ body {
   overflow: hidden;
 }
 
+.go_back {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  align-items: center;
+  padding: 4px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+.back_image {
+  width: 19px;
+  margin-right: 12px;
+}
+.back {
+  font-size: x-large;
+  color: #e6258f;
+}
+
 header {
   display: flex;
   justify-content: flex-end;
@@ -120,7 +138,7 @@ header {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 .header__dropdown-content a {
@@ -128,7 +146,7 @@ header {
   padding: 12px 14px;
   text-decoration: none;
   display: block;
-  
+
   font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
@@ -142,7 +160,9 @@ header {
     rgba(115, 0, 64, 0.9) 100%
   );
 }
-.header__dropdown:hover .header__dropdown-content {display: block;}
+.header__dropdown:hover .header__dropdown-content {
+  display: block;
+}
 
 /* ==================== */
 
@@ -243,9 +263,9 @@ header {
   color: #c0c0c0;
 }
 .Author:hover {
-  box-shadow:inset 0px 0px 0px 7px #B00062;
-  -webkit-box-shadow:inset 0px 0px 0px 7px #B00062;
-  -moz-box-shadow:inset 0px 0px 0px 7px #B00062;
+  box-shadow: inset 0px 0px 0px 7px #b00062;
+  -webkit-box-shadow: inset 0px 0px 0px 7px #b00062;
+  -moz-box-shadow: inset 0px 0px 0px 7px #b00062;
 }
 
 /* ======================== */
@@ -443,6 +463,7 @@ a:active {
 
 .pp_main {
   padding-top: 20px;
+  min-height: 80vh;
 }
 .pp_main__container {
   position: relative;
@@ -559,6 +580,10 @@ a:active {
 }
 .pp_left__img {
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 15vh;
 }
 .pp_left__body {
 }
@@ -566,6 +591,25 @@ a:active {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.pp_body-create_post {
+  display: flex;
+  justify-content: center;
+  background-color: #860049;
+  padding: 15px 0 15px 0;
+  border: #da0178 4px solid;
+  font-weight: 500;
+  cursor: pointer;
+}
+.pp_body-create_subscr {
+  display: flex;
+  justify-content: center;
+  background-color: #860049;
+  padding: 15px 0 15px 0;
+  border: #da0178 4px solid;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0 25px 0 25px;
 }
 .pp_body-left__nick {
   font-family: "Roboto";
@@ -660,7 +704,12 @@ a:active {
 .pp_top-right__link::after {
   color: #3f3f3f;
 }
-
+.pp_left__avatar {
+  min-height: 20vh;
+  min-width: 20vw;
+  max-width: 40vw;
+  max-height: 42vh;
+}
 /* =================== */
 
 .pp_left__top {
@@ -763,6 +812,7 @@ a:active {
   color: #ffffff;
   background: #202020;
   height: 300px;
+  resize: none;
 }
 .settings_description input:focus {
   border: 1px solid#f10086;
@@ -811,8 +861,181 @@ a:active {
   background-color: #860049;
   padding: 1vw;
 }
+#image-preview {
+  min-width: 10vw;
+  min-height: 10vw;
+  max-width: 20vw;
+  max-height: 20vw;
+}
 /* Лента */
 .feed_authors_slider {
   max-width: 600px;
   max-height: 300px;
+}
+/* Создать подписку */
+.subscription_create_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 7vh;
+}
+.subscription_create {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  width: 40vw;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 35px;
+  padding-right: 35px;
+  background-color: #181818;
+}
+.subscription_aside_left {
+  position: absolute;
+  margin-right: 60vw;
+}
+.subscription_form {
+  padding-top: 30px;
+}
+.subscription_form input {
+  margin: 10px 0 5px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  color: #ffffff;
+  background: #202020;
+  border: 0;
+}
+.subscription_form input:focus {
+  border-bottom: #b00062 1px solid;
+}
+.subscription_input {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #202020;
+  display: flex;
+  flex-direction: column;
+}
+.subscription_input > input[type="number"]::-webkit-inner-spin-button,
+.subscription_input > input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.subscription_input > input[type="number"] {
+  -moz-appearance: textfield;
+}
+.subscription_image {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #202020;
+  display: flex;
+  flex-direction: column;
+}
+.subscription_image > label > input[type="file"] {
+  display: none;
+}
+.custom_file_upload {
+  border: 2px solid #b00062;
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px 0 10px;
+  background-color: #181818;
+  width: fit-content;
+  cursor: pointer;
+}
+.custom_file_upload:hover {
+  color: #b00062;
+}
+.subscription_description {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #202020;
+  display: flex;
+  flex-direction: column;
+}
+.subscription_description > textarea {
+  margin-top: 5px;
+  border: 0;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  color: #ffffff;
+  background: #202020;
+  height: 300px;
+  resize: none;
+}
+.subscription_description > textarea:focus {
+  outline: 1px solid#f10086;
+}
+/* Создание поста */
+.file_post {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #202020;
+  display: flex;
+  flex-direction: column;
+}
+.file_post > label > input[type="file"] {
+  display: none;
+}
+.custom_file_upload_post {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px 3px 10px;
+  background-color: #181818;
+  width: fit-content;
+  cursor: pointer;
+}
+.custom_file_upload_post:hover {
+  outline: 2px solid #b00062;
+}
+/* Подписки */
+.pp_subscriptions_wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: #181818;
+  padding-bottom: 15px;
+}
+.pp_subscriptions_header {
+  justify-self: center;
+  font-size: larger;
+  font-weight: 500;
+  margin: 9px 0 9px;
+}
+.pp_subscription {
+  border-top: #b00062 1px solid;
+  padding: 9px 32px;
+}
+.pp_subscription:nth-last-child(2) {
+  border-bottom: #b00062 1px solid;
+  margin-bottom: 15px;
+}
+.pp_subscription_name {
+  font-size: large;
+  font-weight: 500;
+  width: fit-content;
+}
+.pp_subscription_price {
+  font-size: small;
+  font-weight: 300;
+}
+.pp_subscription_description {
+  margin: 8px 0 8px;
+}
+.settings_delete_photo {
+  margin-top: 20px;
+  display: inline-flex;
+  font-style: normal;
+  font-weight: 500;
+  width: fit-content;
+  font-size: 20px;
+  line-height: 23px;
+  border: 3px solid #b00062;
+  color: #ffffff;
+  padding: 12px 24px;
+  cursor: pointer;
 }

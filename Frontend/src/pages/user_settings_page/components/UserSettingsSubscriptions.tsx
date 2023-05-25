@@ -3,6 +3,7 @@ import { getUserBoughtSubscriptions } from "@/services/getUserBoughtSubscription
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { zaglushka } from "./subscriptions_data";
+import { UserSettingsDeleteSubscription } from "./UserSettingsDeleteSubscription";
 
 export const UserSettingsSubscriptions = () => {
   const [boughtSubscription, setBoughtSubscription] = useState<
@@ -17,6 +18,7 @@ export const UserSettingsSubscriptions = () => {
           if (data === undefined) {
             setBoughtSubscription(zaglushka);
           } else {
+            console.log(data)
             setBoughtSubscription(data);
           }
         } else {
@@ -31,8 +33,6 @@ export const UserSettingsSubscriptions = () => {
     }
   }, [LoginName]);
 
-  const handleUnsubscribe = () => {};
-
   return (
     <div className="settings_form_wrapper">
       <h1>Подписки</h1>
@@ -40,7 +40,7 @@ export const UserSettingsSubscriptions = () => {
         {boughtSubscription?.map((bs) => {
           return (
             <div key={bs.id} className="settings_subscription_card">
-              <span className="settings_subscription_unsub"><img src="/img/settings/Crest.svg" alt="Delete" /></span>
+              <UserSettingsDeleteSubscription id={bs.id}/>
               <span className="settings_subscription_name">{bs.name}</span>
               <p className="settings_subscription_description">
                 {bs.description}

@@ -2,6 +2,8 @@ import { IUserSettings } from "@/models/IUserSettings";
 import { postUserSettingsForm } from "@/services/postUserSettingsForm";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import { UserSettingsPhoto } from "./UserSettingsPhoto";
+import { UserSettingsDeletePhoto } from "./UserSettingsDeletePhoto";
 
 export const UserSettingsForm = () => {
   const {
@@ -31,6 +33,8 @@ export const UserSettingsForm = () => {
   return (
     <div className="settings_form_wrapper">
       <h1>Профиль</h1>
+      <UserSettingsPhoto />
+      <UserSettingsDeletePhoto />
       <form className="settings_form" onSubmit={handleSubmit(onSettingsSubmit)}>
         <div className="left-reg__login">
           <label htmlFor="login">Имя</label>

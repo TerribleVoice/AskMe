@@ -7,7 +7,6 @@ import { AuthorsSlider } from "./components/Ourauthors/AuthorsSlider";
 import { IUserTopAuthors } from "@/models/IUserTopAuthors";
 import { getUserTopAuthors } from "@/services/getTopAuthors";
 import { useState, useEffect } from "react";
-import { Author } from "./components/Ourauthors/Author";
 
 export const Main = () => {
   const [authorData, setAuthorData] = useState<IUserTopAuthors[]>([]);
@@ -26,14 +25,14 @@ export const Main = () => {
     } catch (error) {
       console.log(error);
     }
-  });
+  }, []);
   return (
     <>
       <Ask />
       <Service />
       <Let />
       <Ourauthors />
-      <AuthorsSlider className="container"/>
+      <AuthorsSlider authorsData={authorData} />
     </>
   );
 };

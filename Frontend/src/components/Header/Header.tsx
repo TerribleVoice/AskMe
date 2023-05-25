@@ -1,3 +1,4 @@
+import { DebounceSearch } from "@/hooks/DebounceSearch";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
@@ -42,7 +43,8 @@ export const Header = () => {
         <img src="img/profile/logo.png" alt="logo"></img>
       </Link>
       <img src="img/search.svg" alt="" className="header__icon" />
-      <input type="text" className="header__input" placeholder="Поиск автора" />
+      {/* <input type="text" className="header__input" placeholder="Поиск автора" /> */}
+      <DebounceSearch />
       {buttons}
     </header>
   );
