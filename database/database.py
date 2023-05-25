@@ -45,7 +45,8 @@ class Database:
                             subscription_id uuid NOT NULL,
                             content text NOT NULL,
                             created_at timestamp without time zone NOT NULL,
-                            price integer
+                            price integer,
+                            CONSTRAINT post_id PRIMARY KEY (id)
                         );
                         """)
             self.connection.commit()
@@ -74,6 +75,7 @@ class Database:
                             CONSTRAINT user_subscription_fk_1 FOREIGN KEY (subscription_id) REFERENCES public.subscriptions(id)
                         );
                         """)
+            self.connection.commit()
             
             cursor.execute(f"""
                         CREATE TABLE IF NOT EXISTS {config.get('TABLES', 'TABLE_ACTIVE')} (
@@ -84,14 +86,18 @@ class Database:
                         """)
             self.connection.commit()
             
+            cursor.execute(f"""
+                        CREATE TABLE IF NOT EXISTS {config.get('TABLES', 'TABLE_NOTIFICATION')} (
+                            id_post uuid NOT NULL,
+                            notification BOOLEAN NOT NULL,
+                            CONSTRAINT notif_fk FOREIGN KEY (id_post) REFERENCES posts(id)
+                        );
+                        """)
+            self.connection.commit()
             
     def delete_tables(self):
         with self.connection.cursor() as cursor:
-            cursor.execute(f'''DROP TABLE {config.get('TABLES', 'TABLE_USERS')} CASCADE;
-                               DROP TABLE {config.get('TABLES', 'TABLE_POSTS')} CASCADE;
-                               DROP TABLE {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} CASCADE;
-                               DROP TABLE {config.get('TABLES', 'TABLE_ACTIVE')} CASCADE;
-                               DROP TABLE {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')} CASCADE;
+            cursor.execute(f'''DROP TABLE {config.get('TABLES', 'TABLE_POSTS')} CASCADE;
                             ''')
             
             self.connection.commit()
@@ -285,6 +291,54 @@ class Database:
             
             cursor.execute(insert)
             self.connection.commit()
+            
+    # Получение всех постов, которые еще не разослали
+    def get_unactive_posts(self):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT author_id, content, id FROM {config.get('TABLES', 'TABLE_POSTS')}
+            WHERE id NOT IN (SELECT id_post FROM {config.get('TABLES', 'TABLE_NOTIFICATION')});
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+    
+    # Получение всех подписчиков автора
+    def get_all_subscribers(self, sub_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT user_id FROM {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')}
+            WHERE subscription_id = {repr(sub_id)};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+        
+    # Получение telegram_id пользователя
+    def get_telegram_id_user(self, user_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT id_telegram FROM {config.get('TABLES', 'TABLE_ACTIVE')}
+            WHERE id_user = {repr(user_id)};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+    
+    # Добавление поста в аквтиные
+    def add_post_active(self, id_post):
+        with self.connection.cursor() as cursor:
+            insert = f"""
+            INSERT INTO {config.get('TABLES', 'TABLE_NOTIFICATION')} (id_post, notification)
+            VALUES ({repr(id_post)}, true);
+            """
+            
+            cursor.execute(insert)
+            self.connection.commit()
+    
             
 db = Database(db_name=config_db_name,
               db_user=config_db_user,

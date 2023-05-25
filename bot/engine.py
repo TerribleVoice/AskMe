@@ -1,5 +1,7 @@
 import sys
 import uuid
+import asyncio
+import aioschedule
 
 sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\keyboards')
 sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\database')
@@ -293,6 +295,47 @@ async def register_password_command(message: types.Message, state: FSMContext):
         db.add_user_active(telegram_id=message.chat.id, user_id=uuid_code)
         await message.answer("Аккаунт успешно создан!\nПропишите /start!")
         await state.finish()
+        
+# Отправка уведомления о выходе нового поста пользователя
+async def send_notification():
+    
+    while True:
+        print(1)
+        await asyncio.sleep(60)
+        
+    # while True:
+    #     posts = db.get_unactive_posts()
+    #     for post in posts:
+    #         sub_id = post[0]
+    #         subscribers = db.get_all_subscribers(sub_id=sub_id)
+    #         for subscriber in subscribers:
+    #             user_id = subscriber[0]
+    #             telegram_id = db.get_telegram_id_user(user_id=user_id)[0][0]
+    #             print(telegram_id)
+                    
+                    
+        # message = "Новый пост появился в базе данных!"
+        # await bot.send_message(chat_id, message)
+
+        # # ждем 1 минуту и повторяем цикл
+
+async def scheduled(wait_for):
+     while True:
+        posts = db.get_unactive_posts()
+        for post in posts:
+            sub_id = post[0]
+            subscribers = db.get_all_subscribers(sub_id=sub_id)
+            for subscriber in subscribers:
+                user_id = subscriber[0]
+                telegram_id = db.get_telegram_id_user(user_id=user_id)[0][0]
+                await bot.send_message(chat_id=telegram_id, text=post[1])
+            db.add_post_active(id_post=post[2])
+        
+        await asyncio.sleep(wait_for)
+
+
+async def on_startup(dp):
+    asyncio.create_task(scheduled(2))
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
