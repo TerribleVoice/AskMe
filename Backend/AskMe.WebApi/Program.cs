@@ -6,6 +6,7 @@ using AskMe.Core.StorageLayer;
 using AskMe.Service.Converters;
 using AskMe.Service.Services;
 using AskMe.WebApi.Builders;
+using AskMe.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,6 +64,8 @@ app.UseCors(corsBuilder => corsBuilder
     .SetIsOriginAllowed(_ => true)
     .AllowCredentials()
 );
+
+app.UseMiddleware<ErrorMiddleware>();
 
 app.MapControllers();
 app.Run();

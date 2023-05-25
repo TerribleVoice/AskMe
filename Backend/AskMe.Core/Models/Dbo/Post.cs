@@ -11,6 +11,10 @@ public class Post : Dbo, IHaveAuthor
         Content = string.Empty;
     }
 
+    [Column("title")]
+    [Required(AllowEmptyStrings = false)]
+    public string Title { get; set; }
+
     [Column("subscription_id")]
     [Required]
     public Guid SubscriptionId { get; set; }

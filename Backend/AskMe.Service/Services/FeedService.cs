@@ -15,7 +15,7 @@ public class FeedService : IFeedService
     private readonly IPostConverter postConverter;
     private readonly IUserIdentity userIdentity;
     private readonly ISubscriptionService subscriptionService;
-    private readonly S3StorageHandler s3StorageHandler;
+    private readonly IS3StorageHandler s3StorageHandler;
 
     public FeedService(
         PostgresDbContext dbContext,
@@ -23,7 +23,7 @@ public class FeedService : IFeedService
         IPostConverter postConverter,
         IUserIdentity userIdentity,
         ISubscriptionService subscriptionService,
-        S3StorageHandler s3StorageHandler
+        IS3StorageHandler s3StorageHandler
         )
     {
         this.dbContext = dbContext;
@@ -36,11 +36,10 @@ public class FeedService : IFeedService
 
     public async Task<PostResponse[]> GetFeedAsync(string userLogin, DateTime? timeAfter = null)
     {
-        var user = await userService.ReadUserByLoginAsync(userLogin);
+        var subscriptionIds = (await subscriptionService.GetReaderSubscriptionsFlatTreeAsync(userLogin)).Select(x=>x.Id).ToArray();
 
-        var posts = await dbContext.BoughtSubscriptions
-            .Where(x => x.OwnerId == user.Id)
-            .SelectMany(x => x.Subscription.Posts)
+        var posts = await dbContext.Posts
+            .Where(x=>subscriptionIds.Contains(x.SubscriptionId))
             .OrderByDescending(x => x.CreatedAt)
             .FilterByTime(timeAfter)
             .ToArrayAsync();
@@ -75,8 +74,8 @@ public class FeedService : IFeedService
         var tasks = new List<Task>();
         foreach (var request in attachmentRequests)
         {
-            await using var stream = request.FileStream;
-            var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString()}-{request.Name}");
+            var stream = request.FileStream;
+            var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString().ToLower()}-{request.Name}");
             tasks.Add(s3StorageHandler.UploadFileAsync(stream, path));
         }
 
@@ -88,20 +87,20 @@ public class FeedService : IFeedService
         var path = S3StorageHandler.CreatePath("posts", postId.ToString());
         var fileKeys =  await s3StorageHandler.GeFileKeysInDirectoryAsync(path);
 
-        return fileKeys.Select(name => new AttachmentResponse
+
+        var fileNames = fileKeys.ToDictionary(
+            x => x,
+            key => key.Split('/').Last()
+        );
+        return fileKeys.Select(fileKey => new AttachmentResponse
         {
-            FileType = AttachmentService.GetFileType(name),
-            SourceUrl = s3StorageHandler.GetFileUrl(name)
+            FileType = AttachmentService.GetFileType(fileNames[fileKey]),
+            SourceUrl = s3StorageHandler.GetFileUrl(fileKey)
         }).ToArray();
     }
 
     public async Task<Guid> CreateOrUpdateAsync(PostRequest request, Guid? postId = null)
     {
-        if (postId.HasValue)
-        {
-            await ThrowIfCantEdit(postId.Value);
-        }
-
         var id = postId ?? Guid.NewGuid();
         var authorId = userIdentity.CurrentUser!.Id;
         var postDbo = postConverter.Convert(id, authorId, DateTime.Now, request);

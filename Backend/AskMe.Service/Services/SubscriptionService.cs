@@ -28,22 +28,17 @@ public class SubscriptionService : ISubscriptionService
 
     public async Task CreateOrUpdateAsync(SubscriptionRequest request, Guid? subscriptionId = null)
     {
-        if (subscriptionId.HasValue)
-        {
-            await ThrowIfCantBeEditedAsync(subscriptionId.Value);
-        }
-
         var id = subscriptionId ?? Guid.NewGuid();
         var authorId = userIdentity.CurrentUser!.Id;
-        var postDbo = subscriptionConverter.Convert(id, authorId, request);
+        var subscriptionDbo = subscriptionConverter.Convert(id, authorId, request);
 
         if (subscriptionId.HasValue)
         {
-            dbContext.Subscription.Update(postDbo);
+            dbContext.Subscription.Update(subscriptionDbo);
         }
         else
         {
-            await dbContext.Subscription.AddAsync(postDbo);
+            await dbContext.Subscription.AddAsync(subscriptionDbo);
         }
         await dbContext.SaveChangesAsync();
     }
@@ -103,14 +98,43 @@ public class SubscriptionService : ISubscriptionService
         }
     }
 
-    public async Task<Result> SubscribeAsync(Guid subscriptionId)
+    public async Task<SubscriptionResponse[]> SubscriptionsWithoutChildrenAsync(string userLogin)
     {
-        throw new NotImplementedException("Нужно разобраться с тем как оплачивать");
+        var authorSubscriptions = await GetAuthorSubscriptionsAsync(userLogin);
+        var subsWithoutChildren = authorSubscriptions
+            .Where(x => authorSubscriptions.All(children => children.ParentSubscriptionId != x.Id))
+            .ToArray();
+
+        return subsWithoutChildren;
     }
 
-    public async Task<Result> UnsubscribeAsync(Guid subscriptionId)
+    public async Task SubscribeAsync(Guid subscriptionId)
     {
-        throw new NotImplementedException("Нужно подумать с циклом оплаты подписки");
+        var currentUser = await userService.ReadUserByLoginAsync(userIdentity.CurrentUser!.Login);
+        var boughtSubscription = new BoughtSubscription
+        {
+            Id = Guid.NewGuid(),
+            OwnerId = currentUser.Id,
+            SubscriptionId = subscriptionId
+        };
+
+        await dbContext.BoughtSubscriptions.AddAsync(boughtSubscription);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task UnsubscribeAsync(Guid subscriptionId)
+    {
+        var currentUser = await userService.ReadUserByLoginAsync(userIdentity.CurrentUser!.Login);
+
+        var boughtSubscription = await dbContext.BoughtSubscriptions
+            .FirstOrDefaultAsync(x => x.SubscriptionId == subscriptionId && x.OwnerId == currentUser.Id);
+        if (boughtSubscription == null)
+        {
+            throw new ArgumentNullException($"У пользователя {currentUser.Login} нет подписки {subscriptionId}");
+        }
+
+        dbContext.BoughtSubscriptions.Remove(boughtSubscription);
+        await dbContext.SaveChangesAsync();
     }
 
     private async Task ThrowIfCantBeEditedAsync(Guid subscriptionId)
