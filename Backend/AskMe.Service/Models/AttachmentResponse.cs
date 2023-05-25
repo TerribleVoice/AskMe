@@ -10,5 +10,5 @@ public class AttachmentResponse
     }
 
     public FileType FileType { get; set; }
-    public string SourceUrl { get; set; }
+    public string? SourceUrl { get; set; }
 }

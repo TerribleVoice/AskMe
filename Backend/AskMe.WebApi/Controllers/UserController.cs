@@ -134,8 +134,11 @@ public class UserController : CustomControllerBase
     public async Task<ActionResult<UserViewModel>> Search(string query, int limit)
     {
         var userDtos = await userService.SearchAsync(query, limit);
-        var tasks = userDtos.Select(userViewModelBuilder.BuildAsync).ToArray();
-        var viewModels = await Task.WhenAll(tasks);
+        var viewModels = new List<UserViewModel>();
+        foreach (var dto in userDtos)
+        {
+            viewModels.Add(await userViewModelBuilder.BuildAsync(dto));
+        }
 
         return Ok(viewModels);
     }

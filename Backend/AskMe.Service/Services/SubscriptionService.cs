@@ -49,6 +49,7 @@ public class SubscriptionService : ISubscriptionService
 
         var subscription = await dbContext.ReadAsync<Subscription>(id);
         dbContext.Subscription.Remove(subscription);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<SubscriptionResponse[]> GetAuthorSubscriptionsAsync(string userLogin)

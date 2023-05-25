@@ -50,7 +50,7 @@ public class S3StorageHandler : IS3StorageHandler
         }
     }
 
-    public string GetFileUrl(string fileKey)
+    public string? GetFileUrl(string fileKey)
     {
         var request = new GetPreSignedUrlRequest
         {
