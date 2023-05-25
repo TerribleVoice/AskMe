@@ -14,6 +14,7 @@ CREATE TABLE public.posts (
     id uuid NOT NULL,
     author_id uuid NOT NULL,
     subscription_id uuid NOT NULL,
+    title varchar(300) NOT NULL,
     content text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     price integer
@@ -70,5 +71,5 @@ INSERT INTO public.users (id,login,email,"password",qiwi_token) VALUES
     ('a8681dd5-7a5a-4ae5-8237-583edfb2eedb','test','test@ya.ru','123',NULL),
     ('3560787e-4830-4fba-9673-9f47c9a3f8c8','reader','reader@ya.ru','123',NULL);
 
-INSERT INTO public.posts (id,author_id,subscription_id,content,created_at,price) VALUES
-    ('fbad2687-42f4-4cb3-8534-61c8936ec4a8','a8681dd5-7a5a-4ae5-8237-583edfb2eedb','4dcde46f-6f38-4400-bd1e-e495f148afdd','Всем привет, это первый пост автоматически сгенерированный при создании БД. Если вы его видите, то подключение к бд работает хорошо','2023-01-19 23:00:00+05',NULL);
+INSERT INTO public.posts (id,author_id,subscription_id,title,content,created_at,price) VALUES
+    ('fbad2687-42f4-4cb3-8534-61c8936ec4a8','a8681dd5-7a5a-4ae5-8237-583edfb2eedb','4dcde46f-6f38-4400-bd1e-e495f148afdd','Всем привет','Всем привет, это первый пост автоматически сгенерированный при создании БД. Если вы его видите, то подключение к бд работает хорошо','2023-01-19 23:00:00+05',NULL);

@@ -8,7 +8,7 @@ public class PostViewModel
     public string? Content { get; set; }
     public DateTime CreateAt { get; set; }
     public bool HaveAccess { get; set; }
-
+    public string Title { get; set; }
     public UserViewModel AuthorViewModel { get; set; }
 
     public static PostViewModel CreateNoAccess(PostResponse post, UserViewModel authorViewModel)
@@ -19,6 +19,7 @@ public class PostViewModel
             Id = post.Id,
             Content = null,
             CreateAt = post.CreateAt,
+            Title = post.Title,
             AuthorViewModel = authorViewModel
         };
     }
@@ -31,6 +32,7 @@ public class PostViewModel
             Id = post.Id,
             Content = post.Content,
             CreateAt = post.CreateAt,
+            Title = post.Title,
             AuthorViewModel = authorViewModel
         };
     }

@@ -13,7 +13,8 @@ public class PostConverter : IPostConverter
             CreateAt = post.CreatedAt,
             Content = post.Content,
             Price = post.Price,
-            SubscriptionId = post.SubscriptionId
+            SubscriptionId = post.SubscriptionId,
+            Title = post.Title
         };
     }
 
@@ -26,7 +27,8 @@ public class PostConverter : IPostConverter
             Content = request.Content!,
             Price = request.Price,
             CreatedAt = createdAt,
-            SubscriptionId = request.SubscriptionId
+            SubscriptionId = request.SubscriptionId,
+            Title = request.Title
         };
     }
 }
