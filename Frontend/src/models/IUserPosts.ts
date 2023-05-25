@@ -16,5 +16,5 @@ export interface IUserCreatePost {
   subscriptionId: string;
   content: string;
   price: number;
-  files: string;
+  files: FileList;
 }

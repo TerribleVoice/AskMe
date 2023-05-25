@@ -10,9 +10,17 @@ export const UserSettingsForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUserSettings>();
+  } = useForm<IUserSettings>({
+    defaultValues: {
+      login: null,
+      email: null,
+      password: null,
+      links: null,
+      description: null,
+    },
+  });
   const { LoginName } = useParams();
-  const navigation = useNavigate()
+  const navigation = useNavigate();
 
   const onSettingsSubmit = async (data: IUserSettings) => {
     try {
@@ -24,13 +32,13 @@ export const UserSettingsForm = () => {
       console.log(response);
       if (response.status < 300) {
         if (data.login) {
-          localStorage.removeItem("login")
+          localStorage.removeItem("login");
           localStorage.setItem("login", data.login);
-           
-          navigation(`/${data.login}`)
+
+          navigation(`/${data.login}`);
         } else {
-          const login = localStorage.getItem("login")
-          navigation(`/${login}`)
+          const login = localStorage.getItem("login");
+          navigation(`/${login}`);
         }
       } else {
         alert("Reject");
@@ -47,14 +55,24 @@ export const UserSettingsForm = () => {
       <form className="settings_form" onSubmit={handleSubmit(onSettingsSubmit)}>
         <div className="left-reg__login">
           <label htmlFor="login">Имя</label>
-          <input {...register("login")} type="text" name="login" id="login" />
+          <input
+            {...register("login", { setValueAs: (v) => (v === "" ? null : v) })}
+            type="text"
+            name="login"
+            id="login"
+          />
           <label className="settings_caption" htmlFor="login">
             Имя будет показываться на вашей странице
           </label>
         </div>
         <div className="left-reg__login">
           <label htmlFor="email">Почта</label>
-          <input {...register("email")} type="email" name="email" id="email" />
+          <input
+            {...register("email", { setValueAs: (v) => (v === "" ? null : v) })}
+            type="email"
+            name="email"
+            id="email"
+          />
           <label className="settings_caption" htmlFor="login">
             Используется для входа в аккаунт
           </label>
@@ -62,7 +80,9 @@ export const UserSettingsForm = () => {
         <div className="left-reg__login">
           <label htmlFor="password">Пароль</label>
           <input
-            {...register("password")}
+            {...register("password", {
+              setValueAs: (v) => (v === "" ? null : v),
+            })}
             type="password"
             name="password"
             id="password"
@@ -73,7 +93,12 @@ export const UserSettingsForm = () => {
         </div>
         <div className="left-reg__login">
           <label htmlFor="links">Ссылки</label>
-          <input {...register("links")} type="text" name="links" id="links" />
+          <input
+            {...register("links", { setValueAs: (v) => (v === "" ? null : v) })}
+            type="text"
+            name="links"
+            id="links"
+          />
           <label className="settings_caption" htmlFor="login">
             Ссылки будут показываться на вашей странице
           </label>
@@ -81,7 +106,9 @@ export const UserSettingsForm = () => {
         <div className="settings_description">
           <label htmlFor="description">Описание</label>
           <textarea
-            {...register("description")}
+            {...register("description", {
+              setValueAs: (v) => (v === "" ? null : v),
+            })}
             name="description"
             id="description"
           />

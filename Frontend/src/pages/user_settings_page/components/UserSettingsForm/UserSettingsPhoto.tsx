@@ -15,7 +15,9 @@ export const UserSettingsPhoto = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target)
     const file = event.target.files?.[0];
+    console.log(file)
     if (file) {
       setSelectedImage(URL.createObjectURL(file));
     }
@@ -27,8 +29,9 @@ export const UserSettingsPhoto = () => {
       if (!data) {
         console.log(data)
       }
+      console.log(data)
       const response = await postUserPhoto(data, LoginName!);
-
+      console.log(response)
       if (response.status < 300) {
         alert("Confirm");
       } else {

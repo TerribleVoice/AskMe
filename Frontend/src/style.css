@@ -580,9 +580,6 @@ a:active {
 }
 .pp_left__img {
   margin-bottom: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 15vh;
 }
 .pp_left__body {
@@ -1001,6 +998,9 @@ a:active {
 }
 .custom_file_upload_post:hover {
   outline: 2px solid #b00062;
+}
+.subscription_checkbox {
+
 }
 .create_post_subscriptions_wrapper {
   display: grid;
