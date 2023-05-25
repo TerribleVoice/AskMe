@@ -73,4 +73,6 @@ keyboard_register_password.add(keyboard_password_return_register)
 # Вернуться назад после подписки
 keyboard_subscribe_back = InlineKeyboardMarkup()
 keyboard_subscribe_back_button1 = InlineKeyboardButton(text="Вернутся на шаг назад 🚪", callback_data="subscribe_back")
+keyboard_subscribe_back_button2 = InlineKeyboardButton(text="Посмотреть посты пользователя", callback_data="last_posts")
+keyboard_subscribe_back.add(keyboard_subscribe_back_button2)
 keyboard_subscribe_back.add(keyboard_subscribe_back_button1)
