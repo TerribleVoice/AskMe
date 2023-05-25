@@ -79,7 +79,7 @@ public class FeedController : CustomControllerBase
     {
         var attachmentRequests = files.Select(x=> new AttachmentRequest
         {
-            Name = x.Name,
+            Name = x.FileName,
             Type = AttachmentService.GetFileType(x.ContentType),
             FileStream = x.OpenReadStream()
         }).ToArray();

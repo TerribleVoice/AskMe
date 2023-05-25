@@ -72,7 +72,7 @@ public class S3StorageHandler : IS3StorageHandler
         };
 
         var objectsResponse = await S3Client.ListObjectsAsync(request);
-        return objectsResponse.S3Objects.Select(x => GetFileUrl(x.Key)).ToArray()!;
+        return objectsResponse.S3Objects.Select(x=>x.Key).ToArray();
     }
 
     public static string CreatePath(params string[] parts)

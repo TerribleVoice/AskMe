@@ -75,8 +75,8 @@ public class FeedService : IFeedService
         var tasks = new List<Task>();
         foreach (var request in attachmentRequests)
         {
-            await using var stream = request.FileStream;
-            var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString()}-{request.Name}");
+            var stream = request.FileStream;
+            var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString().ToLower()}-{request.Name}");
             tasks.Add(s3StorageHandler.UploadFileAsync(stream, path));
         }
 
@@ -88,10 +88,15 @@ public class FeedService : IFeedService
         var path = S3StorageHandler.CreatePath("posts", postId.ToString());
         var fileKeys =  await s3StorageHandler.GeFileKeysInDirectoryAsync(path);
 
-        return fileKeys.Select(name => new AttachmentResponse
+
+        var fileNames = fileKeys.ToDictionary(
+            x => x,
+            key => key.Split('/').Last()
+        );
+        return fileKeys.Select(fileKey => new AttachmentResponse
         {
-            FileType = AttachmentService.GetFileType(name),
-            SourceUrl = s3StorageHandler.GetFileUrl(name)
+            FileType = AttachmentService.GetFileType(fileNames[fileKey]),
+            SourceUrl = s3StorageHandler.GetFileUrl(fileKey)
         }).ToArray();
     }
 
