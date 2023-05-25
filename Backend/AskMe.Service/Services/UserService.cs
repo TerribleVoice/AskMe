@@ -96,7 +96,7 @@ public class UserService : IUserService
     {
         var innerQuery = query.Trim();
         var startsWith = await dbContext.Users
-            .Where(x => x.Login.StartsWith(innerQuery, StringComparison.InvariantCultureIgnoreCase))
+            .Where(x => x.Login.StartsWith(innerQuery))
             .ToArrayAsync();
         var result = startsWith;
         if (startsWith.Length < limit)
