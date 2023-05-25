@@ -11,6 +11,6 @@ public interface IFeedService
     Task<Dictionary<Guid, bool>> IsUserHaveAccessToPostsAsync(string userLogin, PostResponse[] postId);
     Task<PostResponse> ReadAsync(Guid postId);
     Task<PostResponse[]> GetUserPostsAsync(string userLogin);
-    Task AttachFilesAsync(Guid postId, AttachmentRequest[] fileStreamWithNames);
+    Task AttachFilesAsync(Guid postId, AttachmentRequest fileStreamWithNames);
     Task<AttachmentResponse[]> GetPostAttachmentUrls(Guid postId);
 }

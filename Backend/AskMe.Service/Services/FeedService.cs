@@ -64,20 +64,21 @@ public class FeedService : IFeedService
         return posts.Select(x => postConverter.Convert(x)).ToArray();
     }
 
-    public async Task AttachFilesAsync(Guid postId, AttachmentRequest[] attachmentRequests)
+    public async Task AttachFilesAsync(Guid postId, AttachmentRequest attachmentRequests)
     {
+        var request = attachmentRequests;
         if (await dbContext.CanCurrentUserEdit<Post>(postId))
         {
             throw new Exception($"У {userIdentity.CurrentUser!.Login} доступа на редактирование поста {postId}");
         }
 
         var tasks = new List<Task>();
-        foreach (var request in attachmentRequests)
-        {
+        // foreach (var request in attachmentRequests)
+        // {
             var stream = request.FileStream;
             var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString().ToLower()}-{request.Name}");
             tasks.Add(s3StorageHandler.UploadFileAsync(stream, path));
-        }
+        // }
 
         await Task.WhenAll(tasks);
     }
