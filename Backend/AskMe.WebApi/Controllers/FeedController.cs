@@ -67,10 +67,9 @@ public class FeedController : CustomControllerBase
 
     [HttpPost("create")]
     [Authorize]
-    public async Task<ActionResult<Guid>> Create([FromBody] PostRequest request, IFormFile file)
+    public async Task<ActionResult<Guid>> Create([FromBody] PostRequest request)
     {
         var createdId = await feedService.CreateOrUpdateAsync(request);
-        await AttachFiles(createdId, file);
         return Ok(createdId);
     }
 
