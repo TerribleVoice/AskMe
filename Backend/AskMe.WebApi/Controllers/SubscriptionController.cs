@@ -41,14 +41,8 @@ public class SubscriptionController : CustomControllerBase
         return Ok();
     }
 
-    [HttpGet("{id:guid}/buy")]
-    [Authorize]
-    public async Task BuySubscription(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
     //Метод для авторов, показывает подписки созданные пользователем
+
     [HttpGet("{userLogin}/created_list")]
     [Authorize]
     public async Task<SubscriptionResponse[]> AuthorSubscriptions(string userLogin)
@@ -57,7 +51,18 @@ public class SubscriptionController : CustomControllerBase
         return subscriptions;
     }
 
+    [HttpGet("subscriptions_without_children")]
+    [Authorize]
+    public async Task<ActionResult<SubscriptionResponse[]>> SubscriptionsWithoutChildren(string userLogin)
+    {
+        var result = await subscriptionService.SubscriptionsWithoutChildrenAsync(userLogin);
+
+        return Ok(result);
+    }
+
+
     //Метод для читателей, показывает купленные подписки
+
     [HttpGet("{userLogin}/bought_list")]
     [Authorize]
     public async Task<SubscriptionResponse[]> UserSubscriptions(string userLogin)
@@ -66,20 +71,19 @@ public class SubscriptionController : CustomControllerBase
         return subscriptions;
     }
 
+    [HttpGet("{id:guid}/subscribe")]
+    [Authorize]
+    public async Task<IActionResult> Subscribe(Guid id)
+    {
+        await subscriptionService.SubscribeAsync(id);
+        return Ok();
+    }
+
     [HttpGet("{id:guid}/unsubscribe")]
     [Authorize]
     public async Task<IActionResult> Unsubscribe(Guid id)
     {
-        var result = await subscriptionService.UnsubscribeAsync(id);
-        return ProcessResult(result);
-    }
-
-    [HttpGet("subscriptions_without_children")]
-    [Authorize]
-    public async Task<ActionResult<SubscriptionResponse[]>> SubscriptionsWithoutChildren(string userLogin)
-    {
-        var result = await subscriptionService.SubscriptionsWithoutChildren(userLogin);
-
-        return Ok(result);
+        await subscriptionService.UnsubscribeAsync(id);
+        return Ok();
     }
 }

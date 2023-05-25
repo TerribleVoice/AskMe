@@ -98,7 +98,7 @@ public class SubscriptionService : ISubscriptionService
         }
     }
 
-    public async Task<SubscriptionResponse[]> SubscriptionsWithoutChildren(string userLogin)
+    public async Task<SubscriptionResponse[]> SubscriptionsWithoutChildrenAsync(string userLogin)
     {
         var authorSubscriptions = await GetAuthorSubscriptionsAsync(userLogin);
         var subsWithoutChildren = authorSubscriptions
@@ -108,14 +108,33 @@ public class SubscriptionService : ISubscriptionService
         return subsWithoutChildren;
     }
 
-    public async Task<Result> SubscribeAsync(Guid subscriptionId)
+    public async Task SubscribeAsync(Guid subscriptionId)
     {
-        throw new NotImplementedException("Нужно разобраться с тем как оплачивать");
+        var currentUser = await userService.ReadUserByLoginAsync(userIdentity.CurrentUser!.Login);
+        var boughtSubscription = new BoughtSubscription
+        {
+            Id = Guid.NewGuid(),
+            OwnerId = currentUser.Id,
+            SubscriptionId = subscriptionId
+        };
+
+        await dbContext.BoughtSubscriptions.AddAsync(boughtSubscription);
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<Result> UnsubscribeAsync(Guid subscriptionId)
+    public async Task UnsubscribeAsync(Guid subscriptionId)
     {
-        throw new NotImplementedException("Нужно подумать с циклом оплаты подписки");
+        var currentUser = await userService.ReadUserByLoginAsync(userIdentity.CurrentUser!.Login);
+
+        var boughtSubscription = await dbContext.BoughtSubscriptions
+            .FirstOrDefaultAsync(x => x.SubscriptionId == subscriptionId && x.OwnerId == currentUser.Id);
+        if (boughtSubscription == null)
+        {
+            throw new ArgumentNullException($"У пользователя {currentUser.Login} нет подписки {subscriptionId}");
+        }
+
+        dbContext.BoughtSubscriptions.Remove(boughtSubscription);
+        await dbContext.SaveChangesAsync();
     }
 
     private async Task ThrowIfCantBeEditedAsync(Guid subscriptionId)
