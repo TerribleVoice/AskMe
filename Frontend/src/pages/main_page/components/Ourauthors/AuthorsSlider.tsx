@@ -17,7 +17,7 @@ export const AuthorsSlider = ({authorsData}: AuthorsSliderProp) => {
     <div className={`container`}>
       <Slider {...settings}>
         {authorsData.map((author) => {
-        return <Author author={author} />
+        return <Author key={author.login} author={author} />
       })}
       </Slider>
     </div>

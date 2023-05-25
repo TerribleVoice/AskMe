@@ -53,7 +53,6 @@ export const Posts = () => {
             <div key={post.id} className="pp_post">
               <div className="pp_post__title">
                 <div className="pp_post__text">
-                  {/* Здесь нужно поле Оглавление */}
                   {post.title}
                 </div>
                 <div className="pp_post__date">{post.createAt}</div>

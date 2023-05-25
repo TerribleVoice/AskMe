@@ -2,7 +2,7 @@ export interface IUserTopAuthors {
   login: string;
   description: string;
   links: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
 }
 export interface AuthorsSliderProp {
   authorsData: IUserTopAuthors[];

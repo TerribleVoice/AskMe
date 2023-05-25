@@ -68,6 +68,7 @@ header {
     #141414;
   margin-right: 100px;
   border: 0;
+  font-size: medium;
 }
 .header__input::placeholder {
   font-family: "Roboto";
@@ -864,11 +865,6 @@ a:active {
   max-width: 20vw;
   max-height: 20vw;
 }
-/* Лента */
-.feed_authors_slider {
-  max-width: 600px;
-  max-height: 300px;
-}
 /* Создать подписку */
 .subscription_create_wrapper {
   display: flex;
@@ -1000,7 +996,6 @@ a:active {
   outline: 2px solid #b00062;
 }
 .subscription_checkbox {
-
 }
 .create_post_subscriptions_wrapper {
   display: grid;
@@ -1016,6 +1011,7 @@ a:active {
   font-size: larger;
   font-weight: 500;
   margin: 9px 0 9px;
+  padding: 0 10px 0 10px;
 }
 .create_post_subscriptions {
   border-top: #b00062 1px solid;
@@ -1079,4 +1075,55 @@ a:active {
   color: #ffffff;
   padding: 12px 24px;
   cursor: pointer;
+}
+/* Лента */
+.feed_container {
+  min-width: 40vw;
+
+  margin: 0 auto;
+}
+.feed_container > .slick-slider {
+  max-height: 300px;
+}
+div > .feed_author {
+  min-width: fit-content;
+}
+.feed_author {
+  align-items: center;
+  background: #181818;
+  border: none;
+  border-radius: 5px;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+  padding: 10px 10px;
+  text-align: center;
+}
+/* search */
+.header__loading,
+.header__ul_search {
+  position: absolute;
+}
+.header__ul_search {
+  list-style: none;
+  width: 210px;
+  z-index: 1;
+}
+.header__li_search {
+  padding: 10px;
+  background: #202020;
+  display: flex;
+  align-items: center;
+}
+.header__ava_search {
+  max-width: 25px;
+  max-height: 25px;
+  margin-right: 10px;
+}
+.header__link_search {
+  font-weight: 450;
+}
+.header__li_search:hover {
+  outline: 1px solid#f10086;
 }

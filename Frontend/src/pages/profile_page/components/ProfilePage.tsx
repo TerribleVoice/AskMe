@@ -65,12 +65,13 @@ export const ProfilePage = () => {
       <Posts />
       <aside className="pp_left">
         <div className="pp_left__img">
-          <img className="pp_left__avatar" src={image} alt="ava" />
-          {!image && (
+          {profileData?.profileImageUrl !== null ? (
+            <img className="pp_left__avatar" src={`${image}`} />
+          ) : (
             <img
               className="pp_left__avatar"
-              src="img/NoUserPhoto.svg"
-              alt="ava"
+              src={`img/NoUserPhoto.svg`}
+              alt="noava"
             />
           )}
         </div>

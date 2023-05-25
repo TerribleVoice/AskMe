@@ -1,13 +1,20 @@
 import { AuthorProp } from "@/models/IUserTopAuthors";
 import { Link } from "react-router-dom";
 
-export const Author = ({author}: AuthorProp) => {
+export const Author = ({ author }: AuthorProp) => {
+  const image = author.profileImageUrl;
   return (
-    <div className="Author">
+    <div key={author.login} className="Author">
       <div className="Authoravatar">
-        <img
-          src={`${author.profileImageUrl}`}
-        />
+        {image !== null ? (
+          <img className="pp_left__avatar" src={`${image}`} />
+        ) : (
+          <img
+            className="pp_left__avatar"
+            src={`img/NoUserPhoto.svg`}
+            alt="noava"
+          />
+        )}
       </div>
       <div className="Authorname">{author.login}</div>
       <div className="Authorlink">

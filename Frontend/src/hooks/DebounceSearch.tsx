@@ -10,7 +10,7 @@ export const DebounceSearch: React.FC = () => {
   const [searchResults, setSearchResults] = useState<IUserSearch[]>([]);
 
   useEffect(() => {
-    const delay = 500; // Adjust the debounce delay as needed
+    const delay = 500;
 
     const debounceTimer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -33,10 +33,10 @@ export const DebounceSearch: React.FC = () => {
     try {
       setIsLoading(true);
       const data = await getUserSearch(searchTerm);
+      console.log(data);
       setSearchResults(data);
       setIsLoading(false);
     } catch (error) {
-      // Handle error
       setIsLoading(false);
     }
   };
@@ -54,13 +54,26 @@ export const DebounceSearch: React.FC = () => {
         onChange={handleSearch}
       />
       {isLoading ? (
-        <ul style={{position: "relative", top: "20px"}}>Loading...</ul>
+        <ul className="header__loading">Loading...</ul>
       ) : (
-        <ul>
+        <ul className="header__ul_search">
           {searchResults.map((result) => (
-            <li style={{position: "relative", top: "20px"}} key={result.login}>
-              <Link to={`/${result.login}`}>{result.login}</Link>
-            </li>
+            <Link className="header__li_search" to={`/${result.login}`}>
+              {result.profileImageUrl ? (
+                <img
+                  src={`${result.profileImageUrl}`}
+                  alt="a"
+                  className="header__ava_search"
+                />
+              ) : (
+                <img
+                  src={`/img/NoUserPhoto.svg`}
+                  alt="a"
+                  className="header__ava_search"
+                />
+              )}
+              <span className="header__link_search">{result.login}</span>
+            </Link>
           ))}
         </ul>
       )}

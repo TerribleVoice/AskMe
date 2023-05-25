@@ -18,7 +18,7 @@ export const CreatePost = () => {
   const { LoginName } = useParams();
   const navigate = useNavigate();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,23 +38,23 @@ export const CreatePost = () => {
     fetchData();
   }, []);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-    return file;
-  };
+  // const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     setSelectedImage(URL.createObjectURL(file));
+  //   }
+  //   return file;
+  // };
   const onCreatePost = async (data: IUserCreatePost) => {
     try {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("content", data.content);
-      formData.append("price", data.price.toString());
-      formData.append("files", selectedImage!);
-      formData.append("subscriptionId", selectedSubscription);
-      console.log(formData);
-      const response = await userCreatePost(formData);
+      // const formData = new FormData();
+      // formData.append("title", data.title);
+      // formData.append("content", data.content);
+      // formData.append("price", data.price.toString());
+      // formData.append("files", selectedImage!);
+      // formData.append("subscriptionId", selectedSubscription);
+      // console.log(formData);
+      const response = await userCreatePost(data);
       console.log(response);
       if (response.status < 300) {
         console.log(response);
@@ -131,7 +131,7 @@ export const CreatePost = () => {
               name="content"
             />
           </div>
-          <div className="file_post">
+          {/* <div className="file_post">
             <label htmlFor="image">Обложка</label>
             {selectedImage && (
               <div>
@@ -159,7 +159,7 @@ export const CreatePost = () => {
             <label className="settings_caption" htmlFor="description">
               Рекомендуемый размер 240х150 рх
             </label>
-          </div>
+          </div> */}
           <div className="subscription_input">
             <label htmlFor="price">Стоимость поста</label>
             <input
