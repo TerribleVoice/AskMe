@@ -76,3 +76,10 @@ keyboard_subscribe_back_button1 = InlineKeyboardButton(text="Вернутся н
 keyboard_subscribe_back_button2 = InlineKeyboardButton(text="Посмотреть посты пользователя", callback_data="last_posts")
 keyboard_subscribe_back.add(keyboard_subscribe_back_button2)
 keyboard_subscribe_back.add(keyboard_subscribe_back_button1)
+
+# Кнопка для повтора ввода никнейма
+keyboard_nickname_again = InlineKeyboardMarkup()
+keyboard_nickname_again_button1 = InlineKeyboardButton(text="Попробовать снова 📝", callback_data='nick_again')
+keyboard_nickname_again_button2 = InlineKeyboardButton(text="Вернуться обратно 🚪", callback_data='exit_nickname')
+keyboard_nickname_again.add(keyboard_nickname_again_button1)
+keyboard_nickname_again.add(keyboard_nickname_again_button2)
