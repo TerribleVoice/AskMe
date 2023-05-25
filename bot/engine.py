@@ -199,6 +199,25 @@ async def list_subs_command(call: types.CallbackQuery):
 Имя: {sub_info[3]}\n
 Описание: {sub_info[4]}                                      
 """, reply_markup=keyboard_subs)
+            
+@dp.callback_query_handler(text='last_posts')
+async def last_posts_command(call: types.CallbackQuery):
+    info_message = call.message.text
+    nickname = str(info_message.split("Имя: ")[1].split("\n")[0])
+    author_id = db.get_author_id(nickname=nickname)[0][1]
+    posts = db.get_posts_author(author_id=author_id)
+    if posts == []:
+        await call.message.answer(f"Пользователь {nickname} не имеет постов!")
+    else:
+        if len(posts) == 1:
+            await call.message.answer(f"""
+{posts[0][0]}
+""")
+        else:
+            for post in posts:
+                await call.message.answer(f"""
+{post[0]}                                      
+""")
 
 @dp.callback_query_handler(text='view_posts')
 async def view_posts_command(call: types.CallbackQuery):
