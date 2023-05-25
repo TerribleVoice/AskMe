@@ -15,7 +15,7 @@ public class FeedService : IFeedService
     private readonly IPostConverter postConverter;
     private readonly IUserIdentity userIdentity;
     private readonly ISubscriptionService subscriptionService;
-    private readonly S3StorageHandler s3StorageHandler;
+    private readonly IS3StorageHandler s3StorageHandler;
 
     public FeedService(
         PostgresDbContext dbContext,
@@ -23,7 +23,7 @@ public class FeedService : IFeedService
         IPostConverter postConverter,
         IUserIdentity userIdentity,
         ISubscriptionService subscriptionService,
-        S3StorageHandler s3StorageHandler
+        IS3StorageHandler s3StorageHandler
         )
     {
         this.dbContext = dbContext;
