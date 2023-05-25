@@ -18,7 +18,7 @@ keyboard_auth.add(keyboard_auth_button3)
 
 # Нет подписки
 keyboard_search_user = InlineKeyboardMarkup()
-keyboard_search_user_button1 = InlineKeyboardButton(text="Подписаться", callback_data="subscribe_user")
+keyboard_search_user_button1 = InlineKeyboardButton(text="Подписаться на пользователя", callback_data="subscribe_user")
 keyboard_search_user.add(keyboard_search_user_button1)
 
 # Есть подписка
@@ -69,3 +69,8 @@ keyboard_email_wrong.add(keyboard_email_wrong_button1)
 keyboard_register_password = InlineKeyboardMarkup()
 keyboard_password_return_register = InlineKeyboardButton(text='Вернутся на шаг назад 🚪', callback_data='exit_password_register')
 keyboard_register_password.add(keyboard_password_return_register)
+
+# Вернуться назад после подписки
+keyboard_subscribe_back = InlineKeyboardMarkup()
+keyboard_subscribe_back_button1 = InlineKeyboardButton(text="Вернутся на шаг назад 🚪", callback_data="subscribe_back")
+keyboard_subscribe_back.add(keyboard_subscribe_back_button1)

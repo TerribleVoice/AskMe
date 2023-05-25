@@ -338,6 +338,29 @@ class Database:
             
             cursor.execute(insert)
             self.connection.commit()
+            
+    # Получить имя автора
+    def get_name_author(self, author_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT name FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')}
+            WHERE author_id = {repr(author_id)};
+            """
+            
+            cursor.execute(select)
+            result = cursor.fetchall()
+            return result
+        
+    # Действие - подписка
+    def subscribe_user(self, uuid, user_id, subscription_id):
+        with self.connection.cursor() as cursor:
+            insert = f"""
+            INSERT INTO {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} (id, user_id, subscription_id)
+            VALUES ({repr(uuid)}, {repr(user_id)}, {repr(subscription_id)});
+            """
+            
+            cursor.execute(insert)
+            self.connection.commit()
     
             
 db = Database(db_name=config_db_name,
