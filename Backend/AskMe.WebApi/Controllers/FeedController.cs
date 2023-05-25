@@ -67,7 +67,7 @@ public class FeedController : CustomControllerBase
 
     [HttpPost("create")]
     [Authorize]
-    public async Task<ActionResult<Guid>> Create([FromBody] PostRequest request, IFormFileCollection files)
+    public async Task<ActionResult<Guid>> Create([FromBody] PostRequest request, IFormFile[] files)
     {
         var createdId = await feedService.CreateOrUpdateAsync(request);
         await AttachFiles(createdId, files);
@@ -75,7 +75,7 @@ public class FeedController : CustomControllerBase
     }
 
     [HttpPost("{postId:guid}/attachFiles")]
-    public async Task<IActionResult> AttachFiles(Guid postId, IFormFileCollection files)
+    public async Task<IActionResult> AttachFiles(Guid postId, IFormFile[] files)
     {
         var attachmentRequests = files.Select(x=> new AttachmentRequest
         {
