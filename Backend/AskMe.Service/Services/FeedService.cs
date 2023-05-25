@@ -101,11 +101,6 @@ public class FeedService : IFeedService
 
     public async Task<Guid> CreateOrUpdateAsync(PostRequest request, Guid? postId = null)
     {
-        if (postId.HasValue)
-        {
-            await ThrowIfCantEdit(postId.Value);
-        }
-
         var id = postId ?? Guid.NewGuid();
         var authorId = userIdentity.CurrentUser!.Id;
         var postDbo = postConverter.Convert(id, authorId, DateTime.Now, request);

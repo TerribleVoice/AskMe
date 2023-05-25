@@ -98,6 +98,16 @@ public class SubscriptionService : ISubscriptionService
         }
     }
 
+    public async Task<SubscriptionResponse[]> SubscriptionsWithoutChildren(string userLogin)
+    {
+        var authorSubscriptions = await GetAuthorSubscriptionsAsync(userLogin);
+        var subsWithoutChildren = authorSubscriptions
+            .Where(x => authorSubscriptions.All(children => children.ParentSubscriptionId != x.Id))
+            .ToArray();
+
+        return subsWithoutChildren;
+    }
+
     public async Task<Result> SubscribeAsync(Guid subscriptionId)
     {
         throw new NotImplementedException("Нужно разобраться с тем как оплачивать");

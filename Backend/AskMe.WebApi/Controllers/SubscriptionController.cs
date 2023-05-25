@@ -73,4 +73,13 @@ public class SubscriptionController : CustomControllerBase
         var result = await subscriptionService.UnsubscribeAsync(id);
         return ProcessResult(result);
     }
+
+    [HttpGet("subscriptions_without_children")]
+    [Authorize]
+    public async Task<ActionResult<SubscriptionResponse[]>> SubscriptionsWithoutChildren(string userLogin)
+    {
+        var result = await subscriptionService.SubscriptionsWithoutChildren(userLogin);
+
+        return Ok(result);
+    }
 }
