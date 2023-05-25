@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, executor, types
 from database import db
 from keyboard import keyboard_start, keyboard_auth, keyboard_search_user_subscribe, keyboard_search_user, keyboard_subs, keyboard_login, keyboard_password, \
                      keyboard_auth_again, keyboard_register_login, keyboard_register_email, keyboard_email_wrong, keyboard_register_password, \
-                     keyboard_login_register, keyboard_subscribe_back
+                     keyboard_login_register, keyboard_subscribe_back, keyboard_nickname_again
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
@@ -48,6 +48,12 @@ async def send_welcome(message: types.Message):
     else:
         await message.answer("""
 С возвращением!
+""", reply_markup=keyboard_auth)
+        
+@dp.callback_query_handler(text='exit_nickname')
+async def exit_nickname_command(call: types.CallbackQuery):
+    await call.message.answer("""
+Выберите интересующее вас действие!
 """, reply_markup=keyboard_auth)
     
 @dp.callback_query_handler(text='subscribe_back')
@@ -140,6 +146,11 @@ async def auth_again_command(call: types.CallbackQuery):
 Здравствуйте, вам необходимо войти в свой аккаунт или пройти регистрацию в Сервисе AskeMe!                        
 """, reply_markup=keyboard_start)
     
+@dp.callback_query_handler(text='nick_again')
+async def nick_again_command(call: types.CallbackQuery):
+    await call.message.answer("Пожалуйста, введите никнейм пользователя!")
+    await SearchUser.nickname.set()
+
 @dp.callback_query_handler(text='find_user')
 async def find_user_command(call: types.CallbackQuery):
     await call.message.answer("Пожалуйста, введите никнейм пользователя!")
@@ -157,7 +168,7 @@ async def find_user_nickname(message: types.Message, state: FSMContext):
             anybody = db.search_many_user(nickname=data['nickname'])
             print(anybody)
             if anybody == []:
-                await message.answer("Данный пользователь не найден!")
+                await message.answer("Данного пользователя не удалось найти, просьба повторить попытку ввода.", reply_markup=keyboard_nickname_again)
             else:    
                 await message.answer("Данный пользователь не найден!\nНо мы нашли вам похожих пользователей, возможно вы искали их!\n")
                 for user in anybody:
@@ -180,10 +191,10 @@ async def find_user_nickname(message: types.Message, state: FSMContext):
         await state.finish()
         
     except Exception as ex:
-        await SearchUser.nickname.set()
         await message.answer(f"""
 Введите никнейм пользователя повторно!
 """)
+        await SearchUser.nickname.set()
 
 @dp.callback_query_handler(text='list_subs')
 async def list_subs_command(call: types.CallbackQuery):
