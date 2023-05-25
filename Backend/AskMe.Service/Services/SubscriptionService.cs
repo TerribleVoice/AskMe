@@ -28,22 +28,17 @@ public class SubscriptionService : ISubscriptionService
 
     public async Task CreateOrUpdateAsync(SubscriptionRequest request, Guid? subscriptionId = null)
     {
-        if (subscriptionId.HasValue)
-        {
-            await ThrowIfCantBeEditedAsync(subscriptionId.Value);
-        }
-
         var id = subscriptionId ?? Guid.NewGuid();
         var authorId = userIdentity.CurrentUser!.Id;
-        var postDbo = subscriptionConverter.Convert(id, authorId, request);
+        var subscriptionDbo = subscriptionConverter.Convert(id, authorId, request);
 
         if (subscriptionId.HasValue)
         {
-            dbContext.Subscription.Update(postDbo);
+            dbContext.Subscription.Update(subscriptionDbo);
         }
         else
         {
-            await dbContext.Subscription.AddAsync(postDbo);
+            await dbContext.Subscription.AddAsync(subscriptionDbo);
         }
         await dbContext.SaveChangesAsync();
     }
