@@ -3,7 +3,7 @@ export interface IUserPost {
   content: string;
   createAt: string;
   haveAccess: boolean;
-  subscriptionName: string;
+  title: string;
   authorViewModel: {
     login: string;
     description: string;
@@ -11,6 +11,10 @@ export interface IUserPost {
     profileImageUrl: string;
   };
 }
-export type IUserCreatePost = Required<
-  Pick<IUserPost, "content" | "subscriptionName">
->;
+export interface IUserCreatePost {
+  title: string;
+  subscriptionId: string;
+  content: string;
+  price: number;
+  files: string;
+}

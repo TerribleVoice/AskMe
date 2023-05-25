@@ -894,6 +894,11 @@ a:active {
   position: absolute;
   margin-right: 60vw;
 }
+.subscription_aside_right {
+  position: absolute;
+  margin-left: 60vw;
+  width: 15vw;
+}
 .subscription_form {
   padding-top: 30px;
 }
@@ -979,6 +984,10 @@ a:active {
   display: flex;
   flex-direction: column;
 }
+.sub_post:nth-last-child(1) {
+  border-bottom: #b00062 1px solid;
+  margin-bottom: 15px;
+}
 .file_post > label > input[type="file"] {
   display: none;
 }
@@ -992,6 +1001,25 @@ a:active {
 }
 .custom_file_upload_post:hover {
   outline: 2px solid #b00062;
+}
+.create_post_subscriptions_wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  position: absolute;
+  margin-left: 40vw;
+  top: 130px;
+  background-color: #181818;
+  padding-bottom: 15px;
+}
+.create_post_subscriptions_header {
+  justify-self: center;
+  font-size: larger;
+  font-weight: 500;
+  margin: 9px 0 9px;
+}
+.create_post_subscriptions {
+  border-top: #b00062 1px solid;
+  padding: 9px 32px;
 }
 /* Подписки */
 .pp_subscriptions_wrapper {
@@ -1028,6 +1056,19 @@ a:active {
 }
 .settings_delete_photo {
   margin-top: 20px;
+  display: inline-flex;
+  font-style: normal;
+  font-weight: 500;
+  width: fit-content;
+  font-size: 20px;
+  line-height: 23px;
+  border: 3px solid #b00062;
+  color: #ffffff;
+  padding: 12px 24px;
+  cursor: pointer;
+}
+.settings_delete_sub {
+  margin: 0 0 25px;
   display: inline-flex;
   font-style: normal;
   font-weight: 500;

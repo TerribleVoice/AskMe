@@ -22,6 +22,7 @@ import { CreateSubscription } from "./pages/profile_page/components/CreateSubscr
 import { CreatePost } from "./pages/profile_page/components/CreatePost/CreatePost";
 import { CreateDescription } from "./pages/profile_page/components/CreateDescription/CreateDescription";
 import { Error_Page } from "./pages/Error_Page";
+import { EditSubscription } from "./pages/profile_page/components/EditSubscription/EditSubscription";
 
 export const App = () => {
   return (
@@ -30,10 +31,17 @@ export const App = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Main />} />
           <Route path=":LoginName/">
-            <Route index element={<ProfilePageVa />}/>
-            <Route path="create_description" element={<CreateDescription />}/>
-            <Route path="create_post" element={<CreatePost />}/>
-            <Route path="create_subscription" element={<CreateSubscription />}/>
+            <Route index element={<ProfilePageVa />} />
+            <Route path="create_description" element={<CreateDescription />} />
+            <Route path="create_post" element={<CreatePost />} />
+            <Route
+              path="create_subscription"
+              element={<CreateSubscription />}
+            />
+            <Route
+              path="edit_subscription/:id"
+              element={<EditSubscription />}
+            />
           </Route>
           <Route path="feed" element={<FeedLayout />}>
             <Route index element={<FeedPage />} />

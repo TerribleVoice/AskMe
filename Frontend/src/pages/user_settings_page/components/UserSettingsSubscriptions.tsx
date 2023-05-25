@@ -3,7 +3,7 @@ import { getUserBoughtSubscriptions } from "@/services/getUserBoughtSubscription
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { zaglushka } from "./subscriptions_data";
-import { UserSettingsDeleteSubscription } from "./UserSettingsDeleteSubscription";
+import { UserSettingsUnsubscribe } from "./UserSettingsUnsubscribe";
 
 export const UserSettingsSubscriptions = () => {
   const [boughtSubscription, setBoughtSubscription] = useState<
@@ -40,7 +40,7 @@ export const UserSettingsSubscriptions = () => {
         {boughtSubscription?.map((bs) => {
           return (
             <div key={bs.id} className="settings_subscription_card">
-              <UserSettingsDeleteSubscription id={bs.id}/>
+              <UserSettingsUnsubscribe id={bs.id}/>
               <span className="settings_subscription_name">{bs.name}</span>
               <p className="settings_subscription_description">
                 {bs.description}

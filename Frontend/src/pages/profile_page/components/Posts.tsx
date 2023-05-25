@@ -9,7 +9,7 @@ const zaglushka: IUserPost[] = [
     content: "asdasdasd",
     createAt: "asdasdasd",
     haveAccess: true,
-    subscriptionName: "asdasdasd",
+    title: "asdasdasd",
     authorViewModel: {
       login: "asdasdasd",
       description: "asdasdasd",
@@ -54,7 +54,7 @@ export const Posts = () => {
               <div className="pp_post__title">
                 <div className="pp_post__text">
                   {/* Здесь нужно поле Оглавление */}
-                  Helping a local business reinvent itself
+                  {post.title}
                 </div>
                 <div className="pp_post__date">{post.createAt}</div>
               </div>
@@ -67,7 +67,6 @@ export const Posts = () => {
                   <img src="img/profile/photo.jpg" alt="profile"></img>
                   <div className="pp_post__text2">
                     <p>Пост только для платных подписчиков</p>
-                    <p>{post.subscriptionName}</p>
                   </div>
                 </div>
               )}

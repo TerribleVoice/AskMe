@@ -3,7 +3,7 @@ import { getUserSubscriptions } from "@/services/getUserSubscriptions";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
-export const Subscriptions = () => {
+export const SubscriptionsCheckBox = () => {
   const { LoginName } = useParams();
   const navigate = useNavigate();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>();
@@ -27,25 +27,19 @@ export const Subscriptions = () => {
   }, [LoginName]);
   console.log(subscriptions);
   return (
-    <div className="pp_subscriptions_wrapper">
-      <p className="pp_subscriptions_header">УРОВНИ ПОДПИСКИ</p>
+    <div className="create_post_subscriptions_wrapper">
+      <p className="create_post_subscriptions_header">КТО МОЖЕТ СМОТРЕТЬ</p>
+        
       {subscriptions?.map((subscription) => {
         return (
-          <div key={subscription.id} className="pp_subscription">
+          <div key={subscription.id} className="create_post_subscriptions">
             <div className="pp_subscription_name">{subscription.name}</div>
             <div className="pp_subscription_price">
               {subscription.price} рублей в месяц
             </div>
-            <div className="pp_subscription_description">
-              {subscription.description}
-            </div>
-            <Link to={`/${LoginName}/edit_subscription/${subscription.id}`}>Редактировать</Link>
           </div>
         );
       })}
-      <Link to={"create_subscription"} className="pp_body-create_subscr">
-        ДОБАВИТЬ ПОДПИСКУ
-      </Link>
     </div>
   );
 };

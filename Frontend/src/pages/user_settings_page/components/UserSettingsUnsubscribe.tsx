@@ -1,13 +1,13 @@
-import { deleteSubscription } from "@/services/deleteSubscription";
+import { getUnsubscribe } from "@/services/getUnsubscribe";
 
 interface ISubscriptionIdProps {
     id:string
 }
 
-export const UserSettingsDeleteSubscription = ({id}: ISubscriptionIdProps) => {
+export const UserSettingsUnsubscribe = ({id}: ISubscriptionIdProps) => {
   const onDeletePhoto = async () => {
     try {
-      const response = await deleteSubscription(id);
+      const response = await getUnsubscribe(id);
       console.log(response);
       if (response.status < 300) {
         alert("Confirm");

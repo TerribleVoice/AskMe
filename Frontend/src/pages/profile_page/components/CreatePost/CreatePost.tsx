@@ -2,6 +2,8 @@ import { GoBack } from "@/components/GoBack";
 import { IUserCreatePost } from "@/models/IUserPosts";
 import { userCreatePost } from "@/services/postUserPost";
 import { useForm } from "react-hook-form";
+import { Subscriptions } from "../Subscriptions";
+import { SubscriptionsCheckBox } from "./SubscriptionsCheckBox";
 
 
 export const CreatePost = () => {
@@ -10,7 +12,7 @@ export const CreatePost = () => {
     handleSubmit,
     reset,
     formState: { errors }, // нужен ли??
-  } = useForm();
+  } = useForm<IUserCreatePost>();
 
   const onCreatePost = async (data:IUserCreatePost) => {
     try {
@@ -35,39 +37,51 @@ export const CreatePost = () => {
       </aside>
       <div className="subscription_create">
         <h2>Создание нового Поста</h2>
+          <SubscriptionsCheckBox />
         <form
           className="subscription_form"
-          // onSubmit={handleSubmit(onCreatePost)}
+          onSubmit={handleSubmit(onCreatePost)}
         >
           <div className="subscription_input">
-            <label htmlFor="name">Введите заголовок поста</label>
+            <label htmlFor="title">Введите заголовок поста</label>
             <input
               className=""
-              {...register("name", { required: true })}
+              {...register("title", { required: true })}
               type="text"
-              id="name"
-              name="name"
+              id="title"
+              name="title"
             />
           </div>
           <div className="subscription_description">
-            <label htmlFor="description">Описание поста</label>
+            <label htmlFor="content">Описание поста</label>
             <textarea
-              {...register("description", { required: true })}
-              id="description"
-              name="description"
+              {...register("content", { required: true })}
+              id="content"
+              name="content"
             />
           </div>
           <div className="file_post">
-            <label htmlFor="parentSubscriptionId">Фото или видео</label>
-            <label className="custom_file_upload_post">
+            <label htmlFor="files">Фото или видео</label>
+            <label className="custom_file_upload">
               <input
-                {...register("parentSubscriptionId", { required: true })}
+                {...register("files", { required: true })}
                 type="file"
-                id="parentSubscriptionId"
-                name="parentSubscriptionId"
+                id="files"
+                name="files"
               />
               ВЫБРАТЬ ФАЙЛ
             </label>
+          </div>
+          <div className="subscription_input">
+            <label htmlFor="price">Стоимость поста</label>
+            <input
+              {...register("price", { required: true })}
+              type="number"
+              id="price"
+              name="price"
+              min={0}
+              max={150000}
+            />
           </div>
           <div className="left-reg__submit submit_form">
             <button type="submit">Создать</button>

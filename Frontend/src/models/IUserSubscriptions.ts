@@ -10,3 +10,4 @@ export type IUserCreateSubscription = Omit<
   IUserSubscriptions,
   "id" | "authorId"
 >;
+export type IUserEditSubscription = IUserCreateSubscription
