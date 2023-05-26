@@ -57,7 +57,7 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
               onClick={() =>
                 subButtons[sub.id] ? onSubscribe(sub.id) : onUnsubscribe(sub.id)
               }
-              className="pp_body-create_subscr"
+              className="pp_body-create_subscr hover_create_subscr"
             >
               {subButtons[sub.id] ? "ПОДПИСАТЬСЯ" : "ОТПИСАТЬСЯ"}
             </div>

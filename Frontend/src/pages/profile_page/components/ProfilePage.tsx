@@ -72,7 +72,9 @@ export const ProfilePage = () => {
           {profileData?.description ? profileData.description : ""}
         </div>
       </div>
-      <Posts />
+      <div className="pp_postswrap">
+        <Posts />
+      </div>
       <aside className="pp_left">
         <div className="pp_left__img">
           {profileData?.profileImageUrl !== null ? (
