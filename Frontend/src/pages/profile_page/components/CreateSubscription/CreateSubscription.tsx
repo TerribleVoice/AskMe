@@ -2,6 +2,7 @@ import { GoBack } from "@/components/GoBack";
 import { IUserCreateSubscription } from "@/models/IUserSubscriptions";
 import { userCreateSubscription } from "@/services/postUserCreateSubscription";
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const CreateSubscription = () => {
   const {
@@ -10,6 +11,8 @@ export const CreateSubscription = () => {
     reset,
     formState: { errors }, // нужен ли??
   } = useForm<IUserCreateSubscription>();
+  const navigate = useNavigate()
+  const login = localStorage.getItem("login")
 
   const onCreateSubscription = async (data: IUserCreateSubscription) => {
     try {
@@ -18,6 +21,7 @@ export const CreateSubscription = () => {
       console.log(response);
       if (response.status < 300) {
         console.log(response);
+        navigate(`/${login}`);
       } else {
         reset();
         alert("LSADJ:LASDJLA");

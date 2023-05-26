@@ -4,30 +4,39 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Posts } from "./Posts";
 import { Subscriptions } from "./Subscriptions";
+import { getUserSubscriptions } from "@/services/getUserSubscriptions";
+import { IUserSubscriptions } from "@/models/IUserSubscriptions";
 
 const zaglushka: IUserProfilePage = {
   login: "Shaman",
   description: "eti rolexu mne muzh kupil",
   profileImageUrl: "asdasdasda",
   links: "asdasdasdasdasda",
-  // status: "eto frendly faer ogon' po svoim",
-  // links: ["http://www.banda.na", "http://www.ogorgor.od"],
-  // posts: [
-  //   {
-  //     id: "empty",
-  //     content: "view content",
-  //     price: 42,
-  //     createAt: "01.01.21",
-  //     haveAccess: false,
-  //     subscriptionName: "Krip Uok",
-  //   },
-  // ],
 };
 
 export const ProfilePage = () => {
   const { LoginName } = useParams();
+  const yourLoginName = localStorage.getItem("login");
   const navigate = useNavigate();
-  const [profileData, setProfileData] = useState<IUserProfilePage>();
+  const [profileData, setProfileData] = useState<IUserProfilePage | undefined>();
+  const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (LoginName !== undefined) {
+          const data = await getUserSubscriptions(LoginName);
+          console.log(data);
+          setSubscriptions(data);
+        } else {
+          navigate("/404");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [LoginName]);
 
   useEffect(() => {
     try {
@@ -49,8 +58,9 @@ export const ProfilePage = () => {
       console.log(error);
     }
   }, [LoginName]);
-  const image = profileData?.profileImageUrl;
 
+  const image = profileData?.profileImageUrl;
+  console.log(subscriptions.length);
   return (
     <>
       <div className="pp_about">
@@ -66,7 +76,7 @@ export const ProfilePage = () => {
       <aside className="pp_left">
         <div className="pp_left__img">
           {profileData?.profileImageUrl !== null ? (
-            <img className="pp_left__avatar" src={`${image}`} />
+            <img className="pp_left__avatar" src={`${image}`} alt="avatar" />
           ) : (
             <img
               className="pp_left__avatar"
@@ -77,24 +87,42 @@ export const ProfilePage = () => {
         </div>
         <div className="pp_left__body pp_body-left">
           <div className="pp_body-left__nick">{LoginName}</div>
-          {/* <div className="pp_body-left__job">{profileData?.status}</div> */}
         </div>
-        <Link to={"create_post"} className="pp_body-create_post">
-          СОЗДАТЬ ПУБЛИКАЦИЮ
-        </Link>
+        {LoginName === yourLoginName && subscriptions.length !== 0 ? (
+          <Link to="create_post" className="pp_body-create_post">
+            СОЗДАТЬ ПУБЛИКАЦИЮ
+          </Link>
+        ) : LoginName === yourLoginName && subscriptions.length === 0 ? (
+          <>
+            <div className="pp_body-create_post unactive">
+              <span>Опубликовать пост можно </span>
+              <br />
+              <span>если у вас создан хотя бы </span>
+              <br />
+              <span>один уровень подписки</span>
+            </div>
+            <Link
+              to="create_subscription"
+              onClick={() => navigate(`/${LoginName}`)}
+              className="pp_body-create_subscr"
+              style={{
+                marginTop: "10px",
+                marginLeft: "10px",
+                marginRight: "10px",
+              }}
+            >
+              ДОБАВИТЬ ПОДПИСКУ
+            </Link>
+          </>
+        ) : null}
       </aside>
       <aside className="pp_right">
         <div className="pp_right__top pp_top-right">
           <ul className="pp_top-right__links">
             <p className="pp_top-right__text">Ссылки</p>
-            {/* {profileData?.links?.map((link) => (
-              <li key={link} className="pp_top-right__link">
-                {link}
-              </li>
-            ))} */}
           </ul>
         </div>
-        <Subscriptions />
+        <Subscriptions subs={subscriptions} />
       </aside>
     </>
   );

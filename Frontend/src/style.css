@@ -396,7 +396,7 @@ a:active {
 /* ==================================== */
 
 .footer {
-  margin-top: 200px;
+  margin-top: 600px;
   background: #181818;
   padding: 100px;
   position: relative;
@@ -593,7 +593,7 @@ a:active {
 .pp_body-create_post {
   display: flex;
   justify-content: center;
-  background-color: #860049;
+  background-color: #4C002A;
   padding: 15px 0 15px 0;
   border: #da0178 4px solid;
   font-weight: 500;
@@ -602,7 +602,7 @@ a:active {
 .pp_body-create_subscr {
   display: flex;
   justify-content: center;
-  background-color: #860049;
+  background-color: #4C002A;
   padding: 15px 0 15px 0;
   border: #da0178 4px solid;
   font-weight: 500;
@@ -820,7 +820,7 @@ a:active {
 }
 .settings_caption {
   font-weight: 200;
-  font-size: 400;
+  font-size: 16px;
 }
 .settings_img_link {
   height: 30px;
@@ -856,7 +856,7 @@ a:active {
   margin-bottom: 3vw;
 }
 .settings_subscription_price {
-  background-color: #860049;
+  background-color: #4C002A;
   padding: 1vw;
 }
 #image-preview {
@@ -1029,10 +1029,13 @@ a:active {
   font-size: larger;
   font-weight: 500;
   margin: 9px 0 9px;
+  word-wrap: break-word;
+  max-width: 300px;
 }
 .pp_subscription {
   border-top: #b00062 1px solid;
   padding: 9px 32px;
+  max-width: 300px;
 }
 .pp_subscription:nth-last-child(2) {
   border-bottom: #b00062 1px solid;
@@ -1041,14 +1044,34 @@ a:active {
 .pp_subscription_name {
   font-size: large;
   font-weight: 500;
-  width: fit-content;
+  word-wrap: break-word;
 }
 .pp_subscription_price {
   font-size: small;
-  font-weight: 300;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+.unactive {
+  color: #BBBBBB;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #181818;
+  border-color: #555555;
+}
+.pp_subscription_not_yours {
+  border-top: #b00062 1px solid;
+  padding: 9px 32px;
+  max-width: 300px;
+}
+.pp_subscription_not_yours:nth-last-child(1) {
+  border-bottom: #b00062 1px solid;
+  margin-bottom: 15px;
 }
 .pp_subscription_description {
   margin: 8px 0 8px;
+  word-wrap: break-word;
 }
 .settings_delete_photo {
   margin-top: 20px;

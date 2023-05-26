@@ -1,5 +1,8 @@
 import { DebounceSearch } from "@/hooks/DebounceSearch";
-import { Link } from "react-router-dom";
+import { IUserProfilePage } from "@/models/IUserProfilePage";
+import { getUserProfilePage } from "@/services/getUserProfilePage";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export const Header = () => {
   const login = localStorage.getItem("login");
@@ -19,7 +22,7 @@ export const Header = () => {
       <div className="header__dropdown-content">
         <Link to={login}>Профиль</Link>
         <Link to={`feed`}>Лента</Link>
-        <Link to={`${login}/settings`}>Настройки</Link>
+        <Link to={`${login}/settings/profile`}>Настройки</Link>
         <Link
           to={"/"}
           reloadDocument
