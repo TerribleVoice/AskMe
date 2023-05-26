@@ -703,10 +703,10 @@ a:active {
   color: #3f3f3f;
 }
 .pp_left__avatar {
-  min-height: 20vh;
-  min-width: 20vw;
-  max-width: 40vw;
-  max-height: 42vh;
+  min-height: 15vh;
+  min-width: 15vw;
+  max-width: 10vw;
+  max-height: 10vh;
 }
 /* =================== */
 
