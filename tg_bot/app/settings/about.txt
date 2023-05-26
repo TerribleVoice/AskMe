@@ -1,0 +1,2 @@
+Ссылка на бота - http://t.me/AskMeDonateBot
+Ссылка на проект - https://github.com/TerribleVoice/AskMe/tree/telegram-bot
