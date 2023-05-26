@@ -2,7 +2,7 @@ import psycopg2
 import configparser
 
 config = configparser.ConfigParser()
-config.read('C:\\Users\\Gorob\\Desktop\\bot\\settings\\config.ini')
+config.read('./settings/config.ini')
 
 config_db_name = config.get('DATABASE', 'NAME_DB')
 config_db_user = config.get('DATABASE', 'USER_DB')

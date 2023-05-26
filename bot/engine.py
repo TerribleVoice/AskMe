@@ -1,10 +1,8 @@
 import sys
 import uuid
 import asyncio
-import aioschedule
 
-sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\keyboards')
-sys.path.append('C:\\Users\\Gorob\\Desktop\\bot\\database')
+sys.path.extend(['./keyboards', './database'])
 
 from aiogram import Bot, Dispatcher, executor, types
 from database import db
@@ -17,7 +15,7 @@ from aiogram.dispatcher import FSMContext
 import configparser
 
 config = configparser.ConfigParser()
-config.read('C:\\Users\\Gorob\\Desktop\\bot\\settings\\config.ini')
+config.read('./settings/config.ini')
 
 bot = Bot(token=config.get('BOT', 'TOKEN_BOT'))
 dp = Dispatcher(bot, storage=MemoryStorage())
