@@ -54,7 +54,7 @@ export const DebounceSearch: React.FC = () => {
         onChange={handleSearch}
       />
       {isLoading ? (
-        <ul className="header__loading">Loading...</ul>
+        <ul className="header__loading">Загрузка...</ul>
       ) : (
         <ul className="header__ul_search">
           {searchResults.map((result) => (

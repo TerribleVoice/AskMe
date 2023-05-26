@@ -1,15 +1,16 @@
-import { IUserRegistration } from "@/models/IUserRegistration";
-import "./RegForm.css";
+import React from "react";
+import "./RegForm.css"
 import { useForm } from "react-hook-form";
-import { userRegistration } from "@/services/postUserRegistration";
 import { useNavigate } from "react-router-dom";
+import { IUserRegistration } from "@/models/IUserRegistration";
+import { userRegistration } from "@/services/postUserRegistration";
 
-export const RegForm = () => {
+export const RegForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors }, // нужен ли??
+    formState: { errors },
   } = useForm<IUserRegistration>();
   const navigate = useNavigate();
 
@@ -23,12 +24,12 @@ export const RegForm = () => {
         navigate("/", { replace: true });
       } else {
         reset();
-        alert("LSADJ:LASDJLA");
       }
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <>
       <div className="left-reg__text">
@@ -41,19 +42,11 @@ export const RegForm = () => {
         </div>
         <div className="left-reg__login">
           <label htmlFor="login">Логин</label>
-          <input
-            {...register("login", { required: true })}
-            id="login"
-            type="text"
-          />
+          <input {...register("login", { required: true })} id="login" type="text" />
         </div>
         <div className="left-reg__password">
           <label htmlFor="password">Пароль</label>
-          <input
-            {...register("password", { required: true })}
-            id="password"
-            type="password"
-          />
+          <input {...register("password", { required: true })} id="password" type="password" />
         </div>
         <div className="left-reg__submit">
           <button type="submit">Далее</button>

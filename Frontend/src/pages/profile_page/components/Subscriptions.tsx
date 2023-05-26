@@ -1,7 +1,4 @@
 import { IUserSubscriptions } from "@/models/IUserSubscriptions";
-import { getSubscribe } from "@/services/getSubscribe";
-import { getUnsubscribe } from "@/services/getUnsubscribe";
-import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { SubUnsub } from "./EditSubscription/SubUnsub";
 

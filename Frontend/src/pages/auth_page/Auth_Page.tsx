@@ -1,14 +1,15 @@
 import { useState } from "react";
 import "./Auth.css";
-
 import { AuthForm } from "@/pages/auth_page/components/AuthForm/AuthForm";
 import { RegForm } from "@/pages/auth_page/components/RegForm/RegForm";
 
-export const Auth = () => {
-  const [authReg, setAuthReg] = useState(false);
+export const Auth: React.FC = () => {
+  const [authReg, setAuthReg] = useState<boolean>(false);
+
   const handleSwitchAuthReg = () => {
     setAuthReg(!authReg);
   };
+
   return (
     <div className="wrapper">
       <div className="main">

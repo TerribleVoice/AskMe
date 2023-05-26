@@ -1,9 +1,13 @@
 FROM node:alpine
 EXPOSE 3000
-RUN mkdir -p /code
 WORKDIR /code
-COPY package*.json yarn*.lock ./
-COPY . .
+COPY public/ public/
+COPY src/ src/
+COPY .env .env
+COPY config-overrides.js config-overrides.js
+COPY package.json package.json
+COPY tsconfig.json tsconfig.json
+COPY yarn.lock yarn.lock
 
-RUN npm install yarn && yarn && yarn install && yarn build && yarn cache clean
-CMD [ "yarn", "start" ]
+RUN yarn install -y
+CMD ["yarn", "start"]

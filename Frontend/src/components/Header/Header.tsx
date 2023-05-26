@@ -1,18 +1,15 @@
-import { DebounceSearch } from "@/hooks/DebounceSearch";
-import { IUserProfilePage } from "@/models/IUserProfilePage";
-import { getUserProfilePage } from "@/services/getUserProfilePage";
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { DebounceSearch } from "@/components/Header/DebounceSearch";
+import { Link } from "react-router-dom";
 
-export const Header = () => {
+export const Header: React.FC = () => {
   const login = localStorage.getItem("login");
 
-  const handleLogin = (login: string) => {
+  const handleLogin = (login: string | null): string => {
     if (login && login.length > 14) {
       const shortLogin = login.substring(0, 14) + "...";
       return shortLogin;
     } else {
-      return login;
+      return login || "";
     }
   };
 
@@ -20,10 +17,10 @@ export const Header = () => {
     <div className="header__dropdown">
       <button className="header__dropdown-button">{handleLogin(login)}</button>
       <div className="header__dropdown-content">
-        <Link to={login}>Профиль</Link>
+        <Link to={login || ""}>Профиль</Link>
         <Link to={`feed`}>Лента</Link>
         <Link to={`${login}/settings/profile`}>Настройки</Link>
-        <Link to={`https://t.me/AskMeDonateBot`}>https://t.me/AskMeDonateBot</Link>
+        <Link to={`https://t.me/AskMeDonateBot`}>t.me/AskMeDonateBot</Link>
         <Link
           to={"/"}
           reloadDocument
@@ -47,7 +44,6 @@ export const Header = () => {
         <img src="img/profile/logo.png" alt="logo"></img>
       </Link>
       <img src="img/search.svg" alt="" className="header__icon" />
-      {/* <input type="text" className="header__input" placeholder="Поиск автора" /> */}
       <DebounceSearch />
       {buttons}
     </header>

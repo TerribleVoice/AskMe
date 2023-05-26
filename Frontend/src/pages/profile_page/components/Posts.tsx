@@ -28,7 +28,7 @@ export const Posts = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [LoginName]);
+  }, [LoginName, navigate]);
 
   return (
     <div className="pp_posts_wrapper">
@@ -47,11 +47,13 @@ export const Posts = () => {
                 <img
                   src={`${post.authorViewModel.profileImageUrl}`}
                   style={{ width: "50px", margin: "20px" }}
+                  alt="post_img"
                 />
               ) : (
                 <img
                   src={`/img/NoUserPhoto.svg`}
                   style={{ width: "50px", margin: "20px" }}
+                  alt="post_img"
                 />
               )}
               <span style={{ fontSize: "20px" }}>
@@ -69,7 +71,7 @@ export const Posts = () => {
                 <img
                   className="pp_post__img"
                   src="img/profile/photo.jpg"
-                  alt="profile"
+                  alt="."
                 />
                 <div className="pp_post__text2">{post.content}</div>
               </div>
@@ -78,8 +80,8 @@ export const Posts = () => {
                 <img
                   className="pp_post__img"
                   src="img/profile/photo.jpg"
-                  alt="profile"
-                ></img>
+                  alt="."
+                />
                 <div className="pp_post__text2">
                   <p>Пост только для платных подписчиков</p>
                 </div>
