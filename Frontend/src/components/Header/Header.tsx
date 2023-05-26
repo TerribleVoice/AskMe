@@ -23,6 +23,7 @@ export const Header = () => {
         <Link to={login}>Профиль</Link>
         <Link to={`feed`}>Лента</Link>
         <Link to={`${login}/settings/profile`}>Настройки</Link>
+        <Link to={`https://t.me/AskMeDonateBot`}>https://t.me/AskMeDonateBot</Link>
         <Link
           to={"/"}
           reloadDocument
