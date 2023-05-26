@@ -4,23 +4,43 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserSettingsPhoto } from "./UserSettingsPhoto";
 import { UserSettingsDeletePhoto } from "./UserSettingsDeletePhoto";
+import { IUserProfilePage } from "@/models/IUserProfilePage";
+import { getUserProfilePage } from "@/services/getUserProfilePage";
+import { useState, useEffect } from "react";
 
 export const UserSettingsForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUserSettings>({
-    defaultValues: {
-      login: null,
-      email: null,
-      password: null,
-      links: null,
-      description: null,
-    },
-  });
+  } = useForm<IUserSettings>();
   const { LoginName } = useParams();
   const navigation = useNavigate();
+  const [profileData, setProfileData] = useState<IUserProfilePage>();
+  const login = profileData?.login
+  const links = profileData?.links
+  const description = profileData?.description
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        if (LoginName !== undefined) {
+          const data = await getUserProfilePage(LoginName);
+          if (data === undefined) {
+            console.log("Ne uspeshno");
+          } else {
+            console.log(data);
+            setProfileData(data);
+          }
+        } else {
+          navigation("/404");
+        }
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const onSettingsSubmit = async (data: IUserSettings) => {
     try {
@@ -56,7 +76,12 @@ export const UserSettingsForm = () => {
         <div className="left-reg__login">
           <label htmlFor="login">Имя</label>
           <input
-            {...register("login", { setValueAs: (v) => (v === "" ? null : v) })}
+            {...register("login", {
+              required: true,
+              setValueAs: (v) => (v === "" ? null : v),
+            })}
+            placeholder={login}
+            defaultValue={login}
             type="text"
             name="login"
             id="login"
@@ -68,7 +93,11 @@ export const UserSettingsForm = () => {
         <div className="left-reg__login">
           <label htmlFor="email">Почта</label>
           <input
-            {...register("email", { setValueAs: (v) => (v === "" ? null : v) })}
+            {...register("email", {
+              required: true,
+              // setValueAs: (v) => (v === "" ? null : v),
+            })}
+            placeholder=""
             type="email"
             name="email"
             id="email"
@@ -81,6 +110,7 @@ export const UserSettingsForm = () => {
           <label htmlFor="password">Пароль</label>
           <input
             {...register("password", {
+              required: true,
               setValueAs: (v) => (v === "" ? null : v),
             })}
             type="password"
@@ -94,7 +124,12 @@ export const UserSettingsForm = () => {
         <div className="left-reg__login">
           <label htmlFor="links">Ссылки</label>
           <input
-            {...register("links", { setValueAs: (v) => (v === "" ? null : v) })}
+            {...register("links", {
+              required: true,
+              setValueAs: (v) => (v === "" ? null : v),
+            })}
+            placeholder={links}
+            defaultValue={links}
             type="text"
             name="links"
             id="links"
@@ -107,8 +142,11 @@ export const UserSettingsForm = () => {
           <label htmlFor="description">Описание</label>
           <textarea
             {...register("description", {
+              required: true,
               setValueAs: (v) => (v === "" ? null : v),
             })}
+            placeholder={description}
+            defaultValue={description}
             name="description"
             id="description"
           />

@@ -45,7 +45,7 @@ export const UserSettingsSubscriptions = () => {
               <p className="settings_subscription_description">
                 {bs.description}
               </p>
-              <p className="settings_subscription_price">{bs.price}$ в месяц</p>
+              <p className="settings_subscription_price">{bs.price} RUB в месяц</p>
             </div>
           );
         })}

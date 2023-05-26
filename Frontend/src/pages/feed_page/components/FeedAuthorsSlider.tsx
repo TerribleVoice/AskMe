@@ -13,6 +13,7 @@ export const FeedAuthorsSlider = () => {
     speed: 950,
     slidesToShow: 3,
     slidesToScroll: 3,
+    innerWidth: "auto",
   };
   const [authorsData, setAuthorData] = useState<IUserTopAuthors[]>([]);
   useEffect(() => {
@@ -37,7 +38,7 @@ export const FeedAuthorsSlider = () => {
       <Slider {...settings}>
         {authorsData.map((author) => {
           return (
-            <div key={author.login} className="feed_author">
+            <div key={author.login} className="feed_author hover_create_subscr">
               <div className="feed_authoravatar">
                 {author.profileImageUrl !== null ? (
                   <img className="feed_avatar" src={`${author.profileImageUrl}`} />

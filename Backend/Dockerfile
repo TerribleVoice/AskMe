@@ -4,18 +4,12 @@ COPY AskMe.sln .
 COPY AskMe.WebApi/*.csproj ./AskMe.WebApi/
 COPY AskMe.Core/*.csproj ./AskMe.Core/
 COPY AskMe.Service/*.csproj ./AskMe.Service/
-RUN dotnet restore
 COPY . .
 
-WORKDIR /src/AskMe.WebApi
-RUN dotnet build -c Debug -o /publish
-
-WORKDIR /src
-RUN dotnet build -c Debug -o /publish
-
-WORKDIR /src/AskMe.Service
-RUN dotnet build -c Debug -o /publish
-
+RUN dotnet restore && \
+    dotnet build -c Debug -o /publish ./AskMe.WebApi && \
+    dotnet build -c Debug -o /publish && \
+    dotnet build -c Debug -o /publish ./AskMe.Service
 
 FROM build as publish
 WORKDIR /src

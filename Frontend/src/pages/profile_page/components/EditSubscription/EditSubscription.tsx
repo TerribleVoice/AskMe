@@ -1,9 +1,12 @@
 import { GoBack } from "@/components/GoBack";
-import { IUserEditSubscription } from "@/models/IUserSubscriptions";
+import {
+  IUserEditSubscription,
+  IUserSubscriptions,
+} from "@/models/IUserSubscriptions";
 import { userCreateSubscription } from "@/services/postUserCreateSubscription";
 import { userEditSubscription } from "@/services/postUserEditSubscription";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { DeleteSubscription } from "./DeleteSubscription";
 
 export const EditSubscription = () => {
@@ -14,6 +17,8 @@ export const EditSubscription = () => {
     formState: { errors }, // нужен ли??
   } = useForm<IUserEditSubscription>();
   const { id } = useParams();
+  const { state } = useLocation();
+  console.log(state);
 
   const onEditSubscription = async (data: IUserEditSubscription) => {
     try {
@@ -46,7 +51,8 @@ export const EditSubscription = () => {
           <div className="subscription_input">
             <label htmlFor="name">Название подписки</label>
             <input
-              className=""
+              placeholder={`${state[0].name}`}
+              defaultValue={`${state[0].name}`}
               {...register("name", { required: true })}
               type="text"
               id="name"
@@ -74,6 +80,8 @@ export const EditSubscription = () => {
           <div className="subscription_description">
             <label htmlFor="description">Описание подписки</label>
             <textarea
+              placeholder={`${state[0].description}`}
+              defaultValue={`${state[0].description}`}
               {...register("description", { required: true })}
               id="description"
               name="description"
@@ -85,6 +93,8 @@ export const EditSubscription = () => {
           <div className="subscription_input">
             <label htmlFor="price">Стоимость месячной подписки (в RUB)</label>
             <input
+              placeholder={`${state[0].price}`}
+              defaultValue={`${state[0].price}`}
               {...register("price", { required: true })}
               type="number"
               name="price"
