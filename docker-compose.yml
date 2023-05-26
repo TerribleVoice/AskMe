@@ -44,6 +44,17 @@ services:
     ports:
       - "3000:3000"
 
+  tg_bot:
+    restart: unless-stopped
+    container_name: tg_bot
+    build:
+      context: .
+      dockerfile: ./tg_bot/Dockerfile
+    depends_on:
+      - postgres
+    volumes:
+      - ./tg_bot/app:/app
+
 
 #  payment:
 #    restart: unless-stopped
@@ -62,18 +73,3 @@ services:
 #    volumes:
 #      - ./paymentService:/app
 #
-#  tg_bot:
-#    restart: unless-stopped
-#    container_name: tg_bot
-#    build:
-#      context: .
-#      dockerfile: ./tgService/Dockerfile
-#    environment:
-#      POSTGRES_DB: "AskMe"
-#      POSTGRES_USER: 'admin'
-#      POSTGRES_PASSWORD: "test"
-#      TG_TOKEN: ${AskMe_TG_TOKEN}
-#    depends_on:
-#      - postgres
-#    volumes:
-#      - ./tgService:/app
