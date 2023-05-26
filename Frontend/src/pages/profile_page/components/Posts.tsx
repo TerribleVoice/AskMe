@@ -14,8 +14,8 @@ export const Posts = () => {
         if (LoginName !== undefined) {
           const data = await getUserPosts(LoginName);
           if (data === undefined) {
-            setPosts(zaglushkaPosts); // заглушка
-            // setPosts(data);
+            // setPosts(zaglushkaPosts); // заглушка
+            setPosts(data);
           } else {
             console.log(data);
             setPosts(zaglushkaPosts);

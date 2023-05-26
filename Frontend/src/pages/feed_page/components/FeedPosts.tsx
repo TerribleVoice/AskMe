@@ -14,8 +14,8 @@ export const FeedPosts = () => {
       try {
         if (LoginName !== undefined) {
           const data = await getUserFeed(LoginName!);
-          setPosts(zaglushkaPosts); // заглушка
-          // setPosts(data);
+          // setPosts(zaglushkaPosts); // заглушка
+          setPosts(data);
           console.log(data);
         } else {
           console.log(LoginName);

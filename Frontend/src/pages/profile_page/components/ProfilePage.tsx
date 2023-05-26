@@ -8,17 +8,20 @@ import { getUserSubscriptions } from "@/services/getUserSubscriptions";
 import { IUserSubscriptions } from "@/models/IUserSubscriptions";
 
 const zaglushka: IUserProfilePage = {
-  login: "Shaman",
-  description: "eti rolexu mne muzh kupil",
-  profileImageUrl: "asdasdasda",
-  links: "asdasdasdasdasda",
+  login: "Login1",
+  description:
+    "Description1 Description1 Description1 Description1 Description1 Description1 Description1 Description1 Description1 Description1 ",
+  profileImageUrl: "/img/NoUserPhoto.svg",
+  links: "https://link1.com",
 };
 
 export const ProfilePage = () => {
   const { LoginName } = useParams();
   const yourLoginName = localStorage.getItem("login");
   const navigate = useNavigate();
-  const [profileData, setProfileData] = useState<IUserProfilePage | undefined>();
+  const [profileData, setProfileData] = useState<
+    IUserProfilePage | undefined
+  >();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
 
   useEffect(() => {

@@ -2,15 +2,15 @@ import { IUserPost } from "@/models/IUserPosts";
 
 export const zaglushkaPosts: IUserPost[] = [
     {
-      id: "asdasdasd",
-      content: "asdasdasd",
-      createAt: "asdasdasd",
+      id: "1235456687",
+      content: "Content1 Content1 Content1 Content1 Content1 Content1 Content1 Content1 Content1 ",
+      createAt: "2021.07.22",
       haveAccess: true,
-      title: "asdasdasd",
+      title: "title1",
       authorViewModel: {
-        login: "asdasdasd",
-        description: "asdasdasd",
-        links: "asdasdasd",
+        login: "login1",
+        description: "description1",
+        links: "https://link1.com",
         profileImageUrl: "asdasdasd",
       },
     },
