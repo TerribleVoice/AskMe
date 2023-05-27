@@ -2,7 +2,7 @@ import { IUserPhoto } from "@/models/IUserSettings";
 import { postUserPhoto } from "@/services/postUserPhoto";
 import { ChangeEvent, useState } from "react";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const UserSettingsPhoto = () => {
   const {
@@ -13,6 +13,7 @@ export const UserSettingsPhoto = () => {
 
   const { LoginName } = useParams();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const navigation = useNavigate();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     console.log(event.target)
@@ -33,7 +34,7 @@ export const UserSettingsPhoto = () => {
       const response = await postUserPhoto(data, LoginName!);
       console.log(response)
       if (response.status < 300) {
-        alert("Confirm");
+        navigation(`/${LoginName}`);
       } else {
         alert("Reject");
       }
@@ -68,7 +69,7 @@ export const UserSettingsPhoto = () => {
           ВЫБРАТЬ ФАЙЛ
         </label>
         <label className="settings_caption" htmlFor="description">
-          Рекомендуемый размер 240х150 рх
+          Рекомендуемый размер 350х350 рх
         </label>
       </div>
       <p className="left-reg__submit">

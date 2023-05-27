@@ -1,15 +1,17 @@
 import { deleteUserPhoto } from "@/services/deleteUserPhoto";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export const UserSettingsDeletePhoto = () => {
   const { LoginName } = useParams();
   const location = useLocation();
+  const navigation = useNavigate();
+
   const onDeletePhoto = async () => {
     try {
       const response = await deleteUserPhoto(LoginName!);
       console.log(response);
       if (response.status < 300) {
-        alert("Confirm");
+        navigation(`/${LoginName}`);
       } else {
         alert("Reject");
       }
