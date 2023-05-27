@@ -79,7 +79,7 @@ export const UserSettingsLayout = () => {
             />
             Мои подписки
           </NavLink>
-          <NavLink
+          {/* <NavLink
             className={({ isActive }) =>
               isActive ? "settings_nav_link active" : "settings_nav_link"
             }
@@ -91,7 +91,7 @@ export const UserSettingsLayout = () => {
               alt="settings_subscription"
             />
             Платежная информация
-          </NavLink>
+          </NavLink> */}
         </nav>
       </aside>
     </div>
