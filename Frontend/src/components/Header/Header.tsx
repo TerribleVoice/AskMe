@@ -17,11 +17,12 @@ export const Header: React.FC = () => {
     <div className="header__dropdown">
       <button className="header__dropdown-button">{handleLogin(login)}</button>
       <div className="header__dropdown-content">
-        <Link to={login || ""}>Профиль</Link>
-        <Link to={`feed`}>Лента</Link>
-        <Link to={`${login}/settings/profile`}>Настройки</Link>
-        <Link to={`https://t.me/AskMeDonateBot`}>Telegram Бот</Link>
+        <Link className="header__dropdown-link" to={login || ""}>Профиль</Link>
+        <Link className="header__dropdown-link" to={`feed`}>Лента</Link>
+        <Link className="header__dropdown-link" to={`${login}/settings/profile`}>Настройки</Link>
+        <Link className="header__dropdown-link" to={`https://t.me/AskMeDonateBot`}>Telegram Бот</Link>
         <Link
+          className="header__dropdown-link"
           to={"/"}
           reloadDocument
           onClick={() => {

@@ -1223,3 +1223,10 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   -webkit-box-shadow: inset 0px 0px 0px 7px #b00062;
   -moz-box-shadow: inset 0px 0px 0px 7px #b00062;
 }
+.header__dropdown-link:hover {
+  outline: #ff97d0 3px solid;
+  color: #fcedff;
+}
+.header__dropdown-button:hover {
+  outline: #ff97d0 1px solid;
+}
