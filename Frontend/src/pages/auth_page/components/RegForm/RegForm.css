@@ -80,6 +80,11 @@ input:focus {
   padding: 12px 24px;
   cursor: pointer;
 }
+.left-reg__submit:hover {
+  box-shadow: inset 0px 0px 0px 2px #b00062;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #b00062;
+  -moz-box-shadow: inset 0px 0px 0px 2px #b00062;
+}
 .left-reg__submit button {
   background: #181818;
   font-family: "Roboto";

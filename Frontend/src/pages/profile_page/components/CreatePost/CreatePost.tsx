@@ -29,7 +29,11 @@ export const CreatePost = () => {
           console.log(data);
           setSubscriptions(data);
         } else {
+<<<<<<< HEAD
           navigate("/404");
+=======
+          // navigation("/404");
+>>>>>>> ddd1c16f3d4aea5071a702cdfa17c7c830c6a78a
         }
       } catch (error) {
         console.log(error);
@@ -60,6 +64,7 @@ export const CreatePost = () => {
       if (response.status < 300) {
         navigate(`/${login}`)
         console.log(response);
+        navigation(`/${login}`);
       } else {
         reset();
         alert("LSADJ:LASDJLA");
