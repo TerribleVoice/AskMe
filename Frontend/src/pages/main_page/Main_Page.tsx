@@ -6,10 +6,13 @@ import { AuthorsSlider } from "./components/Ourauthors/AuthorsSlider";
 
 import { IUserTopAuthors } from "@/models/IUserTopAuthors";
 import { getUserTopAuthors } from "@/services/getTopAuthors";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 
 export const Main = () => {
   const [authorData, setAuthorData] = useState<IUserTopAuthors[]>([]);
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     try {
       const fetchData = async () => {

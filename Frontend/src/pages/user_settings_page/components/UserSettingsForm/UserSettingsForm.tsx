@@ -6,11 +6,14 @@ import { UserSettingsPhoto } from "./UserSettingsPhoto";
 import { UserSettingsDeletePhoto } from "./UserSettingsDeletePhoto";
 import { IUserProfilePage } from "@/models/IUserProfilePage";
 import { getUserProfilePage } from "@/services/getUserProfilePage";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 
 export const UserSettingsForm = () => {
   const LoginName = localStorage.getItem("login")
   const navigation = useNavigate();
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     try {
       const fetchData = async () => {

@@ -1,6 +1,6 @@
 import { IUserSubscriptions } from "@/models/IUserSubscriptions";
 import { getUserBoughtSubscriptions } from "@/services/getUserBoughtSubscriptions";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { zaglushka } from "./subscriptions_data";
 import { UserSettingsUnsubscribe } from "./UserSettingsUnsubscribe";
@@ -9,6 +9,9 @@ export const UserSettingsSubscriptions = () => {
   const [boughtSubscription, setBoughtSubscription] = useState<
     IUserSubscriptions[]
   >([]);
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { LoginName } = useParams();
   useEffect(() => {
     try {
