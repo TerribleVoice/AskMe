@@ -1060,6 +1060,12 @@ a:active {
 }
 .subscription_checkbox {
   width: 200px;
+  display: flex;
+  flex-direction: row;
+}
+.pp_subscription_name_price {
+  display: flex;
+  flex-direction: column;
 }
 .create_post_subscriptions_wrapper {
   display: grid;
