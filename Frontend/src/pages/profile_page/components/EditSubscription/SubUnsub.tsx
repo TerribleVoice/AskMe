@@ -14,7 +14,7 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
       const response = await getSubscribe(id);
       console.log(response);
       if (response.status < 300) {
-        setSubButtons((prevButtons) => ({ ...prevButtons, [id]: false }));
+        setSubButtons((prevButtons) => ({ ...prevButtons, [id]: true }));
         // alert("Confirm");
       } else {
         // alert("Reject");
@@ -29,7 +29,7 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
       const response = await getUnsubscribe(id);
       console.log(response);
       if (response.status < 300) {
-        setSubButtons((prevButtons) => ({ ...prevButtons, [id]: true }));
+        setSubButtons((prevButtons) => ({ ...prevButtons, [id]: false }));
         // console.log("Confirm");
       } else {
         // console.log("Reject");
@@ -58,11 +58,11 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
           ) : (
             <div
               onClick={() =>
-                subButtons[sub.id] ? onSubscribe(sub.id) : onUnsubscribe(sub.id)
+                subButtons[sub.id] ? onUnsubscribe(sub.id) : onSubscribe(sub.id)
               }
               className="pp_body-create_subscr hover_create_subscr"
             >
-              {subButtons[sub.id] ? "ПОДПИСАТЬСЯ" : "ОТПИСАТЬСЯ"}
+              {subButtons[sub.id] ? "ОТПИСАТЬСЯ" : "ПОДПИСАТЬСЯ"}
             </div>
           )}
         </div>
