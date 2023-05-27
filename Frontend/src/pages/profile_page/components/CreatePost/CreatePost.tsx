@@ -26,14 +26,11 @@ export const CreatePost = () => {
           const data = await getUserSubscriptions(LoginName);
           console.log(data);
           setSubscriptions(data);
-          navigation(`/${login}`);
         } else {
           // navigation("/404");
-          navigation(`/${login}`);
         }
       } catch (error) {
         console.log(error);
-        navigation(`/${login}`);
       }
     };
 
@@ -60,6 +57,7 @@ export const CreatePost = () => {
       console.log(response);
       if (response.status < 300) {
         console.log(response);
+        navigation(`/${login}`);
       } else {
         reset();
         alert("LSADJ:LASDJLA");

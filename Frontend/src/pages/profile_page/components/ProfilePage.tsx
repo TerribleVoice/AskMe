@@ -53,7 +53,7 @@ export const ProfilePage = () => {
             setProfileData(data);
             if (
               localStorage.getItem("description") === null &&
-              localStorage.getItem("links") === null &&
+              localStorage.getItem("links") === null ||
               localStorage.getItem("login") !== LoginName
             ) {
               localStorage.setItem("description", data.description);

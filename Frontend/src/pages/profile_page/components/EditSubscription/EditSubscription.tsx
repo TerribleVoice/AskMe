@@ -6,8 +6,9 @@ import {
 import { userCreateSubscription } from "@/services/postUserCreateSubscription";
 import { userEditSubscription } from "@/services/postUserEditSubscription";
 import { useForm } from "react-hook-form";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DeleteSubscription } from "./DeleteSubscription";
+import { ProfilePage } from "../ProfilePage";
 
 export const EditSubscription = () => {
   const {
@@ -19,6 +20,8 @@ export const EditSubscription = () => {
   const { id } = useParams();
   const { state } = useLocation();
   console.log(state);
+  const navigation = useNavigate();
+  const login = localStorage.getItem("login")
 
   const onEditSubscription = async (data: IUserEditSubscription) => {
     try {
@@ -26,6 +29,7 @@ export const EditSubscription = () => {
       const response = await userEditSubscription(data, id!);
       console.log(response);
       if (response.status < 300) {
+        navigation(`/${login}`);
         console.log(response);
       } else {
         reset();

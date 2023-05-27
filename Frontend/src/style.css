@@ -619,7 +619,7 @@ a:active {
   display: flex;
   justify-content: center;
   background-color: #4c002a;
-  padding: 15px 0 15px 0;
+  padding: 15px 10px 15px 10px;
   border: #da0178 4px solid;
   font-weight: 500;
   cursor: pointer;
@@ -634,7 +634,10 @@ a:active {
   cursor: pointer;
   margin: 0 25px 0 25px;
 }
-.pp_body-create_subscr {
+.pp_body-create_subscr:hover {
+  box-shadow: inset 0px 0px 0px 2px #da0178;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #da0178;
+  -moz-box-shadow: inset 0px 0px 0px 2px #da0178;
 }
 .pp_body-left__nick {
   font-family: "Roboto";
@@ -796,6 +799,11 @@ a:active {
   font-weight: 600;
   font-size: large;
   color: #ffffff;
+}
+.settings_nav_link:hover {
+  box-shadow: inset 0px 0px 0px 2px #b00062;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #b00062;
+  -moz-box-shadow: inset 0px 0px 0px 2px #b00062;
 }
 .settings_nav_link.active {
   border: 3px solid #f10086;
@@ -1148,6 +1156,11 @@ a:active {
   padding: 12px 24px;
   cursor: pointer;
 }
+.settings_delete_photo:hover {
+  box-shadow: inset 0px 0px 0px 2px #b00062;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #b00062;
+  -moz-box-shadow: inset 0px 0px 0px 2px #b00062;
+}
 .settings_delete_sub {
   margin: 0 0 25px;
   display: inline-flex;
@@ -1224,9 +1237,12 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   -moz-box-shadow: inset 0px 0px 0px 7px #b00062;
 }
 .header__dropdown-link:hover {
-  outline: #ff97d0 3px solid;
-  color: #fcedff;
+  box-shadow: inset 0px 0px 0px 3px #ff97d0;
+  -webkit-box-shadow: inset 0px 0px 0px 3px #ff97d0;
+  -moz-box-shadow: inset 0px 0px 0px 3px #ff97d0;
 }
 .header__dropdown-button:hover {
-  outline: #ff97d0 1px solid;
+  box-shadow: inset 0px 0px 0px 3px #ff97d0;
+  -webkit-box-shadow: inset 0px 0px 0px 3px #ff97d0;
+  -moz-box-shadow: inset 0px 0px 0px 3px #ff97d0;
 }
