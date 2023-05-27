@@ -16,7 +16,7 @@ export const UserSettingsSubscriptions = () => {
         if (LoginName !== undefined) {
           const data = await getUserBoughtSubscriptions(LoginName);
           if (data === undefined) {
-            setBoughtSubscription(zaglushka);
+            // setBoughtSubscription(zaglushka);
           } else {
             console.log(data)
             setBoughtSubscription(data);
@@ -28,8 +28,6 @@ export const UserSettingsSubscriptions = () => {
       fetchData();
     } catch (error) {
       console.log(error);
-    } finally {
-      setBoughtSubscription(zaglushka);
     }
   }, [LoginName]);
 
