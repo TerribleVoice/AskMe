@@ -51,9 +51,12 @@ export const ProfilePage = () => {
           } else {
             console.log(data);
             setProfileData(data);
-            if (localStorage.getItem("description") === null && localStorage.getItem("links") === null) {
-              localStorage.setItem("description", data.description)
-              localStorage.setItem("links", data.links)
+            if (
+              localStorage.getItem("description") === null &&
+              localStorage.getItem("links") === null
+            ) {
+              localStorage.setItem("description", data.description);
+              localStorage.setItem("links", data.links);
             }
           }
         } else {
@@ -67,8 +70,9 @@ export const ProfilePage = () => {
   }, [LoginName]);
 
   const image = profileData?.profileImageUrl;
-  const links = profileData?.links.split("\r\n");
-  console.log(links![0])
+  const links = localStorage.getItem("links");
+
+  // console.log(links![0])
   return (
     <>
       <div className="pp_about">
@@ -130,8 +134,13 @@ export const ProfilePage = () => {
         <div className="pp_right__top pp_top-right">
           <ul className="pp_top-right__links">
             <p className="pp_top-right__text">Ссылки</p>
-            {links?.map(l => <Link to={l} className="pp_links">{l}</Link>)}
-            {/* {links![0] === "null" ?  null : links?.map(l => <Link to={l} className="pp_links">{l}</Link>)} */}
+            {links === null || links === "null" || links === undefined
+              ? null
+              : links.split("\r\n")?.map((l) => (
+                  <Link to={l} className="pp_links">
+                    {l}
+                  </Link>
+                ))}
           </ul>
         </div>
         <Subscriptions subs={subscriptions} />
