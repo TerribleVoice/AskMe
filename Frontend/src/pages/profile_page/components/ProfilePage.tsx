@@ -108,12 +108,8 @@ export const ProfilePage = () => {
           </Link>
         ) : LoginName === yourLoginName && subscriptions.length === 0 ? (
           <>
-            <div className="pp_body-create_post unactive">
-              <span>Опубликовать пост можно </span>
-              <br />
-              <span>если у вас создан хотя бы </span>
-              <br />
-              <span>один уровень подписки</span>
+            <div className="unactive">
+              <span className="unactive_notif">Опубликовать пост можно если у вас создан хотя бы один уровень подписки</span>
             </div>
             <Link
               to="create_subscription"

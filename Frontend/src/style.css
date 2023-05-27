@@ -1101,13 +1101,22 @@ a:active {
   word-wrap: break-word;
 }
 .unactive {
-  color: #bbbbbb;
-  cursor: default;
   display: flex;
+  justify-content: center;
+  padding: 7px;
+  border: #da0178 4px solid;
+  font-weight: 500;
+  color: #bbbbbb;
   flex-direction: column;
   align-items: center;
   background-color: #181818;
   border-color: #555555;
+  word-wrap: break-word;
+  width: 250px;
+}
+.unactive_notif {
+  text-align: center;
+  justify-self: center;
 }
 .pp_subscription_not_yours {
   border-top: #b00062 1px solid;
