@@ -67,7 +67,7 @@ export const ProfilePage = () => {
   }, [LoginName]);
 
   const image = profileData?.profileImageUrl;
-  console.log(subscriptions.length);
+  const links = profileData?.links.split("\r\n");
   return (
     <>
       <div className="pp_about">
@@ -129,6 +129,7 @@ export const ProfilePage = () => {
         <div className="pp_right__top pp_top-right">
           <ul className="pp_top-right__links">
             <p className="pp_top-right__text">Ссылки</p>
+            {links?.map(l => <Link to={l} className="pp_links">{l}</Link>)}
           </ul>
         </div>
         <Subscriptions subs={subscriptions} />

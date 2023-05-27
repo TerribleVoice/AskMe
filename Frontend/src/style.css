@@ -731,6 +731,12 @@ a:active {
   max-width: 10vw;
   max-height: 10vh;
 }
+.pp_links {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  color: #ff31a2;
+  width: fit-content;
+}
 /* =================== */
 
 .pp_left__top {
