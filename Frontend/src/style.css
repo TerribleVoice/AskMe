@@ -599,6 +599,10 @@ a:active {
   background: #181818;
   transform: translateX(-105%);
   border: 10px solid #181818;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .pp_left__img {
   margin-bottom: 10px;
@@ -624,7 +628,7 @@ a:active {
   display: flex;
   justify-content: center;
   background-color: #4c002a;
-  padding: 15px 0 15px 0;
+  padding: 15px 10px 15px 10px;
   border: #da0178 4px solid;
   font-weight: 500;
   cursor: pointer;

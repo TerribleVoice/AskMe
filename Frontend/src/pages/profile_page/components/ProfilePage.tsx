@@ -53,7 +53,8 @@ export const ProfilePage = () => {
             setProfileData(data);
             if (
               localStorage.getItem("description") === null &&
-              localStorage.getItem("links") === null
+              localStorage.getItem("links") === null &&
+              localStorage.getItem("login") !== LoginName
             ) {
               localStorage.setItem("description", data.description);
               localStorage.setItem("links", data.links);
@@ -109,7 +110,10 @@ export const ProfilePage = () => {
         ) : LoginName === yourLoginName && subscriptions.length === 0 ? (
           <>
             <div className="unactive">
-              <span className="unactive_notif">Опубликовать пост можно если у вас создан хотя бы один уровень подписки</span>
+              <span className="unactive_notif">
+                Опубликовать пост можно если у вас создан хотя бы один уровень
+                подписки
+              </span>
             </div>
             <Link
               to="create_subscription"

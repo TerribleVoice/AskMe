@@ -39,12 +39,12 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
     }
   };
 
-  const sort_subs = subs.sort((a, b) => a.price - b.price)
-  console.log(sort_subs)
+  // const sort_subs = subs.sort((a, b) => a.price - b.price)
+  // console.log(sort_subs)
 
   return (
     <>
-      {sort_subs.map((sub) => (
+      {subs.map((sub) => (
         <div key={sub.id} className="pp_subscription_not_yours">
           <div className="pp_subscription_name">{sub.name}</div>
           <div className="pp_subscription_price">
