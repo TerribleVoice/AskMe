@@ -798,7 +798,7 @@ a:active {
   color: #ffffff;
 }
 .settings_nav_link.active {
-  border: 1px solid #f10086;
+  border: 3px solid #f10086;
 }
 .settings_form_wrapper {
   display: flex;
