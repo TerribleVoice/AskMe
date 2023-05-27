@@ -60,10 +60,10 @@ export const CreatePost = () => {
         navigation(`/${login}`);
       } else {
         reset();
-        alert("LSADJ:LASDJLA");
+        navigation(`/${login}`);
       }
     } catch (error) {
-      console.error(error);
+      navigation(`/${login}`);
     }
   };
   const [selectedSubscription, setSelectedSubscription] = useState<string>("");
@@ -126,7 +126,7 @@ export const CreatePost = () => {
           <div className="subscription_description">
             <label htmlFor="content">Описание поста</label>
             <textarea
-              {...register("content", { required: true })}
+              {...register("content", { required: false })}
               id="content"
               name="content"
             />
@@ -160,7 +160,7 @@ export const CreatePost = () => {
               Рекомендуемый размер 240х150 рх
             </label>
           </div> */}
-          <div className="subscription_input">
+          {/* <div className="subscription_input">
             <label htmlFor="price">Стоимость поста</label>
             <input
               {...register("price", { required: true })}
@@ -170,7 +170,7 @@ export const CreatePost = () => {
               min={0}
               max={150000}
             />
-          </div>
+          </div> */}
           <div className="left-reg__submit submit_form">
             <button type="submit">Создать</button>
           </div>

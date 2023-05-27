@@ -624,6 +624,11 @@ a:active {
   font-weight: 500;
   cursor: pointer;
 }
+.pp_body-create_post:hover {
+  box-shadow: inset 0px 0px 0px 2px #da0178;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #da0178;
+  -moz-box-shadow: inset 0px 0px 0px 2px #da0178;
+}
 .pp_body-create_subscr {
   display: flex;
   justify-content: center;
