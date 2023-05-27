@@ -15,7 +15,7 @@ export const Subscriptions = ({ subs }: IUserSubscriptionsProps) => {
     <div className="pp_subscriptions_wrapper">
       <p className="pp_subscriptions_header">УРОВНИ ПОДПИСКИ</p>
 
-      <SubUnsub subs={subs}></SubUnsub>
+      <SubUnsub subs={subs} />
       {LoginName === yourLoginName ? (
         <Link
           to="create_subscription"

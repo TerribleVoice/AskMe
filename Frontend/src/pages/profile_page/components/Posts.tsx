@@ -14,11 +14,11 @@ export const Posts = () => {
         if (LoginName !== undefined) {
           const data = await getUserPosts(LoginName);
           if (data === undefined) {
-            // setPosts(zaglushkaPosts); // заглушка
-            setPosts(data);
+            setPosts(zaglushkaPosts); // заглушка
+            // setPosts(data);
           } else {
             console.log(data);
-            setPosts(zaglushkaPosts);
+            setPosts(data);
           }
         } else {
           navigate("/404");
@@ -43,7 +43,7 @@ export const Posts = () => {
                 backgroundColor: "#181818",
               }}
             >
-              {!post.authorViewModel.profileImageUrl ? (
+              {post.authorViewModel.profileImageUrl !== null ? (
                 <img
                   src={`${post.authorViewModel.profileImageUrl}`}
                   style={{ width: "50px", margin: "20px" }}

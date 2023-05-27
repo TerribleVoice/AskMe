@@ -20,7 +20,7 @@ export const Header: React.FC = () => {
         <Link to={login || ""}>Профиль</Link>
         <Link to={`feed`}>Лента</Link>
         <Link to={`${login}/settings/profile`}>Настройки</Link>
-        <Link to={`https://t.me/AskMeDonateBot`}>t.me/AskMeDonateBot</Link>
+        <Link to={`https://t.me/AskMeDonateBot`}>Telegram Бот</Link>
         <Link
           to={"/"}
           reloadDocument

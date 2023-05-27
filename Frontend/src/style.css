@@ -476,7 +476,6 @@ a:active {
   background: #181818;
   padding: 15px;
   min-height: 190px;
-
 }
 .pp_about__title {
 }
@@ -802,14 +801,16 @@ a:active {
   padding-top: 30px;
   width: 35vw;
 }
-.settings_description {
+.settings_description,
+.settings_links {
   margin-bottom: 12px;
   padding: 10px;
   background: #202020;
   display: flex;
   flex-direction: column;
 }
-.settings_description input {
+.settings_description input,
+.settings_links input {
   margin-top: 5px;
   border: 0;
   font-family: "Roboto";
@@ -836,10 +837,25 @@ a:active {
   height: 300px;
   resize: none;
 }
-.settings_description input:focus {
+.settings_links textarea {
+  margin-top: 5px;
+  border: 0;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  color: #ffffff;
+  background: #202020;
+  height: 150px;
+  resize: none;
+}
+.settings_description input:focus,
+.settings_links input:focus {
   border: 1px solid#f10086;
 }
-.settings_description textarea:focus {
+.settings_description textarea:focus,
+.settings_links textarea:focus {
   outline: 1px solid#f10086;
 }
 .settings_caption {
@@ -1020,6 +1036,7 @@ a:active {
   outline: 2px solid #b00062;
 }
 .subscription_checkbox {
+  width: 200px;
 }
 .create_post_subscriptions_wrapper {
   display: grid;
@@ -1029,9 +1046,11 @@ a:active {
   top: 130px;
   background-color: #181818;
   padding-bottom: 15px;
+  width: 300px;
 }
 .create_post_subscriptions_header {
   justify-self: center;
+  align-self: center;
   font-size: larger;
   font-weight: 500;
   margin: 9px 0 9px;

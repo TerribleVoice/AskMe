@@ -1,8 +1,6 @@
-import { IUserCreatePost } from "@/models/IUserPosts";
 import { IUserSubscriptions } from "@/models/IUserSubscriptions";
 import { getUserSubscriptions } from "@/services/getUserSubscriptions";
 import { useState, useEffect } from "react";
-import { UseFormRegister } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 
 export const SubscriptionsCheckBox = (register:any) => {

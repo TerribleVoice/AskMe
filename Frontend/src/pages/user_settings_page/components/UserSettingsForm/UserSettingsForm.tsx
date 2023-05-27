@@ -9,23 +9,13 @@ import { getUserProfilePage } from "@/services/getUserProfilePage";
 import { useState, useEffect } from "react";
 
 export const UserSettingsForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IUserSettings>();
-  const { LoginName } = useParams();
+  const LoginName = localStorage.getItem("login")
   const navigation = useNavigate();
-  const [profileData, setProfileData] = useState<IUserProfilePage>();
-  const login = profileData?.login
-  const links = profileData?.links
-  const description = profileData?.description
-
   useEffect(() => {
     try {
       const fetchData = async () => {
         if (LoginName !== undefined) {
-          const data = await getUserProfilePage(LoginName);
+          const data = await getUserProfilePage(LoginName!);
           if (data === undefined) {
             console.log("Ne uspeshno");
           } else {
@@ -41,6 +31,22 @@ export const UserSettingsForm = () => {
       console.log(error);
     }
   }, []);
+  const [profileData, setProfileData] = useState<IUserProfilePage>();
+  const links = localStorage.getItem("links")
+  const description = localStorage.getItem("description")
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IUserSettings>({
+    defaultValues: {
+      login: LoginName!,
+      email: "",
+      password: "",
+      links: links!,
+      description: description!,
+    },
+  });
 
   const onSettingsSubmit = async (data: IUserSettings) => {
     try {
@@ -54,7 +60,6 @@ export const UserSettingsForm = () => {
         if (data.login) {
           localStorage.removeItem("login");
           localStorage.setItem("login", data.login);
-
           navigation(`/${data.login}`);
         } else {
           const login = localStorage.getItem("login");
@@ -77,11 +82,10 @@ export const UserSettingsForm = () => {
           <label htmlFor="login">Имя</label>
           <input
             {...register("login", {
-              required: true,
-              setValueAs: (v) => (v === "" ? null : v),
+              // setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={login}
-            defaultValue={login}
+            placeholder={LoginName!}
+            // defaultValue={login}
             type="text"
             name="login"
             id="login"
@@ -94,8 +98,7 @@ export const UserSettingsForm = () => {
           <label htmlFor="email">Почта</label>
           <input
             {...register("email", {
-              required: true,
-              // setValueAs: (v) => (v === "" ? null : v),
+              // setValueAs: (v) => (v === "" ? v : v),
             })}
             placeholder=""
             type="email"
@@ -110,8 +113,7 @@ export const UserSettingsForm = () => {
           <label htmlFor="password">Пароль</label>
           <input
             {...register("password", {
-              required: true,
-              setValueAs: (v) => (v === "" ? null : v),
+              // setValueAs: (v) => (v === "" ? v : v),
             })}
             type="password"
             name="password"
@@ -121,16 +123,14 @@ export const UserSettingsForm = () => {
             Используется для входа в аккаунт
           </label>
         </div>
-        <div className="left-reg__login">
+        <div className="settings_links">
           <label htmlFor="links">Ссылки</label>
-          <input
+          <textarea
             {...register("links", {
-              required: true,
-              setValueAs: (v) => (v === "" ? null : v),
+              // setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={links}
-            defaultValue={links}
-            type="text"
+            placeholder={links!}
+            // defaultValue={links}
             name="links"
             id="links"
           />
@@ -142,11 +142,10 @@ export const UserSettingsForm = () => {
           <label htmlFor="description">Описание</label>
           <textarea
             {...register("description", {
-              required: true,
-              setValueAs: (v) => (v === "" ? null : v),
+              // setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={description}
-            defaultValue={description}
+            placeholder={description!}
+            // defaultValue={description}
             name="description"
             id="description"
           />

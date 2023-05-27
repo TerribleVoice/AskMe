@@ -1,8 +1,8 @@
 import { GoBack } from "@/components/GoBack";
 import { IUserCreatePost } from "@/models/IUserPosts";
 import { userCreatePost } from "@/services/postUserPost";
-import { Controller, useForm } from "react-hook-form";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { IUserSubscriptions } from "@/models/IUserSubscriptions";
 import { getUserSubscriptions } from "@/services/getUserSubscriptions";
 import { useParams, useNavigate } from "react-router-dom";
@@ -12,12 +12,11 @@ export const CreatePost = () => {
     register,
     handleSubmit,
     reset,
-    control,
-    formState: { errors },
   } = useForm<IUserCreatePost>();
   const { LoginName } = useParams();
-  const navigate = useNavigate();
+  const navigation = useNavigate();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
+  const login = localStorage.getItem("login");
   // const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,16 +26,19 @@ export const CreatePost = () => {
           const data = await getUserSubscriptions(LoginName);
           console.log(data);
           setSubscriptions(data);
+          navigation(`/${login}`);
         } else {
-          navigate("/404");
+          // navigation("/404");
+          navigation(`/${login}`);
         }
       } catch (error) {
         console.log(error);
+        navigation(`/${login}`);
       }
     };
 
     fetchData();
-  }, []);
+  }, [LoginName]);
 
   // const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
   //   const file = event.target.files?.[0];

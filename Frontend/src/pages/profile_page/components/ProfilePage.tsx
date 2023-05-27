@@ -51,6 +51,10 @@ export const ProfilePage = () => {
           } else {
             console.log(data);
             setProfileData(data);
+            if (localStorage.getItem("description") === null && localStorage.getItem("links") === null) {
+              localStorage.setItem("description", data.description)
+              localStorage.setItem("links", data.links)
+            }
           }
         } else {
           navigate("/404");

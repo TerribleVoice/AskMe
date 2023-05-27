@@ -9,7 +9,7 @@ export const AuthForm: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<IUserAuthentication>();
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export const AuthForm: React.FC = () => {
       console.log(response);
       if (response.status < 300) {
         localStorage.setItem("login", data.login);
-        navigate("/", { replace: true });
+        navigate(`/${data.login}`, { replace: true });
       } else {
         reset();
       }

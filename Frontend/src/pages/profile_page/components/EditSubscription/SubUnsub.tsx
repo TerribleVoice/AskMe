@@ -1,7 +1,7 @@
 import { getSubscribe } from "@/services/getSubscribe";
 import { getUnsubscribe } from "@/services/getUnsubscribe";
 import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { IUserSubscriptionsProps } from "../Subscriptions";
 
 export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
@@ -15,9 +15,9 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
       console.log(response);
       if (response.status < 300) {
         setSubButtons((prevButtons) => ({ ...prevButtons, [id]: false }));
-        alert("Confirm");
+        // alert("Confirm");
       } else {
-        alert("Reject");
+        // alert("Reject");
       }
     } catch (error) {
       console.error(error);
@@ -30,18 +30,21 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
       console.log(response);
       if (response.status < 300) {
         setSubButtons((prevButtons) => ({ ...prevButtons, [id]: true }));
-        console.log("Confirm");
+        // console.log("Confirm");
       } else {
-        console.log("Reject");
+        // console.log("Reject");
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+  const sort_subs = subs.sort((a, b) => a.price - b.price)
+  console.log(sort_subs)
+
   return (
     <>
-      {subs.map((sub) => (
+      {sort_subs.map((sub) => (
         <div key={sub.id} className="pp_subscription_not_yours">
           <div className="pp_subscription_name">{sub.name}</div>
           <div className="pp_subscription_price">

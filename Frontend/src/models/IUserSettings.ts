@@ -1,10 +1,10 @@
 export interface IUserSettings {
-  login: string | null;
-  email: string | null;
-  oldLogin: string | null;
-  links: string | null;
-  description: string | null;
-  password: string | null;
+  login: string
+  email: string
+  oldLogin: string
+  links: string
+  description: string
+  password: string
 }
 export interface IUserPhoto {
   image?: FileList;

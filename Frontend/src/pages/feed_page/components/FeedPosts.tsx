@@ -27,7 +27,7 @@ export const FeedPosts = () => {
       }
     };
     fetchData();
-  }, [LoginName]);
+  }, [LoginName, navigate]);
 
   return (
     <div className="pp_posts_wrapper" style={{position: "relative", right:"30%"}}>
@@ -46,11 +46,13 @@ export const FeedPosts = () => {
                 <img
                   src={`${post.authorViewModel.profileImageUrl}`}
                   style={{ width: "50px", margin: "20px" }}
+                  alt="."
                 />
               ) : (
                 <img
                   src={`/img/NoUserPhoto.svg`}
                   style={{ width: "50px", margin: "20px" }}
+                  alt="."
                 />
               )}
               <span style={{ fontSize: "20px" }}>

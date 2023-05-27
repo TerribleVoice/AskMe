@@ -10,7 +10,7 @@ export const RegForm: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<IUserRegistration>();
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ export const RegForm: React.FC = () => {
       console.log(response);
       if (response.status < 300) {
         localStorage.setItem("login", data.login);
-        navigate("/", { replace: true });
+        navigate(`/${data.login}`, { replace: true });
       } else {
         reset();
       }
