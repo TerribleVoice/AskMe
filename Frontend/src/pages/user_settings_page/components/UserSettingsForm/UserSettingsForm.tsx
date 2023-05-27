@@ -132,7 +132,7 @@ export const UserSettingsForm = () => {
             {...register("links", {
               // setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={links!}
+            placeholder={links! === "null" ?  "" : links!}
             // defaultValue={links}
             name="links"
             id="links"

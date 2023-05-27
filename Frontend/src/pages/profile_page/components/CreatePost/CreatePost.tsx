@@ -1,8 +1,8 @@
 import { GoBack } from "@/components/GoBack";
 import { IUserCreatePost } from "@/models/IUserPosts";
 import { userCreatePost } from "@/services/postUserPost";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { ChangeEvent, useEffect, useState } from "react";
 import { IUserSubscriptions } from "@/models/IUserSubscriptions";
 import { getUserSubscriptions } from "@/services/getUserSubscriptions";
 import { useParams, useNavigate } from "react-router-dom";
@@ -12,12 +12,14 @@ export const CreatePost = () => {
     register,
     handleSubmit,
     reset,
+    control,
+    formState: { errors },
   } = useForm<IUserCreatePost>();
   const { LoginName } = useParams();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
-  const login = localStorage.getItem("login");
   // const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const login = localStorage.getItem("login");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,19 +28,16 @@ export const CreatePost = () => {
           const data = await getUserSubscriptions(LoginName);
           console.log(data);
           setSubscriptions(data);
-          navigation(`/${login}`);
         } else {
-          // navigation("/404");
-          navigation(`/${login}`);
+          navigate("/404");
         }
       } catch (error) {
         console.log(error);
-        navigation(`/${login}`);
       }
     };
 
     fetchData();
-  }, [LoginName]);
+  }, []);
 
   // const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
   //   const file = event.target.files?.[0];
@@ -59,6 +58,7 @@ export const CreatePost = () => {
       const response = await userCreatePost(data);
       console.log(response);
       if (response.status < 300) {
+        navigate(`/${login}`)
         console.log(response);
       } else {
         reset();

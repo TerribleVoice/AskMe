@@ -619,7 +619,7 @@ a:active {
   display: flex;
   justify-content: center;
   background-color: #4c002a;
-  padding: 15px 0 15px 0;
+  padding: 15px 10px 15px 10px;
   border: #da0178 4px solid;
   font-weight: 500;
   cursor: pointer;
@@ -1047,6 +1047,12 @@ a:active {
 }
 .subscription_checkbox {
   width: 200px;
+  display: flex;
+  flex-direction: row;
+}
+.pp_subscription_name_price {
+  display: flex;
+  flex-direction: column;
 }
 .create_post_subscriptions_wrapper {
   display: grid;

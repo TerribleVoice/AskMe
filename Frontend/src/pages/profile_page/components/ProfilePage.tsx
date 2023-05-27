@@ -53,7 +53,7 @@ export const ProfilePage = () => {
             setProfileData(data);
             if (
               localStorage.getItem("description") === null &&
-              localStorage.getItem("links") === null &&
+              localStorage.getItem("links") === null ||
               localStorage.getItem("login") !== LoginName
             ) {
               localStorage.setItem("description", data.description);
@@ -134,7 +134,7 @@ export const ProfilePage = () => {
         <div className="pp_right__top pp_top-right">
           <ul className="pp_top-right__links">
             <p className="pp_top-right__text">Ссылки</p>
-            {links === null || links === "null" || links === undefined
+            {links === null || links === undefined || links === "null"
               ? null
               : links.split("\r\n")?.map((l) => (
                   <Link to={l} className="pp_links">
