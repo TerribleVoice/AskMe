@@ -15,7 +15,7 @@ export const FeedPosts = () => {
         if (LoginName !== undefined) {
           const data = await getUserFeed(LoginName!);
           // setPosts(zaglushkaPosts); // заглушка
-          setPosts(data);
+          setPosts(zaglushkaPosts);
           console.log(data);
         } else {
           console.log(LoginName);
@@ -58,7 +58,7 @@ export const FeedPosts = () => {
               <span style={{ fontSize: "20px" }}>
                 {post.authorViewModel.login}
               </span>
-              <div className="pp_post__date" style={{ marginLeft: "330px" }}>
+              <div className="pp_post__date" style={{ marginLeft: "330px", marginRight: "20px"}}>
                 {post.createAt}
               </div>
             </div>
@@ -68,7 +68,7 @@ export const FeedPosts = () => {
             >
               <div className="pp_post__text">{post.title}</div>
             </div>
-            {post.haveAccess ? (
+            {/* {post.haveAccess ? (
               <div className="pp_post__img">
                 <img
                   className="pp_post__img"
@@ -88,7 +88,7 @@ export const FeedPosts = () => {
                   <p>Пост только для платных подписчиков</p>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         ))}
     </div>

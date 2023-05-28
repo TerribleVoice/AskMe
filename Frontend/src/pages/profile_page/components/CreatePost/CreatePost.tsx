@@ -16,7 +16,7 @@ export const CreatePost = () => {
     formState: { errors },
   } = useForm<IUserCreatePost>();
   const { LoginName } = useParams();
-  const navigate = useNavigate();
+  const navigation = useNavigate();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
   // const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const login = localStorage.getItem("login");
@@ -29,11 +29,7 @@ export const CreatePost = () => {
           console.log(data);
           setSubscriptions(data);
         } else {
-<<<<<<< HEAD
-          navigate("/404");
-=======
-          // navigation("/404");
->>>>>>> ddd1c16f3d4aea5071a702cdfa17c7c830c6a78a
+          navigation("/404");
         }
       } catch (error) {
         console.log(error);
@@ -62,7 +58,7 @@ export const CreatePost = () => {
       const response = await userCreatePost(data);
       console.log(response);
       if (response.status < 300) {
-        navigate(`/${login}`)
+        navigation(`/${login}`)
         console.log(response);
         navigation(`/${login}`);
       } else {
