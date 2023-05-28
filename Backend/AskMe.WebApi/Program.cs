@@ -63,6 +63,10 @@ app.UseCors(corsBuilder => corsBuilder
     .AllowAnyMethod()
     .SetIsOriginAllowed(_ => true)
     .AllowCredentials()
+    .WithOrigins("84.252.139.241:3000")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
 );
 
 app.UseMiddleware<ErrorMiddleware>();
