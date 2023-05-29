@@ -1329,18 +1329,19 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .menu_settings_link {
     cursor: pointer;
+    height: 50px;
   }
   .menu_sub-settings {
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
-    top: 80px;
-    right: 110px;
+    top: 130px;
+    right: 183px;
   }
   .menu-sublink {
     position: relative;
-    top: 90px;
+    top: 180px;
   }
   .menu-side-hidden {
     display: flex;
@@ -1365,9 +1366,9 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     align-items: center;
     margin-left: 20px;
     margin-bottom: 20px;
-    width: 60%;
     font-size: 30px;
     color: #da0178;
+    width: fit-content;
   }
   .menu_link_img {
     width: 50px;
