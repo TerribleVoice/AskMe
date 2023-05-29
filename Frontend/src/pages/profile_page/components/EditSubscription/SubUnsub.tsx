@@ -39,8 +39,8 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
     }
   };
 
-  // const sort_subs = subs.sort((a, b) => a.price - b.price)
-  // console.log(sort_subs)
+  const sort_subs = subs.sort((a, b) => a.price - b.price)
+  console.log(sort_subs)
 
   return (
     <>
