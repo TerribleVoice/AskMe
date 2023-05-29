@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { FaTelegramPlane } from "react-icons/fa";
-import { RxExit } from "react-icons/rx";
 import { IUserProfilePage } from "@/models/IUserProfilePage";
 import { getUserProfilePage } from "@/services/getUserProfilePage";
 
