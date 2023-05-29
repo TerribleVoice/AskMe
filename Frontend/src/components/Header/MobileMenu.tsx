@@ -110,7 +110,7 @@ export const MobileMenu = () => {
                 <Link
                   onClick={handleNavigation}
                   className="menu__dropdown-link"
-                  to={login || ""}
+                  to={`${login}/settings/profile`}
                 >
                   <img
                     className="menu_link_img"
@@ -122,7 +122,7 @@ export const MobileMenu = () => {
                 <Link
                   onClick={handleNavigation}
                   className="menu__dropdown-link"
-                  to={`feed`}
+                  to={`${login}/settings/subscriptions`}
                 >
                   <img
                     className="menu_link_img"

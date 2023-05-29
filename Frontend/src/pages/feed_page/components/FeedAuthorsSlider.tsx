@@ -12,7 +12,7 @@ export const FeedAuthorsSlider = () => {
     infinite: false,
     speed: 950,
     slidesToScroll: window.innerWidth <= 630 ? 1 : 2,
-    slidesToShow: window.innerWidth <= 630 ? 1 : 4,
+    slidesToShow: window.innerWidth <= 630 ? 2 : 4,
     innerWidth: "auto",
   };
   const [authorsData, setAuthorData] = useState<IUserTopAuthors[]>([]);
