@@ -64,6 +64,7 @@ export const UserSettingsSubscriptions = () => {
               >
                 <img src="/img/settings/Crest.svg" alt="Delete" />
               </span>
+              <img src="/img/NoUserPhoto.svg" alt="subset" style={{margin: "10px"}} />
               <span className="settings_subscription_name">{bs.name}</span>
               <p className="settings_subscription_description">
                 {bs.description}
