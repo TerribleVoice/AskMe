@@ -77,14 +77,14 @@ export const Posts = () => {
               </div>
             ) : (
               <div className="pp_post__img pp_blurred">
-                {/* <img
+                <img
                   className="pp_post__img"
                   src="img/profile/photo.jpg"
                   alt="."
                 />
                 <div className="pp_post__text2">
                   <p>Пост только для платных подписчиков</p>
-                </div> */}
+                </div>
               </div>
             )}
           </div>
