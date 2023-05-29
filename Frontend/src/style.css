@@ -18,7 +18,7 @@ body {
   font-family: Roboto;
   font-size: 16px;
   font-weight: 400;
-  color: #fff;
+  color: #fff ;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
     #141414;
 }
@@ -924,7 +924,7 @@ a:active {
 }
 .settings_subscription_name {
   font-weight: 600;
-  font-size: larger;
+  font-size: 16px;
 }
 .settings_subscription_description {
   margin-top: 3vw;
@@ -1366,7 +1366,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 380px
+    top: 45vh;
   }
   .menu__dropdown-link {
     display: inline-flex;
@@ -1393,6 +1393,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .menu_login {
     font-size: 28px;
+    color: #c0c0c0;
   }
   .header__signup {
     margin-right: 20px;
@@ -1459,8 +1460,8 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     overflow: hidden;
   }
   .footer {
-    margin-top: 0;
     padding: 0;
+    margin-top: 250px;
   }
   .footer__left ul {
     border-right: 0;
@@ -1475,6 +1476,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .footer__right {
     padding: 30px;
+  
   }
   .Authorname {
     font-size: 18px;
@@ -1559,6 +1561,9 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .slick-track > .slick-slide {
     width: auto !important;
+  }
+  .settings_subscription_price {
+    padding: 4vw;
   }
 }
 .slick-track > .slick-slide {
