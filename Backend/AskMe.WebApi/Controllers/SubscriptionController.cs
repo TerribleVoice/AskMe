@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AskMe.WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class SubscriptionController : CustomControllerBase
 {
     private readonly ISubscriptionService subscriptionService;

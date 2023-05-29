@@ -1,13 +1,17 @@
-FROM node:alpine
-EXPOSE 3000
-WORKDIR /code
-COPY public/ public/
-COPY src/ src/
-COPY .env .env
-COPY config-overrides.js config-overrides.js
-COPY package.json package.json
-COPY tsconfig.json tsconfig.json
-COPY yarn.lock yarn.lock
+# Старт с официального образа node (используйте версию LTS)
+FROM node:lts AS build
 
-RUN yarn install -y
-CMD ["yarn", "start"]
+# Укажите рабочую директорию
+WORKDIR /app
+
+# Копируйте package.json и yarn.lock
+COPY package.json yarn.lock ./
+
+# Установите зависимости
+RUN yarn install
+
+# Копируйте остальные файлы проекта
+COPY . .
+
+# Соберите приложение
+CMD ["npm", "start"]
