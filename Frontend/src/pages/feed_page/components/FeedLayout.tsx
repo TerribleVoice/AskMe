@@ -1,4 +1,4 @@
-import { NavLink, Navigate, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 export const FeedLayout = () => {
   const login = localStorage.getItem("login");

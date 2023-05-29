@@ -11,7 +11,7 @@ export const FeedAuthorsSlider = () => {
     dots: false,
     infinite: false,
     speed: 950,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 3,
     innerWidth: "auto",
   };
@@ -38,7 +38,7 @@ export const FeedAuthorsSlider = () => {
       <Slider {...settings}>
         {authorsData.map((author) => {
           return (
-            <div key={author.login} className="feed_author hover_create_subscr">
+            <div key={author.login} className="feed_author hover_create_subscr" > 
               <div className="feed_authoravatar">
                 {author.profileImageUrl !== null ? (
                   <img className="feed_avatar" src={`${author.profileImageUrl}`} />

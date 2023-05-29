@@ -496,6 +496,11 @@ a:active {
 }
 .pp_about__text {
 }
+.feed_page {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+}
 .pp_posts_wrapper {
   background-color: #101010;
 }
@@ -1194,14 +1199,9 @@ a:active {
 }
 /* Лента */
 .feed_container {
-  min-width: 900px;
-  margin: 0 auto;
-}
+
+  }
 .feed_container > .slick-slider {
-  max-height: 400px;
-}
-div > .feed_author {
-  min-width: fit-content;
 }
 .feed_author {
   align-items: center;
@@ -1210,11 +1210,14 @@ div > .feed_author {
   border-radius: 5px;
   box-sizing: content-box;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 15px;
-  padding: 10px 10px;
+  padding: 5px 10px;
   text-align: center;
   width: auto !important;
+}
+.feed_container > .slick-slider {
+  margin-bottom: 10px;
 }
 .feed_avatar {
   height: 140px;
@@ -1363,7 +1366,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 330px;
+    top: 380px
   }
   .menu__dropdown-link {
     display: inline-flex;
@@ -1446,9 +1449,11 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   .Author {
     padding: 10px;
   }
-  .pp_left__avatar {
-    width: 120px;
-    min-height: 13vh;
+  .Authoravatar > img {
+    width: 80px;
+    min-width: auto;
+    /* min-height: 13vh; */
+    min-height: auto;
   }
   .Authoravatar {
     overflow: hidden;
@@ -1489,6 +1494,10 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .pp_left__img {
     min-width: 80vw;
+  }
+  .pp_left__img > img {
+    max-height: 35vh;
+    max-width: 80vw;
   }
   .pp_left__avatar {
     object-fit: contain;

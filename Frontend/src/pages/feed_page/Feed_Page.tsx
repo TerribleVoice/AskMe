@@ -8,8 +8,8 @@ export const FeedPage: React.FC = () => {
   }, []);
   return (
     <>
-    <FeedAuthorsSlider />
-    <div style={{display:"flex", flexDirection:"column", position:'relative', left: "200px"}}>
+    <div className={`feed_page`}>
+      <FeedAuthorsSlider />
       <FeedPosts />
     </div>
     </>

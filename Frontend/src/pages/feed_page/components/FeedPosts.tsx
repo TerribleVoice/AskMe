@@ -30,7 +30,7 @@ export const FeedPosts = () => {
   }, [LoginName, navigate]);
 
   return (
-    <div className="pp_posts_wrapper" style={{position: "relative", right:"30%"}}>
+    <div className="feed_posts_wrapper">
       {posts &&
         posts.map((post) => (
           <div key={post.id} className="pp_post">
