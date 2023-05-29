@@ -919,16 +919,18 @@ a:active {
   position: relative;
   float: right;
   cursor: pointer;
-  left: 3vw;
-  width: 20px;
+  left: 4vw;
+  width: 24px;
 }
 .settings_subscription_name {
   font-weight: 600;
   font-size: 16px;
 }
 .settings_subscription_description {
-  margin-top: 3vw;
-  margin-bottom: 3vw;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  word-wrap: break-word;
+  width: 10vw;
 }
 .settings_subscription_price {
   background-color: #4c002a;
