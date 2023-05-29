@@ -18,7 +18,7 @@ body {
   font-family: Roboto;
   font-size: 16px;
   font-weight: 400;
-  color: #fff ;
+  color: #fff;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
     #141414;
 }
@@ -919,7 +919,7 @@ a:active {
   position: relative;
   float: right;
   cursor: pointer;
-  left: 4vw;
+  left: 4.5vw;
   width: 24px;
 }
 .settings_subscription_name {
@@ -931,6 +931,7 @@ a:active {
   margin-bottom: 1vw;
   word-wrap: break-word;
   width: 10vw;
+  bottom: 0.5vh;
 }
 .settings_subscription_price {
   background-color: #4c002a;
@@ -1201,8 +1202,7 @@ a:active {
 }
 /* Лента */
 .feed_container {
-
-  }
+}
 .feed_container > .slick-slider {
 }
 .feed_author {
@@ -1478,7 +1478,6 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .footer__right {
     padding: 30px;
-  
   }
   .Authorname {
     font-size: 18px;
@@ -1560,6 +1559,8 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .settings_subscription_description {
     width: 34vw;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
   }
   .settings_subscription_unsub {
     width: 20px;
