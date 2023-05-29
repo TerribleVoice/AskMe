@@ -11,8 +11,8 @@ export const FeedAuthorsSlider = () => {
     dots: false,
     infinite: false,
     speed: 950,
-    slidesToShow: 4,
-    slidesToScroll: 3,
+    slidesToScroll: window.innerWidth <= 630 ? 1 : 3,
+    slidesToShow: window.innerWidth <= 630 ? 1 : 4,
     innerWidth: "auto",
   };
   const [authorsData, setAuthorData] = useState<IUserTopAuthors[]>([]);
@@ -33,6 +33,7 @@ export const FeedAuthorsSlider = () => {
       console.log(error);
     }
   }, []);
+
   return (
     <div className={`feed_container`}>
       <Slider {...settings}>

@@ -1554,4 +1554,10 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     left: 15vw;
     bottom: 1vh;
   }
+  .feed_page {
+    width: 90vw;
+  }
+  .slick-track > .slick-slide {
+    width: auto !important;
+  }
 }
