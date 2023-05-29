@@ -34,14 +34,11 @@ export const SubscriptionsCheckBox = (register: any) => {
       {subscriptions?.map((subscription) => {
         return (
           <div key={subscription.id} className="create_post_subscriptions">
-            <div className="pp_subscription_name_price">
-              <div className="pp_subscription_name">{subscription.name}</div>
-              <div className="pp_subscription_price">
-                {subscription.price} рублей в месяц
-              </div>
+            <div className="pp_subscription_name">{subscription.name}</div>
+            <div className="pp_subscription_price">
+              {subscription.price} рублей в месяц
             </div>
             <div className="subscription_input">
-              <label htmlFor="title">Введите заголовок поста</label>
               <input
                 {...register("subscriptionId", { required: true })}
                 className="subscription_input_subscriptionId"

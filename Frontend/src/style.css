@@ -56,6 +56,7 @@ header {
   background-color: #101010;
   padding-bottom: 10px;
   z-index: 50;
+  top: 0;
 }
 .header__logo {
   margin-right: auto;
@@ -951,7 +952,7 @@ a:active {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 7vh;
+  margin-top: 14vh;
 }
 .subscription_create {
   display: flex;
@@ -1077,9 +1078,17 @@ a:active {
   outline: 2px solid #b00062;
 }
 .subscription_checkbox {
-  width: 200px;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  padding-top: 15px;
+}
+.input[type="checkbox"]:not(.switch) {
+  width: 26px;
+}
+.subscription_checkbox > .pp_subscription_name,
+.subscription_checkbox > .pp_subscription_price {
+  margin-left: 15px;
 }
 .pp_subscription_name_price {
   display: flex;
@@ -1090,14 +1099,12 @@ a:active {
   grid-template-columns: 1fr;
   position: absolute;
   margin-left: 40vw;
-  top: 130px;
+  top: 14vh;
   background-color: #181818;
   padding-bottom: 15px;
-  width: 300px;
+  width: 500px;
 }
 .create_post_subscriptions_header {
-  justify-self: center;
-  align-self: center;
   font-size: larger;
   font-weight: 500;
   margin: 9px 0 9px;
@@ -1105,7 +1112,7 @@ a:active {
 }
 .create_post_subscriptions {
   border-top: #b00062 1px solid;
-  padding: 9px 32px;
+  padding: 9px 18px;
 }
 /* Подписки */
 .pp_subscriptions_wrapper {
@@ -1301,6 +1308,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     align-items: center;
     padding-top: 20px;
     padding-bottom: 20px;
+    top: 0;
   }
   .header__icon {
     margin-right: 8px;
@@ -1576,6 +1584,22 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .settings_subscription_price {
     padding: 4vw;
+  }
+  .subscription_create {
+    width: 90vw;
+    margin-top: 2vh;
+  }
+  .subscription_create_wrapper {
+  }
+  .go_back {
+    bottom: 10px;
+    right: 0.3vw;
+  }
+  .create_post_subscriptions_wrapper {
+    top: 0px;
+    width: 77.5vw;
+    position: static;
+    margin-left: 0;
   }
 }
 .slick-track > .slick-slide {
