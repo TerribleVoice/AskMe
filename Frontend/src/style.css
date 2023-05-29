@@ -1561,3 +1561,6 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     width: auto !important;
   }
 }
+.slick-track > .slick-slide {
+  width: 183px !important;
+}

@@ -11,7 +11,7 @@ export const FeedAuthorsSlider = () => {
     dots: false,
     infinite: false,
     speed: 950,
-    slidesToScroll: window.innerWidth <= 630 ? 1 : 3,
+    slidesToScroll: window.innerWidth <= 630 ? 1 : 2,
     slidesToShow: window.innerWidth <= 630 ? 1 : 4,
     innerWidth: "auto",
   };

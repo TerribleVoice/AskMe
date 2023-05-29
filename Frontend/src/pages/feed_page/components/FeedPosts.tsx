@@ -58,7 +58,7 @@ export const FeedPosts = () => {
               <span style={{ fontSize: "20px" }}>
                 {post.authorViewModel.login}
               </span>
-              <div className="pp_post__date" style={{ marginLeft: "330px", marginRight: "20px"}}>
+              <div className="pp_post__date" style={{ marginLeft: "25vw", marginRight: "20px"}}>
                 {post.createAt}
               </div>
             </div>
