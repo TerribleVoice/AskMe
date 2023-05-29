@@ -1319,16 +1319,15 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   .menu-side-open {
     display: flex;
     position: fixed;
-    left: 0; 
-    top: 79px; 
-    width:100%;
+    left: 0;
+    top: 79px;
+    width: 100%;
     height: 100%;
     z-index: 20;
     background-color: #101010;
     flex-direction: column;
   }
   .menu_settings_link {
-
     cursor: pointer;
   }
   .menu_sub-settings {
@@ -1336,7 +1335,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     flex-direction: column;
     justify-content: center;
     position: relative;
-    top:80px;
+    top: 80px;
     right: 110px;
   }
   .menu-sublink {
@@ -1346,8 +1345,8 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   .menu-side-hidden {
     display: flex;
     position: fixed;
-    left: 800px; 
-    top: 80px; 
+    left: 800px;
+    top: 80px;
     width: 130px;
     height: 100%;
   }
@@ -1358,6 +1357,8 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   .menu-content {
     display: flex;
     flex-direction: column;
+    position: fixed;
+    top: 280px;
   }
   .menu__dropdown-link {
     display: inline-flex;
@@ -1380,6 +1381,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     margin-bottom: 30px;
     justify-self: center;
     width: 100%;
+    height: 170px;
   }
   .menu_login {
     font-size: 28px;
@@ -1404,6 +1406,9 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   .left {
     width: 100%;
   }
+  .left__title > img {
+    width: 80vw;
+  }
   .service {
     justify-content: center;
   }
@@ -1427,7 +1432,7 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
     margin-bottom: 100px;
   }
   .body-let__left {
-    border-bottom:#b00062 2px solid;
+    border-bottom: #b00062 2px solid;
   }
   .body-let__left ul li,
   .body-let__left ul li:nth-child(1) {
@@ -1460,5 +1465,11 @@ div.slick-list > div.slick-track > div.slick-slide.slick-activ.slick-current {
   }
   .footer__right {
     padding: 30px;
+  }
+  .Authorname {
+    font-size: 18px;
+  }
+  .Authorlink > a {
+    font-size: 20px;
   }
 }
