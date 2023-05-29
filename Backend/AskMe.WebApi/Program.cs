@@ -58,20 +58,16 @@ if (app.Environment.IsEnvironment("docker")|| app.Environment.IsEnvironment("loc
     app.UseSwaggerUI();
 }
 
-app.UseCors(corsBuilder => corsBuilder
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .SetIsOriginAllowed(_ => true)
-    .AllowCredentials()
-    .WithOrigins("84.252.139.241:3000")
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials()
-);
 
 app.UseMiddleware<ErrorMiddleware>();
 
 app.MapControllers();
+app.UseCors(corsBuilder => corsBuilder
+    .SetIsOriginAllowed(_=>true)
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
+);
 app.Run();
 
 

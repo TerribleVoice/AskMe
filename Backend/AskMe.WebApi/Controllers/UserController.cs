@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AskMe.WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : CustomControllerBase
 {
     private readonly IUserService userService;

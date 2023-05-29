@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AskMe.WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class FeedController : CustomControllerBase
 {
     private readonly IFeedService feedService;

@@ -1,9 +1,17 @@
-FROM node:alpine
-EXPOSE 3000
-RUN mkdir -p /code
-WORKDIR /code
-COPY package*.json yarn*.lock ./
+# Старт с официального образа node (используйте версию LTS)
+FROM node:lts AS build
+
+# Укажите рабочую директорию
+WORKDIR /app
+
+# Копируйте package.json и yarn.lock
+COPY package.json yarn.lock ./
+
+# Установите зависимости
+RUN yarn install
+
+# Копируйте остальные файлы проекта
 COPY . .
 
-RUN npm install yarn && yarn && yarn install && yarn build && yarn cache clean
-CMD [ "yarn", "start" ]
+# Соберите приложение
+CMD ["npm", "start"]
