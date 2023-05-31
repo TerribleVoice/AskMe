@@ -14,12 +14,10 @@ services:
       POSTGRES_DB: "AskMe"
       POSTGRES_USER: 'admin'
       POSTGRES_PASSWORD: "test"
-      PGDATA: "../../Database/Data/pgdata"
     ports:
       - "5000:5432"
     volumes:
-      - ../../Database/Initialization:/docker-entrypoint-initdb.d
-      - ../../Database/Data/data:/var/lib/postgresql/data
+      - ./Database/Initialization:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U admin -d AskMe" ]
       interval: 10s
