@@ -18,7 +18,7 @@ export const CreatePost = () => {
   const { LoginName } = useParams();
   const navigation = useNavigate();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const login = localStorage.getItem("login");
 
   useEffect(() => {
@@ -39,23 +39,23 @@ export const CreatePost = () => {
     fetchData();
   }, []);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-    return file;
-  };
+  // const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     setSelectedImage(URL.createObjectURL(file));
+  //   }
+  //   return file;
+  // };
   const onCreatePost = async (data: IUserCreatePost) => {
     try {
-      const formData = new FormData();
-      formData.append("Title", data.Title);
-      formData.append("Content", data.Content);
+      // const formData = new FormData();
+      // formData.append("title", data.title);
+      // formData.append("content", data.content);
       // formData.append("price", data.price.toString());
-      formData.append("attachments", selectedImage!);
-      formData.append("SubscriptionId", selectedSubscription);
-      console.log(formData);
-      const response = await userCreatePost(formData);
+      // formData.append("files", selectedImage!);
+      // formData.append("subscriptionId", selectedSubscription);
+      // console.log(formData);
+      const response = await userCreatePost(data);
       console.log(response);
       if (response.status < 300) {
         navigation(`/${login}`)
@@ -117,24 +117,24 @@ export const CreatePost = () => {
             })}
           </div>
           <div className="subscription_input">
-            <label htmlFor="Title">Введите заголовок поста</label>
+            <label htmlFor="title">Введите заголовок поста</label>
             <input
               className=""
-              {...register("Title", { required: false })}
+              {...register("title", { required: true })}
               type="text"
-              id="Title"
-              name="Title"
+              id="title"
+              name="title"
             />
           </div>
           <div className="subscription_description">
-            <label htmlFor="Content">Описание поста</label>
+            <label htmlFor="content">Описание поста</label>
             <textarea
-              {...register("Content", { required: false })}
-              id="Content"
-              name="Content"
+              {...register("content", { required: false })}
+              id="content"
+              name="content"
             />
           </div>
-          <div className="file_post">
+          {/* <div className="file_post">
             <label htmlFor="image">Обложка</label>
             {selectedImage && (
               <div>
@@ -144,7 +144,7 @@ export const CreatePost = () => {
             <label className="custom_file_upload">
               <Controller
                 control={control}
-                name="attachments"
+                name="files"
                 render={({ field }) => (
                   <input
                     {...field}
@@ -152,17 +152,17 @@ export const CreatePost = () => {
                       field.onChange(handleFileChange(event))
                     }
                     type="file"
-                    id="attachments"
+                    id="files"
                     value={undefined}
                   />
                 )}
               />
               ВЫБРАТЬ ФАЙЛ
             </label>
-            {/* <label className="settings_caption" htmlFor="description">
+            <label className="settings_caption" htmlFor="description">
               Рекомендуемый размер 240х150 рх
-            </label> */}
-          </div>
+            </label>
+          </div> */}
           {/* <div className="subscription_input">
             <label htmlFor="price">Стоимость поста</label>
             <input

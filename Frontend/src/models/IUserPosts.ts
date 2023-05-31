@@ -12,8 +12,8 @@ export interface IUserPost {
   };
 }
 export interface IUserCreatePost {
-  Title: string;
-  SubscriptionId: string;
-  Content: string;
-  attachments: FileList;
+  title: string;
+  subscriptionId: string;
+  content: string;
+  price: number;
 }
