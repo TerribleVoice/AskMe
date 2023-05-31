@@ -82,7 +82,7 @@ public class FeedService : IFeedService
         await Task.WhenAll(tasks);
     }
 
-    public async Task<AttachmentResponse[]> GetPostAttachmentUrls(Guid postId)
+    public async Task<AttachmentResponse[]> GetPostAttachmentUrlsAsync(Guid postId)
     {
         var path = S3StorageHandler.CreatePath("posts", postId.ToString());
         var fileKeys =  await s3StorageHandler.GeFileKeysInDirectoryAsync(path);
@@ -134,10 +134,9 @@ public class FeedService : IFeedService
 
         return posts.ToDictionary(
             post => post.Id,
-            post => userSubscriptions.Any(subscription => post.SubscriptionId == subscription.Id));
+            post => userSubscriptions.Any(subscription => post.SubscriptionId == subscription.Id)
+                    || (userIdentity.CurrentUser != null && post.AuthorId == userIdentity.CurrentUser.Id));
     }
-
-    // public async Task<>
 
     private async Task ThrowIfCantEdit(Guid postId)
     {

@@ -88,12 +88,6 @@ public class FeedController : CustomControllerBase
         return Ok();
     }
 
-    [HttpGet("{postId:guid}/attachments")]
-    public async Task<ActionResult<AttachmentResponse[]>> GetAttachments(Guid postId)
-    {
-        return Ok(await feedService.GetPostAttachmentUrls(postId));
-    }
-
     [HttpGet("{userLogin}/feed_after")]
     [Authorize]
     public async Task<ActionResult<PostViewModel[]>> FeedAfter(string userLogin, DateTime timeAfter)

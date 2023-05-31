@@ -10,8 +10,9 @@ public class PostViewModel
     public bool HaveAccess { get; set; }
     public string Title { get; set; }
     public UserViewModel AuthorViewModel { get; set; }
+    public AttachmentResponse[] Attachments { get; set; }
 
-    public static PostViewModel CreateNoAccess(PostResponse post, UserViewModel authorViewModel)
+    public static PostViewModel CreateNoAccess(PostResponse post, UserViewModel authorViewModel, AttachmentResponse[] attachments)
     {
         return new PostViewModel
         {
@@ -20,11 +21,12 @@ public class PostViewModel
             Content = null,
             CreateAt = post.CreateAt,
             Title = post.Title,
-            AuthorViewModel = authorViewModel
+            AuthorViewModel = authorViewModel,
+            Attachments = attachments
         };
     }
 
-    public static PostViewModel CreateHaveAccess(PostResponse post, UserViewModel authorViewModel)
+    public static PostViewModel CreateHaveAccess(PostResponse post, UserViewModel authorViewModel, AttachmentResponse[] attachments)
     {
         return new PostViewModel
         {
@@ -33,7 +35,8 @@ public class PostViewModel
             Content = post.Content,
             CreateAt = post.CreateAt,
             Title = post.Title,
-            AuthorViewModel = authorViewModel
+            AuthorViewModel = authorViewModel,
+            Attachments = attachments
         };
     }
 }

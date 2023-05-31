@@ -12,5 +12,5 @@ public interface IFeedService
     Task<PostResponse> ReadAsync(Guid postId);
     Task<PostResponse[]> GetUserPostsAsync(string userLogin);
     Task AttachFilesAsync(Guid postId, AttachmentRequest[] fileStreamWithNames);
-    Task<AttachmentResponse[]> GetPostAttachmentUrls(Guid postId);
+    Task<AttachmentResponse[]> GetPostAttachmentUrlsAsync(Guid postId);
 }
