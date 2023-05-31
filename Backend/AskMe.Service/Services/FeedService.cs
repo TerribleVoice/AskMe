@@ -34,14 +34,29 @@ public class FeedService : IFeedService
         this.s3StorageHandler = s3StorageHandler;
     }
 
-    public async Task<PostResponse[]> GetFeedAsync(string userLogin, DateTime? timeAfter = null)
+    public async Task<PostResponse[]> GetFeedAsync(string userLogin, int skip = 0, int take = 10)
     {
-        var subscriptionIds = (await subscriptionService.GetReaderSubscriptionsFlatTreeAsync(userLogin)).Select(x=>x.Id).ToArray();
+        var subscriptionIds = (await subscriptionService.GetReaderSubscriptionsFlatTreeAsync(userLogin))
+            .Select(x => x.Id).ToArray();
 
         var posts = await dbContext.Posts
-            .Where(x=>subscriptionIds.Contains(x.SubscriptionId))
+            .Where(x => subscriptionIds.Contains(x.SubscriptionId))
+            .Skip(skip)
+            .Take(take)
             .OrderByDescending(x => x.CreatedAt)
-            .FilterByTime(timeAfter)
+            .ToArrayAsync();
+
+        return posts.Select(postConverter.Convert).ToArray();
+    }
+
+    public async Task<PostResponse[]> GetUserPostsAsync(string userLogin, int skip = 0, int take = 10)
+    {
+        var posts = await dbContext.Users
+            .Where(x => x.Login == userLogin)
+            .SelectMany(x => x.Posts)
+            .Skip(skip)
+            .Take(take)
+            .OrderByDescending(x => x.CreatedAt)
             .ToArrayAsync();
 
         return posts.Select(postConverter.Convert).ToArray();
@@ -52,16 +67,6 @@ public class FeedService : IFeedService
         var post = await dbContext.ReadAsync<Post>(postId);
 
         return postConverter.Convert(post);
-    }
-
-    public async Task<PostResponse[]> GetUserPostsAsync(string userLogin)
-    {
-        var posts = await dbContext.Users
-            .Where(x => x.Login == userLogin)
-            .SelectMany(x => x.Posts)
-            .ToArrayAsync();
-
-        return posts.Select(x => postConverter.Convert(x)).ToArray();
     }
 
     public async Task AttachFilesAsync(Guid postId, AttachmentRequest[] attachmentRequests)

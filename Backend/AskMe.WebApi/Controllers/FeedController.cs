@@ -29,34 +29,21 @@ public class FeedController : CustomControllerBase
 
     [HttpGet("{userLogin}/feed")]
     [Authorize]
-    public async Task<ActionResult<PostViewModel[]>> GetUserFeed(string userLogin)
+    public async Task<ActionResult<PostViewModel[]>> GetUserFeed(string userLogin, int skip = 0, int take = 10)
     {
-        var posts = Array.Empty<PostViewModel>();
-        try
-        {
-            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin);
-        }
-        catch (Exception e)
-        {
-            NotFound(e.Message);
-        }
-        return posts;
+        var posts = await feedService.GetFeedAsync(userLogin, skip, take);
+        var postsViewModels = await postViewModelBuilder.BuildAsync(posts, userLogin);
+
+        return postsViewModels;
     }
 
     [HttpGet("{userLogin}/posts")]
-    public async Task<ActionResult<PostViewModel[]>> GetUserPosts(string userLogin)
+    public async Task<ActionResult<PostViewModel[]>> GetUserPosts(string userLogin, int skip = 0, int take = 10)
     {
-        try
-        {
-            await userService.ReadUserByLoginAsync(userLogin);
-        }
-        catch (Exception e)
-        {
-            NotFound(e.Message);
-        }
+        var posts = await feedService.GetUserPostsAsync(userLogin, skip, take);
+        var postViewModels = await postViewModelBuilder.BuildAsync(posts, userLogin);
 
-        var posts = await postViewModelBuilder.BuildUserPostsAsync(userLogin);
-        return posts;
+        return postViewModels;
     }
 
     [HttpGet("{postId:guid}")]
@@ -86,22 +73,6 @@ public class FeedController : CustomControllerBase
 
         await feedService.AttachFilesAsync(postId, attachmentRequests);
         return Ok();
-    }
-
-    [HttpGet("{userLogin}/feed_after")]
-    [Authorize]
-    public async Task<ActionResult<PostViewModel[]>> FeedAfter(string userLogin, DateTime timeAfter)
-    {
-        var posts = Array.Empty<PostViewModel>();
-        try
-        {
-            posts = await postViewModelBuilder.BuildUserFeedAsync(userLogin, timeAfter);
-        }
-        catch (Exception e)
-        {
-            NotFound(e.Message);
-        }
-        return posts;
     }
 
     [HttpDelete("{postId:guid}")]

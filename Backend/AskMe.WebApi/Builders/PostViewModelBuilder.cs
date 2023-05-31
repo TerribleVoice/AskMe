@@ -19,9 +19,8 @@ public class PostViewModelBuilder
         this.subscriptionService = subscriptionService;
     }
 
-    public async Task<PostViewModel[]> BuildUserPostsAsync(string userLogin)
+    public async Task<PostViewModel[]> BuildAsync(PostResponse[] posts, string userLogin)
     {
-        var posts = await feedService.GetUserPostsAsync(userLogin);
         var accessMap = await feedService.IsUserHaveAccessToPostsAsync(userLogin, posts);
 
         var authorViewModel = await userViewModelBuilder.BuildAsync(userLogin);
@@ -30,15 +29,6 @@ public class PostViewModelBuilder
                 ? PostViewModel.CreateHaveAccess(post, authorViewModel, postAttachments[post.Id])
                 : PostViewModel.CreateNoAccess(post, authorViewModel, postAttachments[post.Id]))
             .ToArray();
-    }
-
-    public async Task<PostViewModel[]> BuildUserFeedAsync(string userLogin, DateTime? timeAfter = null)
-    {
-        var posts = await feedService.GetFeedAsync(userLogin, timeAfter);
-        var authorViewModel = await userViewModelBuilder.BuildAsync(userLogin);
-        var postAttachments = await GetPostAttachments(posts);
-
-        return posts.Select(post => PostViewModel.CreateHaveAccess(post, authorViewModel, postAttachments[post.Id])).ToArray();
     }
 
     private async Task<Dictionary<Guid, AttachmentResponse[]>> GetPostAttachments(PostResponse[] posts)

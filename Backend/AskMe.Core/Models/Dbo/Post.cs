@@ -45,15 +45,4 @@ public static class PostExt
         //todo проверить что норм приводит
         post.CreatedAt = post.CreatedAt.ToUniversalTime();
     }
-
-    public static IQueryable<Post> FilterByTime(this IQueryable<Post> query, DateTime? time)
-    {
-        if (!time.HasValue)
-        {
-            return query;
-        }
-
-        var timeUtc = time.Value.ToUniversalTime();
-        return query.Where(x => x.CreatedAt >= timeUtc);
-    }
 }
