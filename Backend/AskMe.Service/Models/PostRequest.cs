@@ -4,6 +4,5 @@ public class PostRequest
 {
     public string? Content { get; set; }
     public Guid SubscriptionId { get; set; }
-    public uint? Price { get; set; }
     public string Title { get; set; }
 }

@@ -27,9 +27,6 @@ public class Post : Dbo, IHaveAuthor
     [Required]
     public DateTime CreatedAt { get; set; }
 
-    [Column("price")]
-    public uint? Price { get; set; }
-
     public User Author { get; set; }
     public Subscription Subscription { get; set; }
 
