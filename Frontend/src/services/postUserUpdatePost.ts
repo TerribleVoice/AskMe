@@ -1,0 +1,13 @@
+import { IUserUpdatePost } from "@/models/IUserPosts";
+import { askMeApiAxiosInstance } from "./askMeApiAxiosInstance";
+
+export const userUpdatePost = async (
+  userSubscriptionData: IUserUpdatePost,
+  id: string,
+) => {
+  const response = await askMeApiAxiosInstance.post(
+    `/Feed/${id}/update`,
+    userSubscriptionData
+  );
+  return response;
+};

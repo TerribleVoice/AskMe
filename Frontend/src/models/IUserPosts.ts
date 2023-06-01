@@ -12,8 +12,13 @@ export interface IUserPost {
   };
 }
 export interface IUserCreatePost {
-  title: string;
-  subscriptionId: string;
+  Title: string;
+  SubscriptionId: string;
+  Content: string;
+  attachments: FileList;
+}
+export interface IUserUpdatePost {
   content: string;
-  price: number;
+  subscriptionId: string;
+  title: string;
 }
