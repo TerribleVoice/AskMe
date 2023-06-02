@@ -1,7 +1,7 @@
 import { IUserUpdatePost } from "@/models/IUserPosts";
 import { askMeApiAxiosInstance } from "./askMeApiAxiosInstance";
 
-export const userUpdatePost = async (
+export const postUserUpdatePost = async (
   userSubscriptionData: IUserUpdatePost,
   id: string,
 ) => {

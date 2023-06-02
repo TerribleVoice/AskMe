@@ -23,6 +23,7 @@ import { CreatePost } from "./pages/profile_page/components/CreatePost/CreatePos
 import { CreateDescription } from "./pages/profile_page/components/CreateDescription/CreateDescription";
 import { Error_Page } from "./pages/Error_Page";
 import { EditSubscription } from "./pages/profile_page/components/EditSubscription/EditSubscription";
+import { EditPost } from './pages/profile_page/components/EditPost/EditPost'
 
 export const App = () => {
   return (
@@ -41,6 +42,10 @@ export const App = () => {
             <Route
               path="edit_subscription/:id"
               element={<EditSubscription />}
+            />
+            <Route 
+              path="edit_post/:id"
+              element={<EditPost />}
             />
           </Route>
           <Route path="feed" element={<FeedLayout />}>

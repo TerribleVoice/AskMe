@@ -2,7 +2,8 @@ import { IUserPost } from "@/models/IUserPosts";
 import { zaglushkaPosts } from "@/pages/feed_page/components/zaglushkaPosts";
 import { getUserPosts } from "@/services/getUserPosts";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { AiFillSetting } from "react-icons/ai";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 export const Posts = () => {
   const { LoginName } = useParams();
@@ -39,6 +40,8 @@ export const Posts = () => {
             year: "numeric",
             month: "long",
             day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
           });
           return (
             <div key={post.id} className="pp_post">
@@ -69,6 +72,9 @@ export const Posts = () => {
                 <div className="pp_post__date" style={{ marginLeft: "330px" }}>
                   {formattedDate}
                 </div>
+                <Link state={post} to={`/${LoginName}/edit_post/${post.id}`}>
+                  <AiFillSetting />
+                </Link>
               </div>
               <div
                 className="pp_post__title"
@@ -80,7 +86,7 @@ export const Posts = () => {
                 <div className="pp_post__img">
                   <img
                     className="pp_post__img"
-                    src="img/profile/photo.jpg"
+                    src={post.attachments[0] ? post.attachments[0]!.sourceUrl : "/img/NoUserPhoto.svg"}
                     alt="."
                   />
                   <div className="pp_post__text2">{post.content}</div>
@@ -89,7 +95,7 @@ export const Posts = () => {
                 <div className="pp_post__img pp_blurred">
                   <img
                     className="pp_post__img"
-                    src="img/profile/photo.jpg"
+                    src={post.attachments[0] ? post.attachments[0]!.sourceUrl : "/img/NoUserPhoto.svg"}
                     alt="."
                   />
                   <div className="pp_post__text2">

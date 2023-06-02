@@ -20,6 +20,7 @@ export const EditSubscription = () => {
   const { id } = useParams();
   const { state } = useLocation();
   console.log(state);
+  const userSubscription:IUserSubscriptions = state
   const navigation = useNavigate();
   const login = localStorage.getItem("login")
 
@@ -55,8 +56,8 @@ export const EditSubscription = () => {
           <div className="subscription_input">
             <label htmlFor="name">Название подписки</label>
             <input
-              placeholder={`${state[0].name}`}
-              defaultValue={`${state[0].name}`}
+              placeholder={`${userSubscription.name}`}
+              defaultValue={`${userSubscription.name}`}
               {...register("name", { required: true })}
               type="text"
               id="name"
@@ -84,8 +85,8 @@ export const EditSubscription = () => {
           <div className="subscription_description">
             <label htmlFor="description">Описание подписки</label>
             <textarea
-              placeholder={`${state[0].description}`}
-              defaultValue={`${state[0].description}`}
+              placeholder={`${userSubscription.description}`}
+              defaultValue={`${userSubscription.description}`}
               {...register("description", { required: true })}
               id="description"
               name="description"
@@ -97,8 +98,8 @@ export const EditSubscription = () => {
           <div className="subscription_input">
             <label htmlFor="price">Стоимость месячной подписки (в RUB)</label>
             <input
-              placeholder={`${state[0].price}`}
-              defaultValue={`${state[0].price}`}
+              placeholder={`${userSubscription.price}`}
+              defaultValue={`${userSubscription.price}`}
               {...register("price", { required: true })}
               type="number"
               name="price"

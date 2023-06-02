@@ -10,6 +10,12 @@ export interface IUserPost {
     links: string;
     profileImageUrl: string;
   };
+  attachments: [
+    {
+      fileType: number;
+      sourceUrl: string;
+    }?
+  ];
 }
 export interface IUserCreatePost {
   Title: string;
@@ -21,4 +27,8 @@ export interface IUserUpdatePost {
   content: string;
   subscriptionId: string;
   title: string;
+}
+export interface IUserUpdatePostAttachments {
+  postId: string;
+  files: FileList;
 }

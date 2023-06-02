@@ -52,7 +52,7 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
           </div>
           <div className="pp_subscription_description">{sub.description}</div>
           {LoginName === yourLoginName ? (
-            <Link state={subs} to={`/${LoginName}/edit_subscription/${sub.id}`}>
+            <Link state={sub} to={`/${LoginName}/edit_subscription/${sub.id}`}>
               Редактировать
             </Link>
           ) : (
