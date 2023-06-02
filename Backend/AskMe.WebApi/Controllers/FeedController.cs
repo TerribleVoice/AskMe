@@ -61,17 +61,13 @@ public class FeedController : CustomControllerBase
         return Ok(createdId);
     }
 
-    [HttpPost("{postId:guid}/attachFiles")]
-    public async Task<IActionResult> AttachFiles([FromForm]Guid postId, [FromForm] IFormFile[] files)
+    [HttpPost("{postId:guid}/update")]
+    [Authorize]
+    public async Task<IActionResult> Update(Guid postId, [FromForm] PostRequest request, [FromForm] IFormFile[] attachments)
     {
-        var attachmentRequests =  files.Select(file=>new AttachmentRequest
-        {
-            Name = file.FileName,
-            Type = AttachmentService.GetFileType(file.ContentType),
-            FileStream = file.OpenReadStream()
-        }).ToArray();
-
-        await feedService.AttachFilesAsync(postId, attachmentRequests);
+        await feedService.CreateOrUpdateAsync(request, postId);
+        await feedService.ClearAttachmentsAsync(postId);
+        await AttachFiles(postId, attachments);
         return Ok();
     }
 
@@ -83,11 +79,16 @@ public class FeedController : CustomControllerBase
         return Ok();
     }
 
-    [HttpPost("{postId:guid}/update")]
-    [Authorize]
-    public async Task<IActionResult> Update(Guid postId, [FromBody] PostRequest request)
+
+    private async Task AttachFiles(Guid postId, [FromForm] IFormFile[] files)
     {
-        await feedService.CreateOrUpdateAsync(request, postId);
-        return Ok();
+        var attachmentRequests =  files.Select(file=>new AttachmentRequest
+        {
+            Name = file.FileName,
+            Type = AttachmentService.GetFileType(file.ContentType),
+            FileStream = file.OpenReadStream()
+        }).ToArray();
+
+        await feedService.AttachFilesAsync(postId, attachmentRequests);
     }
 }

@@ -25,7 +25,7 @@ public class S3StorageHandler : IS3StorageHandler
         return transferUtility.UploadAsync(fileStream, bucketName, fileKey);
     }
 
-    public async Task DeleteIfExists(string fileKey)
+    public async Task DeleteIfExistsAsync(string fileKey)
     {
         if (await IsExists(fileKey))
         {

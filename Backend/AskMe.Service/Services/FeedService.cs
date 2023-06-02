@@ -83,6 +83,17 @@ public class FeedService : IFeedService
             var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString().ToLower()}-{request.Name}");
             tasks.Add(s3StorageHandler.UploadFileAsync(stream, path));
         }
+    }
+
+    public async Task ClearAttachmentsAsync(Guid postId)
+    {
+        if (!await dbContext.CanCurrentUserEdit<Post>(postId))
+        {
+            throw new Exception($"У {userIdentity.CurrentUser!.Login} доступа на редактирование поста {postId}");
+        }
+
+        var attachmentKeys = await s3StorageHandler.GeFileKeysInDirectoryAsync(S3StorageHandler.CreatePath("posts", postId.ToString()));
+        var tasks = attachmentKeys.Select(s3StorageHandler.DeleteIfExistsAsync);
 
         await Task.WhenAll(tasks);
     }
@@ -91,7 +102,6 @@ public class FeedService : IFeedService
     {
         var path = S3StorageHandler.CreatePath("posts", postId.ToString());
         var fileKeys =  await s3StorageHandler.GeFileKeysInDirectoryAsync(path);
-
 
         var fileNames = fileKeys.ToDictionary(
             x => x,
