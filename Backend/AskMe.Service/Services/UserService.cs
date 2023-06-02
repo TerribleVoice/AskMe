@@ -118,7 +118,7 @@ public class UserService : IUserService
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);
 
-        await s3StorageHandler.DeleteIfExists(path);
+        await s3StorageHandler.DeleteIfExistsAsync(path);
         await s3StorageHandler.UploadFileAsync(imageStream, path);
     }
 
@@ -138,7 +138,7 @@ public class UserService : IUserService
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);
 
-        await s3StorageHandler.DeleteIfExists(path);
+        await s3StorageHandler.DeleteIfExistsAsync(path);
     }
 
     private static string CreateFilePathForProfileImage(Guid userId)
