@@ -48,13 +48,14 @@ export const CreatePost = () => {
   };
   const onCreatePost = async (data: IUserCreatePost) => {
     try {
-      const formData = new FormData();
-      formData.append("Title", data.Title);
-      formData.append("Content", data.Content);
-      formData.append("attachments", selectedImage!);
-      formData.append("SubscriptionId", selectedSubscription);
-      console.log(formData);
-      const response = await userCreatePost(formData);
+      console.log(data)
+      // const formData = new FormData();
+      // formData.append("Title", data.Title);
+      // formData.append("Content", data.Content);
+      // formData.append("attachments", data.attachments);
+      // formData.append("SubscriptionId", selectedSubscription);
+      console.log(data);
+      const response = await userCreatePost(data);
       console.log(response);
       if (response.status < 300) {
         navigation(`/${login}`)

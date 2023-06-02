@@ -3,15 +3,12 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export const UserSettingsDeletePhoto = () => {
   const { LoginName } = useParams();
-  const location = useLocation();
-  const navigation = useNavigate();
 
   const onDeletePhoto = async () => {
     try {
       const response = await deleteUserPhoto(LoginName!);
       console.log(response);
       if (response.status < 300) {
-        navigation(`/${LoginName}`);
       } else {
         alert("Reject");
       }
@@ -22,7 +19,7 @@ export const UserSettingsDeletePhoto = () => {
 
   return (
     <Link
-      to={location.pathname}
+      to={`/${LoginName}`}
       className="settings_delete_photo"
       onClick={onDeletePhoto}
     >

@@ -71,9 +71,9 @@ export const ProfilePage = () => {
   }, [LoginName]);
 
   const image = profileData?.profileImageUrl;
-  const links = localStorage.getItem("links");
+  const links = profileData?.links
 
-  // console.log(links![0])
+  console.log(links)
   return (
     <>
       <div className="mobile_pp_avatar">
@@ -132,7 +132,7 @@ export const ProfilePage = () => {
         <ul className="pp_top-right__links">
           {links === null || links === undefined || links === "null"
             ? null
-            : links.split("\r\n")?.map((l) => (
+            : links.split("\n")?.map((l) => (
                 <Link to={l} className="pp_links">
                   {l}
                 </Link>

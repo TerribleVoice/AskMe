@@ -24,11 +24,8 @@ export interface IUserCreatePost {
   attachments: FileList;
 }
 export interface IUserUpdatePost {
-  content: string;
-  subscriptionId: string;
-  title: string;
-}
-export interface IUserUpdatePostAttachments {
-  postId: string;
-  files: FileList;
+  Content: string;
+  SubscriptionId: string;
+  Title: string;
+  attachments: FileList;
 }

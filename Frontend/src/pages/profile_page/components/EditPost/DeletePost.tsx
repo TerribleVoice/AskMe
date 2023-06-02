@@ -1,16 +1,15 @@
 import { deleteUserPost } from "@/services/deleteUserPost";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export const DeletePost = () => {
   const { id } = useParams();
-  const location = useLocation()
+  const { LoginName } = useParams();
 
   const onDeletePost = async () => {
     try {
       const response = await deleteUserPost(id!);
       console.log(response);
       if (response.status < 300) {
-        alert("Confirm");
       } else {
         alert("Reject");
       }
@@ -21,7 +20,7 @@ export const DeletePost = () => {
 
   return (
     <Link
-      to={location.pathname}
+      to={`/${LoginName}`}
       className="settings_delete_sub"
       onClick={onDeletePost}
     >

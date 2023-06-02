@@ -3,11 +3,12 @@ import { askMeApiAxiosInstance } from "./askMeApiAxiosInstance";
 
 export const postUserUpdatePost = async (
   userSubscriptionData: IUserUpdatePost,
-  id: string,
+  id: string
 ) => {
   const response = await askMeApiAxiosInstance.post(
     `/Feed/${id}/update`,
-    userSubscriptionData
+    userSubscriptionData,
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
   return response;
 };
