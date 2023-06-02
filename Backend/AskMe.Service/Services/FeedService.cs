@@ -83,6 +83,7 @@ public class FeedService : IFeedService
             var path = S3StorageHandler.CreatePath("posts", postId.ToString(), $"{request.Type.ToString().ToLower()}-{request.Name}");
             tasks.Add(s3StorageHandler.UploadFileAsync(stream, path));
         }
+        await Task.WhenAll(tasks);
     }
 
     public async Task ClearAttachmentsAsync(Guid postId)

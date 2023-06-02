@@ -79,7 +79,6 @@ public class FeedController : CustomControllerBase
         return Ok();
     }
 
-
     private async Task AttachFiles(Guid postId, [FromForm] IFormFile[] files)
     {
         var attachmentRequests =  files.Select(file=>new AttachmentRequest
