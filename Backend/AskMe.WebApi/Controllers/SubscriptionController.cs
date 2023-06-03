@@ -1,6 +1,8 @@
 using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
+using AskMe.WebApi.Builders;
+using AskMe.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,14 @@ namespace AskMe.WebApi.Controllers;
 public class SubscriptionController : CustomControllerBase
 {
     private readonly ISubscriptionService subscriptionService;
+    private readonly SubscriptionViewModelBuilder subscriptionViewModelBuilder;
 
-    public SubscriptionController(IUserIdentity userIdentity, ISubscriptionService subscriptionService) : base(userIdentity)
+    public SubscriptionController(IUserIdentity userIdentity,
+        ISubscriptionService subscriptionService,
+        SubscriptionViewModelBuilder subscriptionViewModelBuilder) : base(userIdentity)
     {
         this.subscriptionService = subscriptionService;
+        this.subscriptionViewModelBuilder = subscriptionViewModelBuilder;
     }
 
     [HttpPost("create")]
@@ -45,9 +51,9 @@ public class SubscriptionController : CustomControllerBase
 
     [HttpGet("{userLogin}/created_list")]
     [Authorize]
-    public async Task<SubscriptionResponse[]> AuthorSubscriptions(string userLogin)
+    public async Task<ActionResult<SubscriptionViewModel[]>> AuthorSubscriptions(string userLogin)
     {
-        var subscriptions = await subscriptionService.GetAuthorSubscriptionsAsync(userLogin);
+        var subscriptions = await subscriptionViewModelBuilder.BuildCreatedListAsync(userLogin);
         return subscriptions;
     }
 
@@ -57,17 +63,16 @@ public class SubscriptionController : CustomControllerBase
     {
         var result = await subscriptionService.SubscriptionsWithoutChildrenAsync(userLogin);
 
-        return Ok(result);
+        return result;
     }
 
 
     //Метод для читателей, показывает купленные подписки
-
     [HttpGet("{userLogin}/bought_list")]
     [Authorize]
-    public async Task<SubscriptionResponse[]> UserSubscriptions(string userLogin)
+    public async Task<ActionResult<SubscriptionViewModel[]>> UserSubscriptions(string userLogin)
     {
-        var subscriptions = await subscriptionService.GetReaderSubscriptionsAsync(userLogin);
+        var subscriptions = await subscriptionViewModelBuilder.BuildBoughtListAsync(userLogin);
         return subscriptions;
     }
 

@@ -112,6 +112,11 @@ public class SubscriptionService : ISubscriptionService
     public async Task SubscribeAsync(Guid subscriptionId)
     {
         var currentUser = await userService.ReadUserByLoginAsync(userIdentity.CurrentUser!.Login);
+        var userSubscriptions = await GetReaderSubscriptionsFlatTreeAsync(currentUser.Login);
+        if (userSubscriptions.Any(x=>x.Id == subscriptionId))
+        {
+            throw new Exception($"Пользователь {currentUser.Login}, уже имеет подписку {subscriptionId}");
+        }
         var boughtSubscription = new BoughtSubscription
         {
             Id = Guid.NewGuid(),
