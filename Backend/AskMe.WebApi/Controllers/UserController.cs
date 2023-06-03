@@ -32,6 +32,7 @@ public class UserController : CustomControllerBase
     public async Task<IActionResult> CreateAsync([FromBody]UserCreationForm creationForm)
     {
         await userService.CreateUserAsync(creationForm);
+        await CreateCookieSession(creationForm.Login);
         return Ok();
     }
 
@@ -57,16 +58,7 @@ public class UserController : CustomControllerBase
     {
         if ((await userService.AuthenticateUserAsync(form.Login, form.Password)).IsSuccess)
         {
-            var user = await userService.ReadUserByLoginAsync(form.Login);
-
-            var claims = new List<Claim>
-            {
-                new("/id", user.Id.ToString()),
-                new(ClaimTypes.Name, form.Login),
-                new(ClaimTypes.Email, user.Email ?? string.Empty),
-            };
-            var claimIdentity = new ClaimsIdentity(claims, "Cookies");
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
+            await CreateCookieSession(form.Login);
 
             return Ok(true);
         }
@@ -158,5 +150,21 @@ public class UserController : CustomControllerBase
 
         await userService.DeleteUserProfileImage(userLogin);
         return Ok();
+    }
+
+    private async Task CreateCookieSession(string login)
+    {
+
+        var user = await userService.ReadUserByLoginAsync(login);
+
+        var claims = new List<Claim>
+        {
+            new("/id", user.Id.ToString()),
+            new(ClaimTypes.Name, login),
+            new(ClaimTypes.Email, user.Email ?? string.Empty),
+        };
+        var claimIdentity = new ClaimsIdentity(claims, "Cookies");
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimIdentity));
     }
 }
