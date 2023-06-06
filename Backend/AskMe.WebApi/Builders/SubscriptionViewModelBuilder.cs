@@ -20,7 +20,7 @@ public class SubscriptionViewModelBuilder
 
     public async Task<SubscriptionViewModel[]> BuildCreatedListAsync(string userLogin)
     {
-        var authorSubscriptionsTask = subscriptionService.GetAuthorSubscriptionsAsync(userLogin);
+        var authorSubscriptionsTask = await subscriptionService.GetAuthorSubscriptionsAsync(userLogin);
         var currentUserSubscriptionIds = currentUser == null
             ? new HashSet<Guid>()
             : (await subscriptionService.GetReaderSubscriptionsAsync(currentUser.Login)).Select(x=>x.Id).ToHashSet();
@@ -31,8 +31,9 @@ public class SubscriptionViewModelBuilder
             .Except(currentUserSubscriptionIds)
             .ToHashSet();
 
-        return (await authorSubscriptionsTask).Select(x => new SubscriptionViewModel
+        return authorSubscriptionsTask.Select(x => new SubscriptionViewModel
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 AuthorId = x.AuthorId,
@@ -48,6 +49,7 @@ public class SubscriptionViewModelBuilder
         var currentUserSubscriptionIds = await subscriptionService.GetReaderSubscriptionsAsync(userLogin);
         return currentUserSubscriptionIds.Select(x => new SubscriptionViewModel
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 AuthorId = x.AuthorId,

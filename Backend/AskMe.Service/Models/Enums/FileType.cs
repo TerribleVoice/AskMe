@@ -2,8 +2,8 @@
 
 public enum FileType
 {
-    Image,
-    Video,
-    Text,
-    Audio
+    Image = 0,
+    Video = 1,
+    Text = 2,
+    Audio = 3
 }
