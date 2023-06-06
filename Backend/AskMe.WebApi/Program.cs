@@ -32,6 +32,7 @@ builder.Services.AddScoped<ISubscriptionConverter, SubscriptionConverter>();
 
 builder.Services.AddScoped<UserViewModelBuilder>();
 builder.Services.AddScoped<PostViewModelBuilder>();
+builder.Services.AddScoped<SubscriptionViewModelBuilder>();
 
 AddUserIdentity(builder);
 
