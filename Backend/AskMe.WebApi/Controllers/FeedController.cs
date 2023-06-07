@@ -32,7 +32,7 @@ public class FeedController : CustomControllerBase
     public async Task<ActionResult<PostViewModel[]>> GetUserFeed(string userLogin, int skip = 0, int take = 10)
     {
         var posts = await feedService.GetFeedAsync(userLogin, skip, take);
-        var postsViewModels = await postViewModelBuilder.BuildAsync(posts, userLogin);
+        var postsViewModels = await postViewModelBuilder.BuildAsync(posts);
 
         return postsViewModels;
     }
@@ -41,7 +41,7 @@ public class FeedController : CustomControllerBase
     public async Task<ActionResult<PostViewModel[]>> GetUserPosts(string userLogin, int skip = 0, int take = 10)
     {
         var posts = await feedService.GetUserPostsAsync(userLogin, skip, take);
-        var postViewModels = await postViewModelBuilder.BuildAsync(posts, userLogin);
+        var postViewModels = await postViewModelBuilder.BuildAsync(posts);
 
         return postViewModels;
     }

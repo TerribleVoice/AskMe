@@ -22,7 +22,7 @@ public class UserViewModelBuilder
 
     public async Task<UserViewModel> BuildAsync(UserDto userDto)
     {
-        var profileImageUrl = await userService.GetUserProfileImageUrl(userDto.Login);
+        var profileImageUrl = await userService.GetUserProfileImageUrlAsync(userDto.Login);
 
         return new UserViewModel
         {

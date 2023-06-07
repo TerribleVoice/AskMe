@@ -69,6 +69,15 @@ public class UserService : IUserService
         return user;
     }
 
+    public async Task<UserDto> ReadUserByIdAsync(Guid id)
+    {
+        var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+        if (user == null)
+            throw new Exception($"Пользователь с id {id} не найден");
+
+        return userConverter.ToDto(user)!;
+    }
+
     public async Task<UserDto?> FindUserByLoginAsync(string login)
     {
         var user = await dbContext.Users.FirstOrDefaultAsync(x=>x.Login == login);
@@ -122,7 +131,7 @@ public class UserService : IUserService
         await s3StorageHandler.UploadFileAsync(imageStream, path);
     }
 
-    public async Task<string?> GetUserProfileImageUrl(string userLogin)
+    public async Task<string?> GetUserProfileImageUrlAsync(string userLogin)
     {
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);
