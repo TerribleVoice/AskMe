@@ -7,6 +7,7 @@ import { getUserSubscriptions } from "@/services/getUserSubscriptions";
 import { useState, useEffect, useLayoutEffect, ChangeEvent } from "react";
 import { postUserUpdatePost } from "@/services/postUserUpdatePost";
 import { DeletePost } from "./DeletePost";
+import ReactAudioPlayer from "react-audio-player";
 
 export const EditPost = () => {
   const {
@@ -63,7 +64,9 @@ export const EditPost = () => {
       formData.append("Content", data.Content);
       formData.append("SubscriptionId", selectedSubscription);
       if (attachments) {
-        Array.from(data.attachments).forEach((file, index) => formData.append("attachments", file, `${index}`));
+        Array.from(data.attachments).forEach((file, index) =>
+          formData.append("attachments", file, `${index}`)
+        );
       }
       const response = await postUserUpdatePost(formData, id!);
       console.log(response);
@@ -106,6 +109,30 @@ export const EditPost = () => {
         >
           <div className="subscription_image">
             <label htmlFor="image">Обложка поста</label>
+            {/* {userPost.attachments.map((a) => {
+              if (a?.fileType === 0) {
+                return (
+                  <img
+                    id="image-preview"
+                    src={a.sourceUrl}
+                    alt="Uploaded"
+                  />
+                );
+              } else if (a?.fileType === 1) {
+                return (
+                  <video className="pp_post__video_attach" controls>
+                    <source src={a.sourceUrl} type="video/mp4" />
+                    Your browser does not support the video element.
+                  </video>
+                );
+              } else if (a?.fileType === 3) {
+                <ReactAudioPlayer
+                  className="pp_post__audio_attach"
+                  src={a.sourceUrl}
+                  controls
+                />;
+              }
+            })} */}
             {selectedImage.map((si) => (
               <img key={si} id="image-preview" src={si} alt="Uploaded" />
             ))}
