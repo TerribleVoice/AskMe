@@ -121,7 +121,7 @@ export const CreatePost = () => {
                     <input
                       {...register("SubscriptionId", { required: true })}
                       className="subscription_input_subscriptionId"
-                      name="subscriptionId"
+                      name="SubscriptionId"
                       type="checkbox"
                       id={`subscription-${subscription.id}`}
                       checked={isChecked}
