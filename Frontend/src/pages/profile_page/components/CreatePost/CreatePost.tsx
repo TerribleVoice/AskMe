@@ -63,16 +63,21 @@ export const CreatePost = () => {
   const onCreatePost = async (data: IUserCreatePost) => {
     try {
       // console.log(data);
+      console.log(data)
+      if (!data.attachments) {
+        data.attachments = [] as unknown as FileList;
+      }
       const formData = new FormData();
       formData.append("Title", data.Title);
       formData.append("Content", data.Content);
-      Array.from(data.attachments).forEach((file, index) => formData.append("attachments", file, `${index}`));
+      formData.append("SubscriptionId", selectedSubscription);
+      if (attachments) {
+        Array.from(data.attachments).forEach((file, index) => formData.append("attachments", file, `${index}`));
+      }
       // formData.append("attachments", data.attachments[0], "chris1.jpg");
       // formData.append("attachments", data.attachments[1], "chris2.jpg");
       // formData.append("attachments", data.attachments, "files");
-      formData.append("SubscriptionId", selectedSubscription);
       console.log(formData);
-      console.log(data)
       const response = await userCreatePost(formData);
       console.log(response);
       if (response.status < 300) {
@@ -84,7 +89,8 @@ export const CreatePost = () => {
         navigation(`/${login}`);
       }
     } catch (error) {
-      navigation(`/${login}`);
+      console.log(error)
+      // navigation(`/${login}`);
     }
   };
   const [selectedSubscription, setSelectedSubscription] = useState<string>("");

@@ -36,13 +36,6 @@ export const EditPost = () => {
     const stateUrls = userPost.attachments.map((a) => a!.sourceUrl);
     setSelectedImage(stateUrls);
 
-    const getFileFromURL = async (url: string, index: number) => {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const file = new File([blob], `${index}`);
-      return file;
-    };
-
     const fetchData = async () => {
       try {
         if (login !== null) {
@@ -57,22 +50,7 @@ export const EditPost = () => {
       }
     };
 
-    const fetchFiles = async () => {
-      const files = await Promise.all(
-        stateUrls.map(async (url, index) => getFileFromURL(url, index))
-      );
-
-      const dataTransfer = new DataTransfer();
-      files.forEach((file) => {
-        dataTransfer.items.add(file);
-      });
-
-      const fileList = dataTransfer.files;
-      setAttachments(fileList);
-    };
-
     fetchData();
-    fetchFiles();
   }, [login, navigation, userPost.attachments]);
 
   const onUpdatePost = async (data: IUserUpdatePost) => {
