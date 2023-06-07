@@ -2,7 +2,7 @@ import { IUserUpdatePost } from "@/models/IUserPosts";
 import { askMeApiAxiosInstance } from "./askMeApiAxiosInstance";
 
 export const postUserUpdatePost = async (
-  userSubscriptionData: IUserUpdatePost,
+  userSubscriptionData: any,
   id: string
 ) => {
   const response = await askMeApiAxiosInstance.post(

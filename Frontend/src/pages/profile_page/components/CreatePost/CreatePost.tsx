@@ -18,15 +18,16 @@ export const CreatePost = () => {
   const { LoginName } = useParams();
   const navigation = useNavigate();
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string[]>([]);
   const login = localStorage.getItem("login");
+  const [attachments, setAttachments] = useState<FileList>([] as unknown as FileList)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (LoginName !== undefined) {
           const data = await getUserSubscriptions(LoginName);
-          console.log(data);
+          // console.log(data);
           setSubscriptions(data);
         } else {
           navigation("/404");
@@ -40,25 +41,42 @@ export const CreatePost = () => {
   }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
+    const files = event.target.files;
+    // console.log(files);
+    if (files) {
+      const fileURLs = Array.from(files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => [...prevImages, ...fileURLs]);
+      const dataTransfer = new DataTransfer();
+      Array.from(attachments).forEach((file) =>
+        dataTransfer.items.add(file as File)
+      );
+      Array.from(files).forEach((file) => dataTransfer.items.add(file));
+      const newFileList = dataTransfer.files;
+      setAttachments(newFileList);
+      // console.log(newFileList)
+      // console.log(attachments)
+      return newFileList;
     }
-    return file;
   };
   const onCreatePost = async (data: IUserCreatePost) => {
     try {
+      // console.log(data);
+      const formData = new FormData();
+      formData.append("Title", data.Title);
+      formData.append("Content", data.Content);
+      Array.from(data.attachments).forEach((file, index) => formData.append("attachments", file, `${index}`));
+      // formData.append("attachments", data.attachments[0], "chris1.jpg");
+      // formData.append("attachments", data.attachments[1], "chris2.jpg");
+      // formData.append("attachments", data.attachments, "files");
+      formData.append("SubscriptionId", selectedSubscription);
+      console.log(formData);
       console.log(data)
-      // const formData = new FormData();
-      // formData.append("Title", data.Title);
-      // formData.append("Content", data.Content);
-      // formData.append("attachments", data.attachments);
-      // formData.append("SubscriptionId", selectedSubscription);
-      console.log(data);
-      const response = await userCreatePost(data);
+      const response = await userCreatePost(formData);
       console.log(response);
       if (response.status < 300) {
-        navigation(`/${login}`)
+        navigation(`/${login}`);
         console.log(response);
         navigation(`/${login}`);
       } else {
@@ -87,8 +105,7 @@ export const CreatePost = () => {
               К КАКОЙ ПОДПИСКЕ ОТНОСИТСЯ ПОСТ?
             </p>
             {subscriptions?.map((subscription) => {
-              const isChecked =
-                selectedSubscription === subscription.id;
+              const isChecked = selectedSubscription === subscription.id;
               return (
                 <div
                   key={subscription.id}
@@ -116,6 +133,38 @@ export const CreatePost = () => {
               );
             })}
           </div>
+          <div className="file_post">
+            <label htmlFor="image">Обложка</label>
+            {/* {selectedImage && (
+              <div>
+                <img id="image-preview" src={selectedImage} alt="Uploaded" />
+              </div>
+            )} */}
+            {selectedImage.map((si) => (
+              <img key={si} id="image-preview" src={si} alt="Uploaded" />
+            ))}
+            <label className="custom_file_upload">
+              <Controller
+                control={control}
+                name="attachments"
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    onChange={(event) =>
+                      field.onChange(handleFileChange(event))
+                    }
+                    type="file"
+                    id="attachments"
+                    value={[]}
+                  />
+                )}
+              />
+              ВЫБРАТЬ ФАЙЛ
+            </label>
+            {/* <label className="settings_caption" htmlFor="description">
+              Рекомендуемый размер 240х150 рх
+            </label> */}
+          </div>
           <div className="subscription_input">
             <label htmlFor="Title">Введите заголовок поста</label>
             <input
@@ -133,35 +182,6 @@ export const CreatePost = () => {
               id="Content"
               name="Content"
             />
-          </div>
-          <div className="file_post">
-            <label htmlFor="image">Обложка</label>
-            {selectedImage && (
-              <div>
-                <img id="image-preview" src={selectedImage} alt="Uploaded" />
-              </div>
-            )}
-            <label className="custom_file_upload">
-              <Controller
-                control={control}
-                name="attachments"
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    onChange={(event) =>
-                      field.onChange(handleFileChange(event))
-                    }
-                    type="file"
-                    id="attachments"
-                    value={undefined}
-                  />
-                )}
-              />
-              ВЫБРАТЬ ФАЙЛ
-            </label>
-            {/* <label className="settings_caption" htmlFor="description">
-              Рекомендуемый размер 240х150 рх
-            </label> */}
           </div>
           {/* <div className="subscription_input">
             <label htmlFor="price">Стоимость поста</label>

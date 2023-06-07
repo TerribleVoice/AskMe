@@ -4,10 +4,12 @@ export interface IUserSubscriptions {
   price: number;
   name: string;
   description: string;
+  // isBought: boolean;
+  // isInherit: boolean;
   parentSubscriptionId?: string;
 }
 export type IUserCreateSubscription = Omit<
   IUserSubscriptions,
-  "id" | "authorId"
+  "id" | "parentSubscriptionId"
 >;
-export type IUserEditSubscription = IUserCreateSubscription
+export type IUserEditSubscription = IUserCreateSubscription;

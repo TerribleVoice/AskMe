@@ -25,7 +25,8 @@ export const EditPost = () => {
 
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
   const [selectedSubscription, setSelectedSubscription] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>();
+  const [attachments, setAttachments] = useState<FileList>([] as unknown as FileList)
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -48,11 +49,16 @@ export const EditPost = () => {
 
     fetchData();
   }, []);
-
   const onUpdatePost = async (data: IUserUpdatePost) => {
     try {
-      console.log(data);
-      const response = await postUserUpdatePost(data, id!);
+      // console.log(data);
+      const fileList = Array.from(attachments) as File[];
+      const postData = {
+        ...data,
+        attachments: fileList[0]!,
+      };
+      console.log(postData);
+      const response = await postUserUpdatePost(postData, id!);
       console.log(response);
       navigation(`/${login}`);
       //   if (response.status < 300) {
@@ -66,16 +72,28 @@ export const EditPost = () => {
       console.error(error);
     }
   };
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target);
-    const file = event.target.files?.[0];
-    console.log(file);
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-    return file;
-  };
+  
+  
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const files = event.target.files;
+    // console.log(files);
+    if (files) {
+      // const fileURLs = Array.from(files).map((file) =>
+      //   URL.createObjectURL(file)
+      // );
+      // setSelectedImage((prevImages) => [...prevImages, ...fileURLs]);
 
+      setSelectedImage(URL.createObjectURL(files[0]))
+      const newFileList = new DataTransfer();
+      Array.from(attachments).forEach((file) => newFileList.items.add(file));
+      Array.from(files).forEach((file) => newFileList.items.add(file));
+      // console.log(newFileList)
+      setAttachments(newFileList.files as FileList);
+    }
+  };
+  
+  
+  
   return (
     <div className="subscription_create_wrapper">
       <aside className="subscription_aside_left">
@@ -96,6 +114,10 @@ export const EditPost = () => {
                 <img id="image-preview" src={selectedImage} alt="Uploaded" />
               </div>
             )}
+            {/* {selectedImage &&
+              selectedImage.map((si) => {
+                return <img id="image-preview" src={si} alt="Uploaded" />;
+              })} */}
             <label className="custom_file_upload">
               <Controller
                 control={control}

@@ -514,14 +514,12 @@ a:active {
   filter: blur(10px);
   overflow: hidden;
 }
-.pp_post__img {
+.pp_post__img_wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  /* position: absolute;
-  left: 50%;
-  top: 60%; */
+  padding: 24px 24px 54px 24px;
 }
 .pp_post__textt {
   font-family: "Roboto";
@@ -562,24 +560,71 @@ a:active {
   margin-top: 20px;
   background-color: #181818;
 }
+.pp_post_head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: #b00062 1px solid;
+  padding: 15px 15px 15px 15px;
+}
+.pp_post_profileAvatar {
+  width: 80px;
+}
+.pp_post_profile {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.pp_post_profileLogin {
+  font-size: 20px;
+}
+.pp_post__attach_wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, max(276px));
+  padding: 24px 24px 54px 24px;
+}
+.pp_post__video_attach {
+  max-width: 272px;
+  margin: 5px;
+}
+.pp_post__img_attach {
+  margin: 5px;
+}
+.pp_post__audio_wrapper {
+  margin-top: 25px;
+}
+.pp_post__audio_attach {
+  width: 552px;
+  border-radius: 5px;
+  color: #b00062;
+  background-color: #b00062;
+}
+.react-audio-player {
+  
+}
+.pp_post__text_attach {
+  margin: 5px 0px;
+}
 .pp_post__title {
+  font-size: 24px;
+  font-weight: 500;
   padding: 24px;
   display: flex;
-  justify-content: space-between;
 }
 .pp_post__text {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 20px;
-  line-height: 23px;
-  color: #c0c0c0;
+  padding: 0 24px 0 24px;
+}
+.pp_post__settings {
+  position: absolute;
+  right: 25px;
 }
 .pp_post__date {
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 14px;
   color: #505050;
 }
@@ -597,7 +642,6 @@ a:active {
   text-align: center;
 }
 .pp_post__text2 img {
-  padding-top: 5px;
   display: block;
   margin: 0 auto;
 }

@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DeleteSubscription } from "./DeleteSubscription";
 import { ProfilePage } from "../ProfilePage";
+import { useLayoutEffect } from "react";
 
 export const EditSubscription = () => {
   const {
@@ -23,6 +24,9 @@ export const EditSubscription = () => {
   const userSubscription:IUserSubscriptions = state
   const navigation = useNavigate();
   const login = localStorage.getItem("login")
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const onEditSubscription = async (data: IUserEditSubscription) => {
     try {
