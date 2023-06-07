@@ -69,36 +69,40 @@ export const Posts = () => {
                 <span style={{ fontSize: "20px" }}>
                   {post.authorViewModel.login}
                 </span>
-                <div className="pp_post__date" style={{ marginLeft: "330px" }}>
+                <div className="pp_post__date">
                   {formattedDate}
                 </div>
+                {localStorage.getItem("login") === post.authorViewModel.login ?
+                <div className="pp_post_editicon">
                 <Link state={post} to={`/${LoginName}/edit_post/${post.id}`}>
                   <AiFillSetting />
                 </Link>
+                </div>
+                 : null}
               </div>
               <div
-                className="pp_post__title"
+                className="pp_post__text"
                 style={{ backgroundColor: "#181818" }}
               >
-                <div className="pp_post__text">{post.title}</div>
+                <div className="pp_post__title">{post.title}</div>
+                {post.haveAccess ? <div className="pp_post__text2">{post.content}</div> : null}
               </div>
               {post.haveAccess ? (
                 <div className="pp_post__img">
                   <img
                     className="pp_post__img"
-                    src={post.attachments[0] ? post.attachments[0]!.sourceUrl : "/img/NoUserPhoto.svg"}
-                    alt="."
+                    src={post?.attachments?.[0]?.sourceUrl ?? ""}
+                    alt=""
                   />
-                  <div className="pp_post__text2">{post.content}</div>
                 </div>
               ) : (
                 <div className="pp_post__img pp_blurred">
                   <img
                     className="pp_post__img"
                     src={post.attachments[0] ? post.attachments[0]!.sourceUrl : "/img/NoUserPhoto.svg"}
-                    alt="."
+                    alt=""
                   />
-                  <div className="pp_post__text2">
+                  <div className="pp_post__text_noaccess">
                     <p>Пост только для платных подписчиков</p>
                   </div>
                 </div>

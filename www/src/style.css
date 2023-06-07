@@ -503,6 +503,11 @@ a:active {
     font-size: 12px;
     line-height: 14px;
     color: #505050;
+    margin-left: 280px;
+}
+.pp_post_editicon {
+    height: 1em;
+    width: 2em;
 }
 
 .pp_post__img {

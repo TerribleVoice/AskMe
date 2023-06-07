@@ -510,15 +510,18 @@ a:active {
   background-color: #181818;
 }
 .pp_blurred > img {
-  width: 520px;
   filter: blur(10px);
   overflow: hidden;
 }
 .pp_post__img {
   display: flex;
-  justify-content: center;
   align-items: center;
+  margin-bottom: 30px;
+  margin-top: 12px;
   position: relative;
+  display: block;
+  width: 100%;
+  max-width: 250px;
   /* position: absolute;
   left: 50%;
   top: 60%; */
@@ -566,6 +569,8 @@ a:active {
   padding: 24px;
   display: flex;
   justify-content: space-between;
+  padding-top:12px;
+  padding-bottom:12px;
 }
 .pp_post__text {
   font-family: "Roboto";
@@ -582,8 +587,38 @@ a:active {
   font-size: 12px;
   line-height: 14px;
   color: #505050;
+  margin-left: auto;
+  margin-right: auto;
+  margin-right: 7%;
+}
+.pp_post_editicon {
+  height: 1em;
+  width: 2em;
+  margin-left: 10px;
+  margin-right: 10px;
+  transform: scale(2);
 }
 .pp_post__text2 {
+  left: 50%;
+  /* top: 60%; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 28px;
+  color: #c0c0c0;
+  padding:24px;
+  padding-top:12px;
+  padding-bottom:12px;
+  /* display: flex;
+  justify-content: space-between; */
+}
+.pp_post__text2 img {
+  padding-top: 5px;
+  display: block;
+  margin: 0 auto;
+}
+.pp_post__text_noaccess {
   position: absolute;
   left: 50%;
   /* top: 60%; */
@@ -596,12 +631,6 @@ a:active {
   color: #c0c0c0;
   text-align: center;
 }
-.pp_post__text2 img {
-  padding-top: 5px;
-  display: block;
-  margin: 0 auto;
-}
-
 /* ================================ */
 
 .pp_left {
@@ -663,7 +692,7 @@ a:active {
   font-size: 24px;
   line-height: 28px;
   color: #c0c0c0;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
   max-width: 260px;
   word-wrap: break-word;
 }
