@@ -214,6 +214,7 @@ async def last_posts_command(call: types.CallbackQuery):
     info_message = call.message.text
     nickname = str(info_message.split("Имя: ")[1].split("\n")[0])
     author_id = db.get_author_id(nickname=nickname)[0][1]
+    author_name = db.get_name_author(author_id=author_id)
     posts = db.get_posts_author(author_id=author_id)
     if posts == []:
         await call.message.answer(f"Пользователь {nickname} не имеет постов!")
@@ -227,12 +228,15 @@ async def last_posts_command(call: types.CallbackQuery):
                 await call.message.answer(f"""
 {post[0]}                                      
 """)
+        await call.message.answer(
+            f"Вы можете получить более подробную информацию в профиле автора https://askme-platform.ru/{author_name}")
 
 @dp.callback_query_handler(text='view_posts')
 async def view_posts_command(call: types.CallbackQuery):
     info_message = call.message.text
     nickname = str(info_message.split("Имя: ")[1].split("\n")[0])
     author_id = db.get_author_id(nickname=nickname)[0][1]
+    author_name = db.get_name_author(author_id=author_id)
     posts = db.get_posts_author(author_id=author_id)
     if posts == []:
         await call.message.answer(f"Пользователь {nickname} не имеет постов!")
@@ -246,6 +250,8 @@ async def view_posts_command(call: types.CallbackQuery):
                 await call.message.answer(f"""
 {post[0]}                                      
 """)
+        await call.message.answer(
+            f"Вы можете получить более подробную информацию в профиле автора https://askme-platform.ru/{author_name}")
             
 @dp.callback_query_handler(text='posts')
 async def posts_command(call: types.CallbackQuery):
@@ -256,8 +262,11 @@ async def posts_command(call: types.CallbackQuery):
     else:
         for post in posts:
             await call.message.answer(f"""
-{post[0]}                                                                            
+{post[0]}                                                                   
 """)
+            author_name = db.get_name_author(author_id=post[1])
+            await call.message.answer(
+                f"Вы можете получить более подробную информацию в профиле автора https://askme-platform.ru/{author_name}")
 
 # Регистрационный блок
 @dp.callback_query_handler(text='register')
@@ -345,7 +354,7 @@ async def scheduled(wait_for):
             for subscriber in subscribers:
                 user_id = subscriber[0]
                 telegram_id = db.get_telegram_id_user(user_id=user_id)[0][0]
-                nickname_author = db.get_name_author(author_id=sub_id)[0][0]
+                nickname_author = db.get_name_subscription(sub_id=sub_id)[0][0]
                 await bot.send_message(chat_id=telegram_id, text=f"""У {nickname_author} вышел новый пост!\n\n{post[1]}""")
             db.add_post_active(id_post=post[2])
         

@@ -245,7 +245,7 @@ class Database:
     def get_posts(self, user_id):
         with self.connection.cursor() as cursor:
             select = f"""
-            SELECT p.content
+            SELECT p.content, p.author_id
             FROM {config.get('TABLES', 'TABLE_POSTS')} p
             INNER JOIN {config.get('TABLES', 'TABLE_USER_SUBSCRIPTION')} s ON p.author_id = s.subscription_id
             WHERE s.user_id = {repr(user_id)}
@@ -343,17 +343,28 @@ class Database:
             self.connection.commit()
             
     # Получить имя автора
-    def get_name_author(self, author_id):
+    def get_name_subscription(self, sub_id):
         with self.connection.cursor() as cursor:
             select = f"""
             SELECT name FROM {config.get('TABLES', 'TABLE_SUBSCRIPTIONS')}
-            WHERE author_id = {repr(author_id)};
+            WHERE author_id = {repr(sub_id)};
             """
             
             cursor.execute(select)
             result = cursor.fetchall()
             return result
-        
+
+    def get_name_author(self, author_id):
+        with self.connection.cursor() as cursor:
+            select = f"""
+            SELECT login FROM {config.get('TABLES', 'TABLE_USERS')}
+            WHERE id = {repr(author_id)};
+            """
+
+            cursor.execute(select)
+            result = cursor.fetchone()
+            return result[0]
+
     # Действие - подписка
     def subscribe_user(self, uuid, user_id, subscription_id):
         with self.connection.cursor() as cursor:
