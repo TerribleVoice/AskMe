@@ -27,13 +27,13 @@ public class S3StorageHandler : IS3StorageHandler
 
     public async Task DeleteIfExistsAsync(string fileKey)
     {
-        if (await IsExists(fileKey))
+        if (await IsExistsAsync(fileKey))
         {
             await S3Client.DeleteObjectAsync(bucketName, fileKey);
         }
     }
 
-    public async Task<bool> IsExists(string fileKey)
+    public async Task<bool> IsExistsAsync(string fileKey)
     {
         try
         {

@@ -1,6 +1,6 @@
 import { getSubscribe } from "@/services/getSubscribe";
 import { getUnsubscribe } from "@/services/getUnsubscribe";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { IUserSubscriptionsProps } from "../Subscriptions";
 
@@ -8,7 +8,13 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
   const { LoginName } = useParams();
   const yourLoginName = localStorage.getItem("login");
   const [subButtons, setSubButtons] = useState<{ [id: string]: boolean }>({});
-
+  useEffect(() => {
+    const initialSubButtonsState = subs.reduce(
+      (acc, sub) => ({ ...acc, [sub.id]: sub.isBought }),
+      {}
+    );
+    setSubButtons(initialSubButtonsState);
+  }, [subs]);
   const onSubscribe = async (id: string) => {
     try {
       const response = await getSubscribe(id);
@@ -56,6 +62,7 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
               Редактировать
             </Link>
           ) : (
+            yourLoginName ? (
             <div
               onClick={() =>
                 subButtons[sub.id] ? onUnsubscribe(sub.id) : onSubscribe(sub.id)
@@ -63,7 +70,7 @@ export const SubUnsub = ({ subs }: IUserSubscriptionsProps) => {
               className="pp_body-create_subscr hover_create_subscr"
             >
               {subButtons[sub.id] ? "ОТПИСАТЬСЯ" : "ПОДПИСАТЬСЯ"}
-            </div>
+            </div>) : null
           )}
         </div>
       ))}

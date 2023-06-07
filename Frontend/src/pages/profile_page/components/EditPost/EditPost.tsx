@@ -14,7 +14,7 @@ export const EditPost = () => {
     handleSubmit,
     reset,
     control,
-    formState: { errors }, // нужен ли??
+    formState: { errors },
   } = useForm<IUserUpdatePost>();
   const { id } = useParams();
   const { state } = useLocation();
@@ -25,18 +25,28 @@ export const EditPost = () => {
 
   const [subscriptions, setSubscriptions] = useState<IUserSubscriptions[]>([]);
   const [selectedSubscription, setSelectedSubscription] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<string>();
-  const [attachments, setAttachments] = useState<FileList>([] as unknown as FileList)
+  const [selectedImage, setSelectedImage] = useState<string[]>([]);
+  const [attachments, setAttachments] = useState<FileList | null>(null);
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
+    const stateUrls = userPost.attachments.map((a) => a!.sourceUrl);
+    setSelectedImage(stateUrls);
+
+    const getFileFromURL = async (url: string, index: number) => {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const file = new File([blob], `${index}`);
+      return file;
+    };
+
     const fetchData = async () => {
       try {
-        if (login !== undefined) {
-          const data = await getUserSubscriptions(login!);
+        if (login !== null) {
+          const data = await getUserSubscriptions(login);
           console.log(data);
           setSubscriptions(data);
         } else {
@@ -47,53 +57,59 @@ export const EditPost = () => {
       }
     };
 
+    const fetchFiles = async () => {
+      const files = await Promise.all(
+        stateUrls.map(async (url, index) => getFileFromURL(url, index))
+      );
+
+      const dataTransfer = new DataTransfer();
+      files.forEach((file) => {
+        dataTransfer.items.add(file);
+      });
+
+      const fileList = dataTransfer.files;
+      setAttachments(fileList);
+    };
+
     fetchData();
-  }, []);
+    fetchFiles();
+  }, [login, navigation, userPost.attachments]);
+
   const onUpdatePost = async (data: IUserUpdatePost) => {
     try {
-      // console.log(data);
-      const fileList = Array.from(attachments) as File[];
+      const fileList = attachments ? (Array.from(attachments) as File[]) : [];
       const postData = {
         ...data,
-        attachments: fileList[0]!,
+        attachments: fileList,
       };
       console.log(postData);
       const response = await postUserUpdatePost(postData, id!);
       console.log(response);
       navigation(`/${login}`);
-      //   if (response.status < 300) {
-      //     navigation(`/${login}`);
-      //     console.log(response);
-      //   } else {
-      //     reset();
-      //     alert("LSADJ:LASDJLA");
-      //   }
     } catch (error) {
       console.error(error);
     }
   };
-  
-  
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const files = event.target.files;
-    // console.log(files);
     if (files) {
-      // const fileURLs = Array.from(files).map((file) =>
-      //   URL.createObjectURL(file)
-      // );
-      // setSelectedImage((prevImages) => [...prevImages, ...fileURLs]);
-
-      setSelectedImage(URL.createObjectURL(files[0]))
-      const newFileList = new DataTransfer();
-      Array.from(attachments).forEach((file) => newFileList.items.add(file));
-      Array.from(files).forEach((file) => newFileList.items.add(file));
-      // console.log(newFileList)
-      setAttachments(newFileList.files as FileList);
+      const fileURLs = Array.from(files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => [...prevImages, ...fileURLs]);
+      const dataTransfer = new DataTransfer();
+      if (attachments) {
+        Array.from(attachments).forEach((file) =>
+          dataTransfer.items.add(file as File)
+        );
+      }
+      Array.from(files).forEach((file) => dataTransfer.items.add(file));
+      const newFileList = dataTransfer.files;
+      setAttachments(newFileList);
     }
   };
-  
-  
-  
+
   return (
     <div className="subscription_create_wrapper">
       <aside className="subscription_aside_left">
@@ -102,22 +118,15 @@ export const EditPost = () => {
       <div className="subscription_create">
         <DeletePost />
         <h2>Редактирование поста</h2>
-        {/* <EditAttachPost postId={userPost.id} /> */}
         <form
           className="subscription_form"
           onSubmit={handleSubmit(onUpdatePost)}
         >
           <div className="subscription_image">
             <label htmlFor="image">Обложка поста</label>
-            {selectedImage && (
-              <div>
-                <img id="image-preview" src={selectedImage} alt="Uploaded" />
-              </div>
-            )}
-            {/* {selectedImage &&
-              selectedImage.map((si) => {
-                return <img id="image-preview" src={si} alt="Uploaded" />;
-              })} */}
+            {selectedImage.map((si) => (
+              <img key={si} id="image-preview" src={si} alt="Uploaded" />
+            ))}
             <label className="custom_file_upload">
               <Controller
                 control={control}
@@ -125,12 +134,10 @@ export const EditPost = () => {
                 render={({ field }) => (
                   <input
                     {...field}
-                    onChange={(event) =>
-                      field.onChange(handleFileChange(event))
-                    }
+                    onChange={(event) => handleFileChange(event)}
                     type="file"
                     id="attachments"
-                    value={undefined}
+                    value={[]}
                   />
                 )}
               />

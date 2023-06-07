@@ -589,6 +589,7 @@ a:active {
 }
 .pp_post__img_attach {
   margin: 5px;
+  max-width: 272px;
 }
 .pp_post__audio_wrapper {
   margin-top: 25px;

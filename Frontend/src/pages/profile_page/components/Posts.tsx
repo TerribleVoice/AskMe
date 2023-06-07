@@ -10,6 +10,7 @@ import ReactAudioPlayer from "react-audio-player";
 
 export const Posts = () => {
   const { LoginName } = useParams();
+  const urLogin = localStorage.getItem("login");
   const navigate = useNavigate();
   const [posts, setPosts] = useState<IUserPost[]>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -86,29 +87,35 @@ export const Posts = () => {
                   </span>
                   <span className="pp_post__date">{formattedDate}</span>
                 </div>
-                <Link
-                  state={post}
-                  className="pp_post__settings"
-                  to={`/${LoginName}/edit_post/${post.id}`}
-                >
-                  <img
-                    style={{ width: "30px" }}
-                    src="/img/post/Tochki3.svg"
-                    alt="post_settings"
-                  />
-                </Link>
+                {LoginName === urLogin ? (
+                  <Link
+                    state={post}
+                    className="pp_post__settings"
+                    to={`/${LoginName}/edit_post/${post.id}`}
+                  >
+                    <img
+                      style={{ width: "30px" }}
+                      src="/img/post/Tochki3.svg"
+                      alt="post_settings"
+                    />
+                  </Link>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="pp_post__title">{post.title}</div>
               <div className="pp_post__text">{post.content}</div>
               {post.haveAccess && post.attachments.length <= 4 ? (
                 <div className="pp_post__attach_wrapper">
                   {post.attachments !== undefined ? (
-                    post.attachments.slice(0, 4).map((a) => (
-                      <Attachment
-                        fileType={a!.fileType}
-                        sourceUrl={a!.sourceUrl}
-                      />
-                    ))
+                    post.attachments
+                      .slice(0, 4)
+                      .map((a) => (
+                        <Attachment
+                          fileType={a!.fileType}
+                          sourceUrl={a!.sourceUrl}
+                        />
+                      ))
                   ) : (
                     <></>
                   )}
@@ -132,13 +139,15 @@ export const Posts = () => {
                 </div>
               ) : post.haveAccess && post.attachments.length >= 4 ? (
                 <div className="pp_post__attach_wrapper">
-                  {post.attachments !== undefined && post.attachments.map((a) => a) ? (
-                    post.attachments.slice(0, 4).map((a) => (
-                      <Attachment
-                        fileType={a!.fileType}
-                        sourceUrl={a!.sourceUrl}
-                      />
-                    ))
+                  {post.attachments !== undefined &&
+                  post.attachments.map((a) => a) ? (
+                    post.attachments
+                      .map((a) => (
+                        <Attachment
+                          fileType={a!.fileType}
+                          sourceUrl={a!.sourceUrl}
+                        />
+                      ))
                   ) : (
                     <></>
                   )}
