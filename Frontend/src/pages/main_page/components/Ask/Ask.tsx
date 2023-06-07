@@ -11,7 +11,7 @@ export const Ask = () => {
           </div>
           <div className="left__text">Ваше творчество - ваш заработок </div>
           {login ? (
-            <div className="left__text">Добро пожаловать. Снова.</div>
+            <div className="left__text">Добро пожаловать</div>
           ) : (
             <Link to="/auth">
               <div className="left__btn">Регистрация</div>

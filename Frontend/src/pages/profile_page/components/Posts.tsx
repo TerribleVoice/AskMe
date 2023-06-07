@@ -4,8 +4,10 @@ import { getUserPosts } from "@/services/getUserPosts";
 import { useEffect, useState } from "react";
 import { AiFillSetting } from "react-icons/ai";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import Modal from "@/components/Modal";
 
 export const Posts = () => {
+  const [modalActive, setModalActive] = useState(false);
   const { LoginName } = useParams();
   const navigate = useNavigate();
   const [posts, setPosts] = useState<IUserPost[]>();
@@ -30,7 +32,8 @@ export const Posts = () => {
       console.log(error);
     }
   }, [LoginName, navigate]);
-
+  
+  
   return (
     <div className="pp_posts_wrapper">
       {posts &&
@@ -87,13 +90,20 @@ export const Posts = () => {
                 <div className="pp_post__title">{post.title}</div>
                 {post.haveAccess ? <div className="pp_post__text2">{post.content}</div> : null}
               </div>
+
               {post.haveAccess ? (
-                <div className="pp_post__img">
+                <div className="pp_post__img" onClick={() =>setModalActive(true)}>
                   <img
                     className="pp_post__img"
                     src={post?.attachments?.[0]?.sourceUrl ?? ""}
                     alt=""
                   />
+                                <Modal active ={modalActive} setActive={setModalActive}>
+                <img
+                  className=""
+                  src={post?.attachments?.[0]?.sourceUrl ?? ""}
+                />
+              </Modal>
                 </div>
               ) : (
                 <div className="pp_post__img pp_blurred">
