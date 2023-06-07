@@ -126,7 +126,7 @@ public class UserService : IUserService
     {
         var user = await ReadUserByLoginAsync(userLogin);
         var path = CreateFilePathForProfileImage(user.Id);
-        if (await s3StorageHandler.IsExists(path))
+        if (await s3StorageHandler.IsExistsAsync(path))
         {
             return s3StorageHandler.GetFileUrl(path);
         }

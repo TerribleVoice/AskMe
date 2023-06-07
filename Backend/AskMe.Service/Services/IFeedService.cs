@@ -14,4 +14,5 @@ public interface IFeedService
     Task AttachFilesAsync(Guid postId, AttachmentRequest[] fileStreamWithNames);
     Task<AttachmentResponse[]> GetPostAttachmentUrlsAsync(Guid postId);
     Task ClearAttachmentsAsync(Guid postId);
+    Task DeleteAttachmentsAsync(Guid postId, string[] fileNames);
 }

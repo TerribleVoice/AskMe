@@ -79,7 +79,9 @@ public class FeedController : CustomControllerBase
         return Ok();
     }
 
-    private async Task AttachFiles(Guid postId, [FromForm] IFormFile[] files)
+    [HttpPost("{postId:guid}/files")]
+    [Authorize]
+    public async Task AttachFiles(Guid postId, [FromForm] IFormFile[] files)
     {
         var attachmentRequests =  files.Select(file=>new AttachmentRequest
         {
@@ -89,5 +91,12 @@ public class FeedController : CustomControllerBase
         }).ToArray();
 
         await feedService.AttachFilesAsync(postId, attachmentRequests);
+    }
+
+    [HttpDelete("{postId:guid}/files")]
+    [Authorize]
+    public async Task AttachFiles(Guid postId, string[] fileNames)
+    {
+        await feedService.DeleteAttachmentsAsync(postId, fileNames);
     }
 }
