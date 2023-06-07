@@ -9,7 +9,7 @@ import { getUserProfilePage } from "@/services/getUserProfilePage";
 import { useState, useEffect, useLayoutEffect } from "react";
 
 export const UserSettingsForm = () => {
-  const LoginName = localStorage.getItem("login")
+  const LoginName = localStorage.getItem("login");
   const navigation = useNavigate();
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -35,8 +35,7 @@ export const UserSettingsForm = () => {
     }
   }, []);
   const [profileData, setProfileData] = useState<IUserProfilePage>();
-  const links = localStorage.getItem("links")
-  const description = localStorage.getItem("description")
+
   const {
     register,
     handleSubmit,
@@ -46,8 +45,8 @@ export const UserSettingsForm = () => {
       login: LoginName!,
       email: "",
       password: "",
-      links: links!,
-      description: description!,
+      links: profileData?.links === null ? "" : profileData?.links,
+      description: profileData?.description === null ? "" : profileData?.description,
     },
   });
 
@@ -132,7 +131,7 @@ export const UserSettingsForm = () => {
             {...register("links", {
               // setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={links! === "null" ?  "" : links!}
+            placeholder={profileData?.links === null ? "" : profileData?.links}
             // defaultValue={links}
             name="links"
             id="links"
@@ -147,7 +146,7 @@ export const UserSettingsForm = () => {
             {...register("description", {
               // setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={description!}
+            placeholder={profileData?.description === null ? "" : profileData?.description}
             // defaultValue={description}
             name="description"
             id="description"
