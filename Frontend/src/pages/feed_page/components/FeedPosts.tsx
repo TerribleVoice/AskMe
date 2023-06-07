@@ -66,21 +66,6 @@ export const FeedPosts = () => {
                   </span>
                   <span className="pp_post__date">{formattedDate}</span>
                 </div>
-                {LoginName === urLogin ? (
-                  <Link
-                    state={post}
-                    className="pp_post__settings"
-                    to={`/${LoginName}/edit_post/${post.id}`}
-                  >
-                    <img
-                      style={{ width: "30px" }}
-                      src="/img/post/Tochki3.svg"
-                      alt="post_settings"
-                    />
-                  </Link>
-                ) : (
-                  <></>
-                )}
               </div>
               <div className="pp_post__title">{post.title}</div>
               <div className="pp_post__text">{post.content}</div>
