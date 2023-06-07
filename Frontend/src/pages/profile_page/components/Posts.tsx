@@ -13,23 +13,6 @@ export const Posts = () => {
   const urLogin = localStorage.getItem("login");
   const navigate = useNavigate();
   const [posts, setPosts] = useState<IUserPost[]>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string>("");
-
-  const openModal = (imageUrl: string) => {
-    setSelectedImageUrl(imageUrl);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const [isVideoOpen, setVideoOpen] = useState(true);
-
-  const handleVideo = () => {
-    setVideoOpen(false);
-  };
 
   useEffect(() => {
     try {
