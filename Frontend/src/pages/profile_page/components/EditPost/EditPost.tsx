@@ -139,6 +139,7 @@ export const EditPost = () => {
                 >
                   <div className="subscription_checkbox">
                     <input
+                      {...register("SubscriptionId", { required: true })}
                       className="subscription_input_subscriptionId"
                       name="SubscriptionId"
                       type="checkbox"
