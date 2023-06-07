@@ -37,10 +37,6 @@ export const UserSettingsForm = () => {
     fetchData();
   }, []);
 
-  
-    if (profileData === null) {
-      return <div>Loading...</div>;
-    }
   const {
     register,
     handleSubmit,
@@ -79,6 +75,10 @@ export const UserSettingsForm = () => {
       console.error(error);
     }
   };
+
+  if (profileData === null) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="settings_form_wrapper">
       <h1>Профиль</h1>

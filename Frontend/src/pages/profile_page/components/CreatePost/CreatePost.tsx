@@ -176,7 +176,7 @@ export const CreatePost = () => {
             <label htmlFor="Title">Введите заголовок поста</label>
             <input
               className=""
-              {...register("Title", { required: false })}
+              {...register("Title", { required: true })}
               type="text"
               id="Title"
               name="Title"
@@ -185,7 +185,7 @@ export const CreatePost = () => {
           <div className="subscription_description">
             <label htmlFor="Content">Описание поста</label>
             <textarea
-              {...register("Content", { required: false })}
+              {...register("Content", { required: true })}
               id="Content"
               name="Content"
             />
