@@ -15,6 +15,7 @@ export const UserSettingsForm = () => {
     window.scrollTo(0, 0);
   }, []);
   const [profileData, setProfileData] = useState<IUserProfilePage | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,13 +30,15 @@ export const UserSettingsForm = () => {
           }
         } catch (error) {
           console.log(error);
+        } finally {
+          setIsLoading(false);
         }
       } else {
         navigation("/404");
       }
     };
     fetchData();
-  }, []);
+  }, [LoginName]);
 
   const {
     register,
@@ -46,8 +49,8 @@ export const UserSettingsForm = () => {
       login: LoginName!,
       email: "",
       password: "",
-      links: profileData?.links || "",
-      description: profileData?.description || "",
+      links: profileData?.links,
+      description: profileData?.description,
     },
   });
 
@@ -76,9 +79,10 @@ export const UserSettingsForm = () => {
     }
   };
 
-  if (profileData === null) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="settings_form_wrapper">
       <h1>Профиль</h1>
@@ -137,7 +141,7 @@ export const UserSettingsForm = () => {
               // setValueAs: (v) => (v === "" ? v : v),
             })}
             // placeholder={profileData?.links === null ? "" : profileData?.links}
-            // defaultValue={profileData?.links === null ? "" : profileData?.links}
+            defaultValue={profileData?.links}
             name="links"
             id="links"
           />
@@ -152,7 +156,7 @@ export const UserSettingsForm = () => {
               // setValueAs: (v) => (v === "" ? v : v),
             })}
             // placeholder={profileData?.description === null ? "" : profileData?.description}
-            // defaultValue={profileData?.description === null ? "" : profileData?.description}
+            defaultValue={profileData?.description}
             name="description"
             id="description"
           />
