@@ -66,7 +66,6 @@ public class FeedController : CustomControllerBase
     public async Task<IActionResult> Update(Guid postId, [FromForm] PostRequest request, [FromForm] IFormFile[] attachments)
     {
         await feedService.CreateOrUpdateAsync(request, postId);
-        await feedService.ClearAttachmentsAsync(postId);
         await AttachFiles(postId, attachments);
         return Ok();
     }

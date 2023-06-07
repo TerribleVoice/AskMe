@@ -86,19 +86,6 @@ public class FeedService : IFeedService
         await Task.WhenAll(tasks);
     }
 
-    public async Task ClearAttachmentsAsync(Guid postId)
-    {
-        if (!await dbContext.CanCurrentUserEdit<Post>(postId))
-        {
-            throw new Exception($"У {userIdentity.CurrentUser!.Login} доступа на редактирование поста {postId}");
-        }
-
-        var attachmentKeys = await s3StorageHandler.GeFileKeysInDirectoryAsync(S3StorageHandler.CreatePath("posts", postId.ToString()));
-        var tasks = attachmentKeys.Select(s3StorageHandler.DeleteIfExistsAsync);
-
-        await Task.WhenAll(tasks);
-    }
-
     public async Task DeleteAttachmentsAsync(Guid postId, string[] fileNames)
     {
         if (!await dbContext.CanCurrentUserEdit<Post>(postId))
