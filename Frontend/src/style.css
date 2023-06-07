@@ -797,9 +797,9 @@ a:active {
 }
 .pp_left__avatar {
   min-height: 15vh;
-  min-width: 15vw;
-  max-width: 35vw;
-  max-height: 35vh;
+  min-width: 15vh;
+  max-width: 15vh;
+  max-height: 15vh;
 }
 .pp_links {
   margin-top: 3px;
