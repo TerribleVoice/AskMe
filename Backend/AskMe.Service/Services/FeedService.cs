@@ -147,11 +147,12 @@ public class FeedService : IFeedService
     public async Task<Dictionary<Guid, bool>> IsUserHaveAccessToPostsAsync(string userLogin, PostResponse[] posts)
     {
         var userSubscriptions = await subscriptionService.GetReaderSubscriptionsFlatTreeAsync(userLogin);
+        var userId = (await userService.FindUserByLoginAsync(userLogin))?.Id;
 
         return posts.ToDictionary(
             post => post.Id,
             post => userSubscriptions.Any(subscription => post.SubscriptionId == subscription.Id)
-                    || (userIdentity.CurrentUser != null && post.AuthorId == userIdentity.CurrentUser.Id));
+                    || (!userId.HasValue && post.AuthorId == userId));
     }
 
     private async Task ThrowIfCantEdit(Guid postId)

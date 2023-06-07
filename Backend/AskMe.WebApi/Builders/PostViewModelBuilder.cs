@@ -1,3 +1,4 @@
+using AskMe.Core.Models;
 using AskMe.Service.Models;
 using AskMe.Service.Services;
 using AskMe.WebApi.Models;
@@ -9,19 +10,23 @@ public class PostViewModelBuilder
     private readonly UserViewModelBuilder userViewModelBuilder;
     private readonly IFeedService feedService;
     private readonly ISubscriptionService subscriptionService;
+    private readonly IUserIdentity userIdentity;
 
     public PostViewModelBuilder(UserViewModelBuilder userViewModelBuilder,
         IFeedService feedService,
-        ISubscriptionService subscriptionService)
+        ISubscriptionService subscriptionService,
+        IUserIdentity userIdentity)
     {
         this.userViewModelBuilder = userViewModelBuilder;
         this.feedService = feedService;
         this.subscriptionService = subscriptionService;
+        this.userIdentity = userIdentity;
     }
 
     public async Task<PostViewModel[]> BuildAsync(PostResponse[] posts, string userLogin)
     {
-        var accessMap = await feedService.IsUserHaveAccessToPostsAsync(userLogin, posts);
+        var readerLogin = userIdentity.CurrentUser == null ? "" : userIdentity.CurrentUser.Login;
+        var accessMap = await feedService.IsUserHaveAccessToPostsAsync(readerLogin, posts);
 
         var authorViewModel = await userViewModelBuilder.BuildAsync(userLogin);
         var postAttachments = await GetPostAttachments(posts);
