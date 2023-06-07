@@ -599,7 +599,16 @@ a:active {
   width: 552px;
   border-radius: 5px;
   color: #b00062;
+}
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-panel {
   background-color: #b00062;
+  border-color: #b00062;
+  color: #b00062;
+  border-radius: 0%;
+  box-shadow: inset 0px 0px 0px 2px #b00062;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #b00062;
+  -moz-box-shadow: inset 0px 0px 0px 2px #b00062;
 }
 .react-audio-player {
   
