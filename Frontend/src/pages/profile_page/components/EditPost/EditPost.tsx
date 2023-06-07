@@ -55,13 +55,17 @@ export const EditPost = () => {
 
   const onUpdatePost = async (data: IUserUpdatePost) => {
     try {
-      const fileList = attachments ? (Array.from(attachments) as File[]) : [];
-      const postData = {
-        ...data,
-        attachments: fileList,
-      };
-      console.log(postData);
-      const response = await postUserUpdatePost(postData, id!);
+      if (!data.attachments) {
+        data.attachments = [] as unknown as FileList;
+      }
+      const formData = new FormData();
+      formData.append("Title", data.Title);
+      formData.append("Content", data.Content);
+      formData.append("SubscriptionId", selectedSubscription);
+      if (attachments) {
+        Array.from(data.attachments).forEach((file, index) => formData.append("attachments", file, `${index}`));
+      }
+      const response = await postUserUpdatePost(formData, id!);
       console.log(response);
       navigation(`/${login}`);
     } catch (error) {

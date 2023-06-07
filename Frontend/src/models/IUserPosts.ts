@@ -27,5 +27,5 @@ export interface IUserUpdatePost {
   Content: string;
   SubscriptionId: string;
   Title: string;
-  attachments: File;
+  attachments: FileList;
 }

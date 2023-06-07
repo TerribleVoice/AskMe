@@ -100,7 +100,7 @@ export const UserSettingsForm = () => {
           <label htmlFor="email">Почта</label>
           <input
             {...register("email", {
-              // setValueAs: (v) => (v === "" ? v : v),
+              setValueAs: (v) => (v === "" ? v : v),
             })}
             placeholder=""
             type="email"
@@ -115,7 +115,7 @@ export const UserSettingsForm = () => {
           <label htmlFor="password">Пароль</label>
           <input
             {...register("password", {
-              // setValueAs: (v) => (v === "" ? v : v),
+              setValueAs: (v) => (v === "" ? v : v),
             })}
             type="password"
             name="password"
@@ -129,10 +129,10 @@ export const UserSettingsForm = () => {
           <label htmlFor="links">Ссылки</label>
           <textarea
             {...register("links", {
-              // setValueAs: (v) => (v === "" ? v : v),
+              setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={profileData?.links === null ? "" : profileData?.links}
-            // defaultValue={links}
+            // placeholder={profileData?.links === null ? "" : profileData?.links}
+            defaultValue={profileData?.links === null ? "" : profileData?.links}
             name="links"
             id="links"
           />
@@ -144,10 +144,10 @@ export const UserSettingsForm = () => {
           <label htmlFor="description">Описание</label>
           <textarea
             {...register("description", {
-              // setValueAs: (v) => (v === "" ? v : v),
+              setValueAs: (v) => (v === "" ? v : v),
             })}
-            placeholder={profileData?.description === null ? "" : profileData?.description}
-            // defaultValue={description}
+            // placeholder={profileData?.description === null ? "" : profileData?.description}
+            defaultValue={profileData?.description === null ? "" : profileData?.description}
             name="description"
             id="description"
           />
