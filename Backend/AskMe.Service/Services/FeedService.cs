@@ -151,7 +151,7 @@ public class FeedService : IFeedService
         return posts.ToDictionary(
             post => post.Id,
             post => userSubscriptions.Any(subscription => post.SubscriptionId == subscription.Id)
-                    || (!userId.HasValue && post.AuthorId == userId));
+                    || (userId.HasValue && post.AuthorId == userId));
     }
 
     private async Task ThrowIfCantEdit(Guid postId)
