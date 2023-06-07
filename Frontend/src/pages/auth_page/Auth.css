@@ -91,7 +91,7 @@ body {
   input[type="radio"] {
     --active: #b00062;
     --active-inner: #fff;
-    --focus: 2px rgba(254, 39, 200, 0.3);
+    --focus: 6px rgba(254, 39, 200, 0.3);
     --border: #bbc1e1;
     --border-hover: #b00062;
     --background: #c0c0c0;
