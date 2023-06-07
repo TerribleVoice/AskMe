@@ -99,7 +99,10 @@ public class UserController : CustomControllerBase
     {
         var authorsDtos = await userService.GetTopAuthorsAsync(limit);
 
-        return authorsDtos.Select(x => new UserViewModel(x)).ToArray();
+        var viewModels = new List<UserViewModel>();
+        foreach (var userDto in authorsDtos)
+            viewModels.Add(await userViewModelBuilder.BuildAsync(userDto));
+        return viewModels.ToArray();
     }
 
     [HttpPost("{userLogin}/profile_image")]
