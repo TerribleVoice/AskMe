@@ -95,7 +95,7 @@ public class FeedController : CustomControllerBase
 
     [HttpDelete("{postId:guid}/files")]
     [Authorize]
-    public async Task AttachFiles(Guid postId, string[] fileNames)
+    public async Task DeleteFiles(Guid postId, string[] fileNames)
     {
         await feedService.DeleteAttachmentsAsync(postId, fileNames);
     }
